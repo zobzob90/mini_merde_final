@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:58 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/03 15:42:15 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:19:34 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	reset_stdio(int stdin_backup, int stdout_backup)
 	}
 }
 
-int	exec_builtin(t_cmd *cmd, t_shell *shell)
+/*int	exec_builtin(t_cmd *cmd, t_shell *shell)
 {
 	char	**args;
 
@@ -65,7 +65,7 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell)
 	if (ft_strcmp(args[0], "exit") == 0)
 		return (get_exit(args));
 	return (1);
-}
+}*/
 
 
 /*Exec builtin in the parent process*/
@@ -90,7 +90,7 @@ int	exec_builtin_parent(t_cmd *cmd, t_shell *shell)
 		shell->exit_code = 1;
 		return (1);
 	}
-	shell->exit_code = exec_builtin(cmd, shell);
+	shell->exit_code = launch_built(shell, cmd->cmds);
 	reset_stdio(stdin_backup, stdout_backup);
 	return (0);
 }
