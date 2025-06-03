@@ -6,9 +6,9 @@ PARSER -> Doit etre plus ou moins Ok changement a prevoir avec l'exec.
 
 Expander-> Tout les tests sont reussis donc ca doit etre ok
 
-EXEC-> En attente.
+EXEC-> OK poour le moment.
 
-Builtin -> Cd tres leger a revoir, export pas fonctionnelle, exit doit gerer les signaux le reste me semble ok.
+Builtin -> Tout ok sauf export a gerer.
 
 Easter -> Ajout du mode mini_merde/minishell_drucker/mini_hell/mini jacquie et michel change juste le prompt;
 
