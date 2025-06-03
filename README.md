@@ -1,2 +1,17 @@
-# mini_merde_final
-Version final de mini_merde
+MINI_MERDE
+
+LEXER -> OK normalement pas besoin de changement.
+
+PARSER -> Doit etre plus ou moins Ok changement a prevoir avec l'exec.
+
+Expander-> Tout les tests sont reussis donc ca doit etre ok
+
+EXEC-> En attente.
+
+Builtin -> Cd tres leger a revoir, export pas fonctionnelle, exit doit gerer les signaux le reste me semble ok.
+
+Easter -> Ajout du mode mini_merde/minishell_drucker/mini_hell/mini jacquie et michel change juste le prompt;
+
+Les leaks semblent ok a voir pour ajouter un script pour masquer les leaks de readline qui sont normaux.
+
+Inchallah on push avant la mi-juin.
