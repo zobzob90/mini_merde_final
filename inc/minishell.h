@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/03 15:46:22 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:12:15 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,18 @@ int		get_echo(char **av);
 int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);
+int		get_export(t_shell *shell, t_cmd *cmd);
 int		launch_built(t_shell *shell, char **argv);
 int		get_unset(t_shell *shell, char **argv);
+
+/*BUILTIN EXPORT UTILS*/
+t_env	*create_env_node(const char *key, const char *value, t_shell *shell);
+void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell *shell);
+int		is_valid_export_key(const char *key);
+void	trim_spaces(char *av);
+void	handle_key(t_env **env, char *av, t_shell *shell);
+void	handle_key_value(t_env **env, char *av, char *equal, t_shell *shell);
+bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell);
 
 /*EASTER*/
 int		get_drucker(t_shell *shell);
