@@ -6,15 +6,15 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/04 14:53:01 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:00:47 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env *create_env_node(const char *key, const char *value, t_shell *shell)
+t_env	*create_env_node(const char *key, const char *value, t_shell *shell)
 {
-	t_env *new_node;
+	t_env	*new_node;
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
@@ -28,8 +28,8 @@ t_env *create_env_node(const char *key, const char *value, t_shell *shell)
 
 void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell *shell)
 {
-    t_env *temp;
-    t_env *new_node;
+    t_env	*temp;
+    t_env	*new_node;
 
     temp = *env;
     while (temp)
@@ -57,7 +57,7 @@ void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell 
 
 int	is_valid_export_key(const char *key)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!key || !key[0] ||(!ft_isalpha(key[0]) && key[0] != '_'))
@@ -73,8 +73,8 @@ int	is_valid_export_key(const char *key)
 
 void	trim_spaces(char *av)
 {
-	char *start;
-	char *end;
+	char	*start;
+	char	*end;
 
 	start = av;
 	while (*start && ft_isspace(*start))
