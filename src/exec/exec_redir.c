@@ -16,6 +16,7 @@ static int	open_redir_fd(t_redir *redir)
 {
 	int	fd;
 
+	printf("type de redir : %d\n",redir->type);
 	if (redir->type == REDIR_IN)
 		fd = open(redir->file, O_RDONLY);
 	else if (redir->type == REDIR_OUT)
@@ -32,10 +33,28 @@ static int	open_redir_fd(t_redir *redir)
 	return (fd);
 }
 
+static int	dup_fd(int oldfd, int newfd)
+{
+	if (oldfd == newfd)
+		return (0);
+	if (dup2(oldfd, newfd) == -1)
+	{
+		perror("dup2");
+		close(oldfd);
+		return (1);
+	}
+	close(oldfd);
+	return (0);
+}
+
 int	handle_redir_exec(t_redir *redir)
 {
 	int	fd;
+	int	fd_in;
+	int	fd_out;
 
+	fd_in = -1;
+	fd_out = -1;
 	while (redir)
 	{
 		if (!redir->file)
@@ -45,16 +64,23 @@ int	handle_redir_exec(t_redir *redir)
 			return (1);
 		if (redir->type == REDIR_IN)
 		{
-			if (dup2(fd,STDIN_FILENO) == -1)
-				return (close(fd), perror("dup2"), 1);
+			if (fd_in != -1)
+				close (fd_in);
+			fd_in = fd;
+		}
+		else if (redir->type == REDIR_OUT || redir->type == APPEND)
+		{
+			if (fd_out != -1)
+				close(fd_out);
+			fd_out = fd;
 		}
 		else
-		{
-			if (dup2(fd, STDOUT_FILENO) == -1)
-				return (close(fd), perror("dup2"), 1);
-		}
-		close(fd);
+			close(fd);
 		redir = redir->next;
 	}
+	if (fd_in != -1 && dup_fd(fd_in, STDIN_FILENO))
+		return (1);
+	if (fd_out != -1 && dup_fd(fd_out, STDOUT_FILENO))
+		return (1);
 	return (0);
 }

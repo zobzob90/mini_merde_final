@@ -63,21 +63,21 @@ static char	*resolve_cmd_path(char *cmd, t_env *env)
 	char	*path_var;
 	int		i;
 
-	i = 0;
-	full = NULL;
 	path_var = get_env_value(env, "PATH");
 	if (!path_var)
 		return (NULL);
 	paths = ft_split(path_var, ':');
 	if (!paths)
 		return (NULL);
+	i = 0;
 	while (paths[i])
 	{
 		full = ft_strjoin_path(paths[i], cmd);
+		if (!full)
+			return (ft_free_tab(paths), NULL);
 		if (access(full, X_OK) == 0)
 			return (ft_free_tab(paths), full);
-		if (full)
-			free (full);
+		free(full);
 		i++;
 	}
 	ft_free_tab(paths);
@@ -115,25 +115,47 @@ int	exec_external(t_cmd *cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
+	int		err;
 
-	path = NULL;
 	if (!cmd || !cmd->cmds || !cmd->cmds[0])
 		return (1);
+
 	if (ft_strchr(cmd->cmds[0], '/'))
 		path = ft_strdup(cmd->cmds[0]);
 	else
 		path = resolve_cmd_path(cmd->cmds[0], env);
 	if (!path)
-		return (perror(cmd->cmds[0]), 127);
+	{
+		perror(cmd->cmds[0]);
+		return (127);
+	}
+
+	if (access(path, X_OK) != 0)
+	{
+		perror("access before execve");
+		printf("	path tente : %s\n", path);
+		free(path);
+		return (126);
+	}
+
 	envp = env_list_to_array(env);
 	if (!envp)
 	{
 		free(path);
 		return (1);
 	}
+
+	printf("	execve(%s)\n", path);
+	for (int i = 0; cmd->cmds[i]; i++)
+		printf("cmds[%d] = %s\n",i, cmd->cmds[i]);
+	for (int i = 0; envp[i]; i++)
+		printf("envp[%d] = %s\n", i, envp[i]);
+
 	execve(path, cmd->cmds, envp);
+
+	err = errno;
 	perror(cmd->cmds[0]);
-	ft_free_tab(envp);
 	free(path);
-	exit(126);
+	ft_free_tab(envp);
+	exit(err == ENOENT ? 127 : 126);
 }
