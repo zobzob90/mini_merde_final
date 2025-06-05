@@ -140,6 +140,10 @@ int		exec_external(t_cmd *cmd, t_env *env);
 void	exec_child(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2]);
 int 	is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
+char	**env_list_to_array(t_env *env);
+int		env_list_size(t_env *env);
+char	*ft_strjoin_path(char *path, char *cmd);
+char	*resolve_cmd_path(char *cmd, t_env *env);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list);

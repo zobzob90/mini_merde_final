@@ -12,150 +12,78 @@
 
 #include "minishell.h"
 
-/*Return the size of the chained link of env variable*/
-
-static int	env_list_size(t_env *env)
+char	*get_executable_path(t_cmd *cmd, t_env *env)
 {
-	int	count;
+	char	*path;
 
-	count = 0;
-	while (env)
+	if (ft_strchr(cmd->cmds[0], '/'))
+		path = ft_strdup(cmd->cmds[0]);
+	else
+		path = resolve_cmd_path(cmd->cmds[0], env);
+	return (path);
+}
+
+int	check_exec_access(char *path)
+{
+	if (access(path, X_OK) != 0)
 	{
-		count++;
-		env = env->next;
+		perror("access before execve");
+		return (0);
 	}
-	return (count);
+	return (1);
 }
 
-/*Join path with the cmd name*/
-
-static char	*ft_strjoin_path(char *path, char *cmd)
-{
-	char	*res;
-	int		path_len;
-	int		cmd_len;
-	int		add_slash;
-	int		len;
-
-	res = NULL;
-	if (!path || !cmd)
-		return (NULL);
-	path_len = ft_strlen(path);
-	cmd_len = ft_strlen(cmd);
-	add_slash = 0;
-	if (path_len > 0 && path[path_len - 1] != '/')
-		add_slash = 1;
-	len = path_len + cmd_len + add_slash + 1;
-	res = ft_calloc(len, sizeof(char));
-	if (!res)
-		return (NULL);
-	ft_strcpy(res, path);
-	if (add_slash)
-		ft_strcat(res, "/");
-	ft_strcat(res, cmd);
-	return (res);
-}
-
-static char	*resolve_cmd_path(char *cmd, t_env *env)
-{
-	char	**paths;
-	char	*full;
-	char	*path_var;
-	int		i;
-
-	path_var = get_env_value(env, "PATH");
-	if (!path_var)
-		return (NULL);
-	paths = ft_split(path_var, ':');
-	if (!paths)
-		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		full = ft_strjoin_path(paths[i], cmd);
-		if (!full)
-			return (ft_free_tab(paths), NULL);
-		if (access(full, X_OK) == 0)
-			return (ft_free_tab(paths), full);
-		free(full);
-		i++;
-	}
-	ft_free_tab(paths);
-	return (NULL);
-}
-
-static char	**env_list_to_array(t_env *env)
+char	**prepare_envp(t_env *env, char *path)
 {
 	char	**envp;
-	char	*joined;
-	int		size;
-	int		i;
 
-	size = env_list_size(env);
-	envp = ft_calloc((size + 1), sizeof(char *));
+	envp = env_list_to_array(env);
 	if (!envp)
-		return (NULL);
-	i = 0;
-	while (env)
 	{
-		joined = ft_strjoin(env->key, "=");
-		if (!joined)
-			return (ft_free_tab(envp), NULL);
-		envp[i] = ft_strjoin(joined, env->value);
-		if (!envp[i])
-			return (free(joined), ft_free_tab(envp), NULL);
-		free(joined);
-		i++;
-		env = env->next;
+		free(path);
+		return (NULL);
 	}
 	return (envp);
+}
+
+void	handle_execve_failure(char *path, char **envp, const char *cmd_name)
+{
+	int	err;
+	int	exit_code;
+
+	err = errno;
+	perror(cmd_name);
+	free(path);
+	ft_free_tab(envp);
+	if (err == ENOENT)
+		exit_code = 127;
+	else
+		exit_code = 126;
+	exit(exit_code);
 }
 
 int	exec_external(t_cmd *cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
-	int		err;
 
 	if (!cmd || !cmd->cmds || !cmd->cmds[0])
 		return (1);
-
-	if (ft_strchr(cmd->cmds[0], '/'))
-		path = ft_strdup(cmd->cmds[0]);
-	else
-		path = resolve_cmd_path(cmd->cmds[0], env);
+	path = get_executable_path(cmd, env);
 	if (!path)
-	{
-		perror(cmd->cmds[0]);
 		return (127);
-	}
-
-	if (access(path, X_OK) != 0)
+	if (!check_exec_access(path))
 	{
-		perror("access before execve");
-		printf("	path tente : %s\n", path);
 		free(path);
 		return (126);
 	}
-
-	envp = env_list_to_array(env);
+	envp = prepare_envp(env, path);
 	if (!envp)
 	{
 		free(path);
 		return (1);
 	}
-
-	printf("	execve(%s)\n", path);
-	for (int i = 0; cmd->cmds[i]; i++)
-		printf("cmds[%d] = %s\n",i, cmd->cmds[i]);
-	for (int i = 0; envp[i]; i++)
-		printf("envp[%d] = %s\n", i, envp[i]);
-
 	execve(path, cmd->cmds, envp);
-
-	err = errno;
-	perror(cmd->cmds[0]);
-	free(path);
-	ft_free_tab(envp);
-	exit(err == ENOENT ? 127 : 126);
+	handle_execve_failure(path, envp, cmd->cmds[0]);
+	return (1);
 }
