@@ -18,7 +18,10 @@ static int	open_redir_fd(t_redir *redir)
 
 	printf("type de redir : %d\n",redir->type);
 	if (redir->type == REDIR_IN)
+	{
 		fd = open(redir->file, O_RDONLY);
+	printf("fd %d",fd);
+	}
 	else if (redir->type == REDIR_OUT)
 		fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (redir->type == APPEND)

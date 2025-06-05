@@ -69,6 +69,8 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 	return (0);
 }
 
+/*Return 1 when the heredoc creation fails and 0 when it's OK*/
+
 int	setup_heredocs(t_cmd *cmd_list)
 {
 	t_cmd	*cmd;
@@ -109,7 +111,7 @@ void	cleanup_heredocs(t_cmd *cmd_list)
 		while (redir)
 		{
 			if (redir->type == REDIR_IN && redir->file
-				&& ft_strncmp (redir->file, ".heredoc_tmp_", 13))
+				&& !ft_strncmp (redir->file, ".heredoc_tmp_", 13))
 				unlink(redir->file);
 			redir = redir->next;
 		}
