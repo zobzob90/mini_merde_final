@@ -6,13 +6,13 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:44:28 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/04 14:39:30 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:40:44 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	env_count(t_env *env)
+/*static int	env_count(t_env *env)
 {
 	int	count;
 
@@ -23,9 +23,9 @@ static int	env_count(t_env *env)
 		env = env->next;
 	}
 	return (count);
-}
+}*/
 
-static char **env_keys_array(t_env *env)
+/*static char **env_keys_array(t_env *env)
 {
 	int		i;
 	int		count;
@@ -40,14 +40,14 @@ static char **env_keys_array(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		arr[i++] = tmp->key;
+		arr[i++] = ft_strdup(tmp->key);
 		tmp = tmp->next;
 	}	
 	arr[i] = NULL;
 	return (arr);
-}
+}*/
 
-static void	print_exported_env(t_env *env)
+/*static void	print_exported_env(t_env *env)
 {
 	char	**keys;
 	int		i;
@@ -60,20 +60,19 @@ static void	print_exported_env(t_env *env)
 	i = 0;
 	while (keys[i])
 	{
+		// printf("Affichage de la variable : %s\n", keys[i]); // Ajoute ce printf
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		ft_putstr_fd(keys[i], STDOUT_FILENO);
 		value = get_env_value(env, keys[i]);
 		if (value != NULL)
-		{
-			ft_putstr_fd("=\"", STDOUT_FILENO);
-			ft_putstr_fd(value, STDOUT_FILENO);
-			ft_putstr_fd("\"", STDOUT_FILENO);
-		}
+			(ft_putstr_fd("=\"", STDOUT_FILENO), ft_putstr_fd(value, STDOUT_FILENO), ft_putstr_fd("\"", STDOUT_FILENO));;
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
+	while (i--)
+		free(keys[i]);
 	free(keys);
-}
+}*/
 
 int	get_export(t_shell *shell, t_cmd *cmd)
 {
@@ -81,11 +80,11 @@ int	get_export(t_shell *shell, t_cmd *cmd)
 	bool	skip_next;
 
 	i = 1;
-	if (!cmd->cmds[1])
-	{
-		print_exported_env(shell->env);
-		return (0);
-	}
+	// if (!cmd->cmds[1])
+	// {
+	// 	print_exported_env(shell->env);
+	// 	return (0);
+	// }
 	while (cmd->cmds[i])
 	{
 		skip_next = export_args(&shell->env, cmd->cmds[i], cmd->cmds[i + 1], shell);

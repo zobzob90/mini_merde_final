@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:57:09 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/03 13:42:34 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:59:31 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	get_shit(t_shell *shell)
 	if (!shell->drucker_mode)
 	{
 		shell->drucker_mode = 4;
-		ft_putstr_fd("Mode merde activé 💩\n", 1);
+		ft_putstr_fd("Hum tu as fait un gros caca 💩\n", 1);
 	}
 	return (0);
 }

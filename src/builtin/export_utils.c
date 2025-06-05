@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/04 15:00:47 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:45:55 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_env	*create_env_node(const char *key, const char *value, t_shell *shell)
 		exit_clean_shell(shell, "Error: Malloc failed in create_env_node");
 	new_node->key = ft_strdup(key);
 	new_node->value = ft_strdup(value);
-	if (!new_node->key || !new_node->value)
+	if (!new_node->key || (value && !new_node->value))
 		exit_clean_shell(shell, "Error: Malloc failed in strdup create_env_node");
 	return (new_node);
 }
@@ -37,11 +37,8 @@ void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell 
         if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0 && temp->key[ft_strlen(key)] == '\0')
         {
 			free(temp->value);
-			if (!value)
-                temp->value = NULL;
-            else
-                temp->value = ft_strdup(value);
-            if (value && value[0] != '\0' && !temp->value)
+			temp->value = ft_strdup(value);
+            if (value && !temp->value)
                 exit_clean_shell(shell, "Error: Malloc failed in add_or_update_env");
             return;
         }
@@ -86,9 +83,7 @@ void	trim_spaces(char *av)
 	if (start != av)
 	{
 		while (*start)
-		{
 			*av++ = *start++;
-		}
 		*av = '\0';
 	}
 }
@@ -99,7 +94,7 @@ void handle_key(t_env **env, char *av, t_shell *shell)
 	if(is_valid_export_key(av))
 		add_or_update_env(env, av, NULL, shell);
 	else
-		ft_putstr_fd("minishell: export: not a valid identifier`", 2);
+		ft_putstr_fd("minishell: export: not a valid identifier", 2);
 }
 
 void handle_key_value(t_env **env, char *av, char *equal, t_shell *shell)
@@ -109,7 +104,7 @@ void handle_key_value(t_env **env, char *av, char *equal, t_shell *shell)
 	if (is_valid_export_key(av))
 		add_or_update_env(env, av, equal + 1, shell);
 	else
-		ft_putstr_fd("minishell: export: not a valid identifier`", 2);
+		ft_putstr_fd("minishell: export: not a valid identifier", 2);
 }
 
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell)
@@ -120,6 +115,7 @@ bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell)
 
 	skip_next = false;
 	joined_arg = NULL;
+	printf("export_args: %s\n", arg);
 	trim_spaces(arg);
 	if (arg && arg[ft_strlen(arg) - 1] == '=' && next_arg)
 	{

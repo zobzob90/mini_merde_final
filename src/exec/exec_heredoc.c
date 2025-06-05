@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:32 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/03 10:45:02 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:48:15 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	cleanup_heredocs(t_cmd *cmd_list)
 		while (redir)
 		{
 			if (redir->type == REDIR_IN && redir->file
-				&& ft_strncmp (redir->file, ".heredoc_tmp_", 13))
+				&& !ft_strncmp (redir->file, ".heredoc_tmp_", 13))
 				unlink(redir->file);
 			redir = redir->next;
 		}
