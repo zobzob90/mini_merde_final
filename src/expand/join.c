@@ -26,21 +26,26 @@ char	*join_literal(char *res, const char *token, int *i)
 	return (res);
 }
 
-char	*join_dollar(char *res, const char *token, int *i, t_env *env)
+char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 {
 	char	*key;
 	char	*val;
 	int		start;
 
 	(*i)++;
+	if (token[*i] == '?')
+	{
+		val = ft_itoa(shell->exit_code);
+		return (ft_strjoin_free(res, val));
+	}
 	start = *i;
 	while (ft_isalnum(token[*i]) || token[*i] == '_')
 		(*i)++;
 	key = ft_substr(token, start, *i - start);
-	val = get_env_value(env, key);
+	val = get_env_value(shell->env, key);
 	free(key);
 	if (!val)
-		return (NULL);
+		return (res);
 	return (ft_strjoin_free(res, val));
 }
 
@@ -53,13 +58,13 @@ char	*join_char(char *res, char c)
 	return (ft_strjoin_free(res, ft_strdup(tmp)));
 }
 
-char	*join_double_quote(char *res, const char *token, int *i, t_env *env)
+char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 {
 	(*i)++;
 	while (token[*i] && token[*i] != '\"')
 	{
 		if (token[*i] == '$')
-			res = join_dollar(res, token, i, env);
+			res = join_dollar(res, token, i, shell);
 		else
 			res = join_char(res, token[(*i)++]);
 	}

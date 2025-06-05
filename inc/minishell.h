@@ -125,11 +125,11 @@ void	free_pars(t_cmd *cmd);
 
 /*EXPANDER*/
 char	*join_literal(char *res, const char *token, int *i);
-char	*join_dollar(char *res, const char *token, int *i, t_env *env);
+char	*join_dollar(char *res, const char *token, int *i, t_shell *shell);
 char	*join_char(char *res, char c);
-char	*join_double_quote(char *res, const char *token, int *i, t_env *env);
+char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell);
 //char	*get_env_value(const char *name);
-void	expand_all_tokens(t_lexer *lexer, t_env *env);
+void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
 /*EXEC*/
 int		exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env);
@@ -187,4 +187,4 @@ void	free_env(t_env *env);
 char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
 void	ft_sort_str_array(char **arr);
 
-#endif 
+#endif

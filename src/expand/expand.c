@@ -39,7 +39,7 @@ static int	contains_expand_chars(const char *str)
 	return (0);
 }
 
-static char	*expand_token(char *token, t_env *env)
+static char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
 	int		i;
@@ -53,9 +53,9 @@ static char	*expand_token(char *token, t_env *env)
 		if (token[i] == '\'')
 			res = join_literal(res, token, &i);
 		else if (token[i] == '\"')
-			res = join_double_quote(res, token, &i, env);
+			res = join_double_quote(res, token, &i, shell);
 		else if (token[i] == '$')
-			res = join_dollar(res, token, &i, env);
+			res = join_dollar(res, token, &i, shell);
 		else
 			res = join_char(res, token[i++]);
 		if (!res)
@@ -64,7 +64,7 @@ static char	*expand_token(char *token, t_env *env)
 	return (res);
 }
 
-void	expand_all_tokens(t_lexer *lexer, t_env *env)
+void	expand_all_tokens(t_lexer *lexer, t_shell *shell)
 {
 	char	*new;
 
@@ -72,7 +72,7 @@ void	expand_all_tokens(t_lexer *lexer, t_env *env)
 	{
 		if (lexer && lexer->value && contains_expand_chars(lexer->value))
 		{
-			new = expand_token(lexer->value, env);
+			new = expand_token(lexer->value, shell);
 			if (!new)
 				return ;
 			free(lexer->value);

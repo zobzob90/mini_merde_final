@@ -54,7 +54,7 @@ void	parser(t_shell *shell)
 {
 	t_cmd	*cmd;
 
-	expand_all_tokens(shell->lexer, shell->env);
+	expand_all_tokens(shell->lexer, shell);
 	cmd = new_cmd();
 	if (!cmd)
 	{
