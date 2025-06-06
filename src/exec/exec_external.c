@@ -46,20 +46,18 @@ char	**prepare_envp(t_env *env, char *path)
 	return (envp);
 }
 
-void	handle_execve_failure(char *path, char **envp, const char *cmd_name)
+void	handle_execve_failure(char *path, char **envp, const char *cmd)
 {
-	int	err;
-	int	exit_code;
-
-	err = errno;
-	perror(cmd_name);
+	perror(cmd);
 	free(path);
 	ft_free_tab(envp);
-	if (err == ENOENT)
-		exit_code = 127;
+
+	if (errno == EACCES)
+		exit(126);
+	else if (errno == ENOENT)
+		exit(127);
 	else
-		exit_code = 126;
-	exit(exit_code);
+		exit(1);
 }
 
 int	exec_external(t_cmd *cmd, t_env *env)

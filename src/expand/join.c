@@ -23,6 +23,7 @@ char	*join_literal(char *res, const char *token, int *i)
 	res = ft_strjoin_free(res, ft_substr(token, start, *i - start));
 	if (token [*i])
 		(*i)++;
+	printf("single quote = %s\n", res);
 	return (res);
 }
 
@@ -36,6 +37,7 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 	if (token[*i] == '?')
 	{
 		val = ft_itoa(shell->exit_code);
+		(*i)++;
 		return (ft_strjoin_free(res, val));
 	}
 	start = *i;

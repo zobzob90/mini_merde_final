@@ -50,12 +50,22 @@ static char	*expand_token(char *token, t_shell *shell)
 	i = 0;
 	while (token && token[i])
 	{
+		printf("Token[%d] = %c\n", i, token[i]);
 		if (token[i] == '\'')
+		{
+			printf("I'm a simple quote\n");
 			res = join_literal(res, token, &i);
+		}
 		else if (token[i] == '\"')
+		{
+			printf("I'm a double quote\n");
 			res = join_double_quote(res, token, &i, shell);
+		}
 		else if (token[i] == '$')
+		{
+			printf("I'm a dollar\n");
 			res = join_dollar(res, token, &i, shell);
+		}
 		else
 			res = join_char(res, token[i++]);
 		if (!res)
