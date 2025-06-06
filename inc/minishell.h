@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/05 11:53:01 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:01:23 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,22 +154,23 @@ void	init_shell_input(t_shell *shell, char *input);
 void	exit_clean_shell(t_shell *shell, char *msg);
 
 /*BUILTIN*/
-int		get_echo(char **av);
+int		get_echo(char **av, t_env *env);
 int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);
-int		get_export(t_shell *shell, t_cmd *cmd);
+int		get_export(t_shell *shell, char **argv);
 int		launch_built(t_shell *shell, char **argv);
 int		get_unset(t_shell *shell, char **argv);
 
 /*BUILTIN EXPORT UTILS*/
 t_env	*create_env_node(const char *key, const char *value, t_shell *shell);
-void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell *shell);
+void 	add_or_update_env(t_env **env, char *key, char *value);
 int		is_valid_export_key(const char *key);
-void	trim_spaces(char *av);
-void	handle_key(t_env **env, char *av, t_shell *shell);
-void	handle_key_value(t_env **env, char *av, char *equal, t_shell *shell);
+char	*safe_trim(const char *str);
+void	handle_key(t_env **env, char *arg, t_shell *shell);
+void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell);
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 /*EASTER*/
 int		get_drucker(t_shell *shell);

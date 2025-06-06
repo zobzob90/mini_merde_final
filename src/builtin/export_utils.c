@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/05 13:45:55 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:25:29 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,25 @@ t_env	*create_env_node(const char *key, const char *value, t_shell *shell)
 	return (new_node);
 }
 
-void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell *shell)
+void add_or_update_env(t_env **env, char *key, char *value)
 {
-    t_env	*temp;
-    t_env	*new_node;
-
-    temp = *env;
-    while (temp)
+    t_env *tmp = *env;
+    while (tmp)
     {
-        if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0 && temp->key[ft_strlen(key)] == '\0')
+        if (strcmp(tmp->key, key) == 0)
         {
-			free(temp->value);
-			temp->value = ft_strdup(value);
-            if (value && !temp->value)
-                exit_clean_shell(shell, "Error: Malloc failed in add_or_update_env");
+            free(tmp->value);
+            tmp->value = value ? strdup(value) : NULL;
             return;
         }
-        temp = temp->next;
+        tmp = tmp->next;
     }
-    new_node = create_env_node(key, value, shell);
-    new_node->next = *env;
-    if (*env)
-        (*env)->prev = new_node;
-    *env = new_node;
-    shell->env = *env;
+    // Ajout si la clé n'existait pas
+    t_env *new = malloc(sizeof(t_env));
+    new->key = strdup(key);
+    new->value = value ? strdup(value) : NULL;
+    new->next = *env;
+    *env = new;
 }
 
 int	is_valid_export_key(const char *key)
@@ -68,71 +63,86 @@ int	is_valid_export_key(const char *key)
 	return (1);
 }
 
-void	trim_spaces(char *av)
+char	*safe_trim(const char *str)
 {
-	char	*start;
+	char	*start = (char *)str;
 	char	*end;
+	char	*trimmed;
+	size_t	len;
 
-	start = av;
 	while (*start && ft_isspace(*start))
 		start++;
-	end = start + ft_strlen(start) - 1;
-	while (end > start && ft_isspace(*end))
+	end = start + ft_strlen(start);
+	while (end > start && ft_isspace(*(end - 1)))
 		end--;
-	*(end + 1) = '\0';
-	if (start != av)
+	len = end - start;
+	trimmed = malloc(len + 1);
+	if (!trimmed)
+		return (NULL);
+	ft_strlcpy(trimmed, start, len + 1);
+	return (trimmed);
+}
+
+void	handle_key(t_env **env, char *arg, t_shell *shell)
+{
+	char *key = safe_trim(arg);
+
+	if (!key)
+		exit_clean_shell(shell, "malloc failed");
+
+	if (is_valid_export_key(key))
+		add_or_update_env(env, key, NULL);
+	else
 	{
-		while (*start)
-			*av++ = *start++;
-		*av = '\0';
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
+	free(key);
 }
 
-void handle_key(t_env **env, char *av, t_shell *shell)
+void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell)
 {
-	trim_spaces(av);
-	if(is_valid_export_key(av))
-		add_or_update_env(env, av, NULL, shell);
-	else
-		ft_putstr_fd("minishell: export: not a valid identifier", 2);
-}
+	char *key = ft_substr(arg, 0, equal_pos - arg);
+	char *value = safe_trim(equal_pos + 1);
 
-void handle_key_value(t_env **env, char *av, char *equal, t_shell *shell)
-{
-	trim_spaces(av);
-	trim_spaces(equal + 1);
-	if (is_valid_export_key(av))
-		add_or_update_env(env, av, equal + 1, shell);
+	if (!key || !value)
+		exit_clean_shell(shell, "malloc failed");
+
+	if (is_valid_export_key(key))
+		add_or_update_env(env, key, value);
 	else
-		ft_putstr_fd("minishell: export: not a valid identifier", 2);
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
+	free(key);
+	free(value);
 }
 
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell)
 {
 	char	*equal_sign;
-	char	*joined_arg;
-	bool	skip_next;
+	char	*joined_arg = NULL;
+	bool	skip_next = false;
 
-	skip_next = false;
-	joined_arg = NULL;
-	printf("export_args: %s\n", arg);
-	trim_spaces(arg);
-	if (arg && arg[ft_strlen(arg) - 1] == '=' && next_arg)
+	if (!arg || !*arg)
+		return false;
+	if (arg[ft_strlen(arg) - 1] == '=' && next_arg)
 	{
 		joined_arg = ft_strjoin(arg, next_arg);
 		if (!joined_arg)
-			return (ft_putstr_fd("Error: malloc\n", STDERR_FILENO), false);
+			exit_clean_shell(shell, "malloc failed");
 		arg = joined_arg;
 		skip_next = true;
 	}
 	equal_sign = ft_strchr(arg, '=');
 	if (equal_sign)
-	{
-		*equal_sign = '\0';
 		handle_key_value(env, arg, equal_sign, shell);
-		*equal_sign = '=';
-	}
 	else
 		handle_key(env, arg, shell);
-	return (free(joined_arg), skip_next);
+
+	free(joined_arg);
+	return skip_next;
 }

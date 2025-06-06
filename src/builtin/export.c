@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:44:28 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/05 13:40:44 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:00:15 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,50 +47,88 @@
 	return (arr);
 }*/
 
-/*static void	print_exported_env(t_env *env)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	**keys;
-	int		i;
-	char	*value;
+	size_t	i;
 
-	keys = env_keys_array(env);
-	if (!keys)
-		return;
-	ft_sort_str_array(keys);
+	if (!dst || !src)
+		return (0);
+
 	i = 0;
-	while (keys[i])
+	if (dstsize > 0)
 	{
-		// printf("Affichage de la variable : %s\n", keys[i]); // Ajoute ce printf
-		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		ft_putstr_fd(keys[i], STDOUT_FILENO);
-		value = get_env_value(env, keys[i]);
-		if (value != NULL)
-			(ft_putstr_fd("=\"", STDOUT_FILENO), ft_putstr_fd(value, STDOUT_FILENO), ft_putstr_fd("\"", STDOUT_FILENO));;
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		i++;
+		while (src[i] && i < dstsize - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	while (i--)
-		free(keys[i]);
-	free(keys);
-}*/
+	while (src[i])
+		i++;
+	return (i);
+}
 
-int	get_export(t_shell *shell, t_cmd *cmd)
+static t_env	**env_to_array(t_env *env, int *size)
+{
+	t_env *tmp = env;
+	int count = 0;
+	while (tmp) { count++; tmp = tmp->next; }
+
+	*size = count;
+	t_env **array = malloc(sizeof(t_env *) * count);
+	if (!array)
+		return (NULL);
+
+	tmp = env;
+	for (int i = 0; i < count; i++)
+	{
+		array[i] = tmp;
+		tmp = tmp->next;
+	}
+	return array;
+}
+
+static int compare_env(const void *a, const void *b)
+{
+	t_env *ea = *(t_env **)a;
+	t_env *eb = *(t_env **)b;
+	return ft_strcmp(ea->key, eb->key);
+}
+
+static int	print_export(t_env *env)
+{
+	int size = 0;
+	t_env **array = env_to_array(env, &size);
+	if (!array)
+		return (1);
+
+	qsort(array, size, sizeof(t_env *), compare_env);
+	for (int i = 0; i < size; i++)
+	{
+		printf("declare -x %s", array[i]->key);
+		if (array[i]->value)
+			printf("=\"%s\"", array[i]->value);
+		printf("\n");
+	}
+	free(array);
+	return (0);
+}
+
+int	get_export(t_shell *shell, char **argv)
 {
 	int		i;
 	bool	skip_next;
 
 	i = 1;
-	// if (!cmd->cmds[1])
-	// {
-	// 	print_exported_env(shell->env);
-	// 	return (0);
-	// }
-	while (cmd->cmds[i])
+	if (!argv[1])
+		return print_export(shell->env);
+	while (argv[i])
 	{
-		skip_next = export_args(&shell->env, cmd->cmds[i], cmd->cmds[i + 1], shell);
+		skip_next = export_args(&shell->env, argv[i], argv[i + 1], shell);
 		if (skip_next)
 			i++;
 		i++;
 	}
-	return (0);
+	return 0;
 }
