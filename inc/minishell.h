@@ -102,7 +102,7 @@ int		is_redir(const char *c, int i);
 int		is_quote(const char c);
 int		check_opened_quotes(char *str);
 int		check_closed_quotes(char *str);
-char	*remove_quotes_from_tok(const char *str);
+char	*remove_quotes_from_tok(char *str);
 int		check_redir_syntax(t_lexer *lexer);
 void	print_lexer(t_lexer *lexer);
 void	free_lexer(t_lexer *lexer);

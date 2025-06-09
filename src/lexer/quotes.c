@@ -58,7 +58,7 @@ int	check_closed_quotes(char *str)
 	return (1);
 }
 
-char	*remove_quotes_from_tok(const char *str)
+char	*remove_quotes_from_tok(char *str)
 {
 	int		i;
 	int		j;
@@ -82,5 +82,7 @@ char	*remove_quotes_from_tok(const char *str)
 		i++;
 	}
 	new_str[j] = '\0';
+	if (str)
+		free(str);
 	return (new_str);
 }
