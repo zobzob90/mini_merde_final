@@ -6,45 +6,25 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:35 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/03 13:51:02 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:39:12 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3)
-{
-	char	*tmp;
-	char	*tmp_join;
-	char	*res;
-
-	tmp_join = ft_strdup(s1);
-	tmp = ft_strjoin(tmp_join, s2);
-	if (!tmp)
-		return (NULL);
-	res = ft_strjoin(tmp, s3);
-	if (!res)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	free(tmp);
-	return (res);
-}
-
-void	ft_sort_str_array(char **arr)
+void	ft_sort_str_array(t_env	**arr, int size)
 {
 	int		i;
 	int		j;
-	char	*tmp;
+	t_env	*tmp;
 
 	i = 0;
-	while (arr[i])
+	while (i < size)
 	{
 		j = i + 1;
-		while (arr[j])
+		while (j < size)
 		{
-			if (ft_strcmp(arr[i], arr[j]) > 0)
+			if (ft_strcmp(arr[i]->key, arr[j]->key) > 0)
 			{
 				tmp = arr[i];
 				arr[i] = arr[j];
@@ -54,4 +34,41 @@ void	ft_sort_str_array(char **arr)
 		}
 		i++;
 	}
+}
+
+char	*safe_trim(const char *str)
+{
+	char	*start;
+	char	*end;
+	char	*trimmed;
+	size_t	len;
+
+	start = (char *)str;
+	while (*start && ft_isspace(*start))
+		start++;
+	end = start + ft_strlen(start);
+	while (end > start && ft_isspace(*(end - 1)))
+		end--;
+	len = end - start;
+	trimmed = malloc(len + 1);
+	if (!trimmed)
+		return (NULL);
+	ft_strlcpy(trimmed, start, len + 1);
+	return (trimmed);
+}
+
+int	is_valid_export_key(const char *key)
+{
+	int	i;
+
+	i = 0;
+	if (!key || !key[0] || (!ft_isalpha(key[0]) && key[0] != '_'))
+		return (0);
+	while (key[i] && key[i] != '=')
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
 }

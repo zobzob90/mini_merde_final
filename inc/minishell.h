@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/06 14:01:23 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:25:56 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,6 @@ void	free_env(t_env *env);
 
 /*UTILS*/
 char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
-void	ft_sort_str_array(char **arr);
+void	ft_sort_str_array(t_env	**arr, int size);
 
 #endif 

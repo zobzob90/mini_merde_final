@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:16:21 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/05/27 11:35:40 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:51:48 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ void		ft_free_tab(char **tab);
 /*str dup concat or copy*/
 char		*ft_strcpy(char *dest, char *src);
 char		*ft_strncpy(char *dest, char *src, unsigned int n);
+size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char		*ft_strdup(const char *src);
 char		*ft_strndup(const char *src, size_t n);
 char		*ft_strjoin(char *s1, const char *s2);
 char		*ft_strjoin_free(char *s1, const char *s2);
 char		*ft_strcat(char *dest, char *src);
+size_t		ft_strspn(const char *s, const char *accept);
 /*print c or str*/
 void		ft_putchar_fd(char c, int fd);
 void		ft_putstr_fd(char *s, int fd);

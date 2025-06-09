@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:51:22 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/05 11:53:56 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:22:35 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	handle_redir_exec(t_redir *redir)
 			return (1);
 		if (redir->type == REDIR_IN)
 		{
-			if (dup2(fd,STDIN_FILENO) == -1)
+			if (dup2(fd, STDIN_FILENO) == -1)
 				return (close(fd), perror("dup2"), 1);
 		}
 		else

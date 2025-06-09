@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/06 14:01:53 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:20:57 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_env_built(t_shell *shell)
 	return (0);
 }
 
-static int get_moulinette(t_shell *shell)
+static int	get_moulinette(t_shell *shell)
 {
 	if (!shell->drucker_mode)
 	{
@@ -44,6 +44,10 @@ static int	launch_easter(t_shell *shell, char **argv)
 		ft_putstr_fd("Tu n'es pas le vrai bash, imposteur ! 🚨\n", 2);
 	else if (ft_strcmp(argv[0], "moulinette") == 0)
 		return (get_moulinette(shell));
+	else if (ft_strcmp(argv[0], "miaou") == 0)
+		ft_putstr_fd("Je suis un gros chat\n", 2);
+	else if (ft_strcmp(argv[0], "Xavier") == 0)
+		ft_putstr_fd("Xavier, notre rais a nous\n", 2);
 	return (-1);
 }
 

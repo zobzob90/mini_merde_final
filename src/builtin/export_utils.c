@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/06 13:25:29 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:39:01 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,74 +22,42 @@ t_env	*create_env_node(const char *key, const char *value, t_shell *shell)
 	new_node->key = ft_strdup(key);
 	new_node->value = ft_strdup(value);
 	if (!new_node->key || (value && !new_node->value))
-		exit_clean_shell(shell, "Error: Malloc failed in strdup create_env_node");
+		exit_clean_shell(shell, "Error: Malloc failed in create_env_node");
 	return (new_node);
 }
 
-void add_or_update_env(t_env **env, char *key, char *value)
+void	add_or_update_env(t_env **env, char *key, char *value)
 {
-    t_env *tmp = *env;
-    while (tmp)
-    {
-        if (strcmp(tmp->key, key) == 0)
-        {
-            free(tmp->value);
-            tmp->value = value ? strdup(value) : NULL;
-            return;
-        }
-        tmp = tmp->next;
-    }
-    // Ajout si la clé n'existait pas
-    t_env *new = malloc(sizeof(t_env));
-    new->key = strdup(key);
-    new->value = value ? strdup(value) : NULL;
-    new->next = *env;
-    *env = new;
-}
+	t_env	*tmp;
+	t_env	*new;
 
-int	is_valid_export_key(const char *key)
-{
-	int	i;
-
-	i = 0;
-	if (!key || !key[0] ||(!ft_isalpha(key[0]) && key[0] != '_'))
-		return (0);
-	while (key[i] && key[i] != '=')
+	tmp = *env;
+	while (tmp)
 	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (0);
-		i++;
+		if (strcmp(tmp->key, key) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return ;
+		}
+		tmp = tmp->next;
 	}
-	return (1);
-}
-
-char	*safe_trim(const char *str)
-{
-	char	*start = (char *)str;
-	char	*end;
-	char	*trimmed;
-	size_t	len;
-
-	while (*start && ft_isspace(*start))
-		start++;
-	end = start + ft_strlen(start);
-	while (end > start && ft_isspace(*(end - 1)))
-		end--;
-	len = end - start;
-	trimmed = malloc(len + 1);
-	if (!trimmed)
-		return (NULL);
-	ft_strlcpy(trimmed, start, len + 1);
-	return (trimmed);
+	new = malloc(sizeof(t_env));
+	if (!new)
+		exit_clean_shell(NULL, "Error: Malloc failed in add_or_update_env");
+	new->key = ft_strdup(key);
+	new->value = ft_strdup(value);
+	new->next = *env;
+	*env = new;
 }
 
 void	handle_key(t_env **env, char *arg, t_shell *shell)
 {
-	char *key = safe_trim(arg);
+	char	*key;
 
+	key = safe_trim(arg);
 	if (!key)
 		exit_clean_shell(shell, "malloc failed");
-
 	if (is_valid_export_key(key))
 		add_or_update_env(env, key, NULL);
 	else
@@ -101,14 +69,15 @@ void	handle_key(t_env **env, char *arg, t_shell *shell)
 	free(key);
 }
 
-void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell)
+void	handle_key_value(t_env **env, char *arg, char *equal, t_shell *shell)
 {
-	char *key = ft_substr(arg, 0, equal_pos - arg);
-	char *value = safe_trim(equal_pos + 1);
+	char	*key;
+	char	*value;
 
+	key = ft_substr(arg, 0, equal - arg);
+	value = safe_trim(equal + 1);
 	if (!key || !value)
 		exit_clean_shell(shell, "malloc failed");
-
 	if (is_valid_export_key(key))
 		add_or_update_env(env, key, value);
 	else
@@ -124,11 +93,13 @@ void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell)
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell)
 {
 	char	*equal_sign;
-	char	*joined_arg = NULL;
-	bool	skip_next = false;
+	char	*joined_arg;
+	bool	skip_next;
 
+	joined_arg = NULL;
+	skip_next = false;
 	if (!arg || !*arg)
-		return false;
+		return (false);
 	if (arg[ft_strlen(arg) - 1] == '=' && next_arg)
 	{
 		joined_arg = ft_strjoin(arg, next_arg);
@@ -142,7 +113,6 @@ bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell)
 		handle_key_value(env, arg, equal_sign, shell);
 	else
 		handle_key(env, arg, shell);
-
 	free(joined_arg);
-	return skip_next;
+	return (skip_next);
 }

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/03 16:15:54 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:21:50 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	update_exit_code(t_shell *shell, int status)
 
 /*Clean the heredoc and update the exit code to 1*/
 
-static int heredoc_fail(t_shell *shell)
+static int	heredoc_fail(t_shell *shell)
 {
 	cleanup_heredocs(shell->cmd);
 	shell->exit_code = 1;
@@ -75,7 +75,7 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env)
 		if (is_builtin(cmd->cmds[0]) && !cmd->next && !cmd->prev)
 			return (exec_builtin_parent(cmd, shell));
 		if (cmd->next && pipe(shell->pipe_fd) == -1)
-				return (perror("pipe"), -1);
+			return (perror("pipe"), -1);
 		pid = fork();
 		if (pid == -1)
 			return (perror("fork"), 1);
