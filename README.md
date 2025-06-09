@@ -14,4 +14,6 @@ Easter -> Ajout du mode mini_merde/minishell_drucker/mini_hell/mini jacquie et m
 
 Les leaks semblent ok a voir pour ajouter un script pour masquer les leaks de readline qui sont normaux.
 
-Inchallah on push avant la mi-juin.
+Ajouter la gestion des retour de valeur dans l'exec
+
+Revoir signaux, gestion des quotes et expand
