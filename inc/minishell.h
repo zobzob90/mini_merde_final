@@ -33,6 +33,8 @@
 # define TRUE 1
 # define FALSE 0
 
+extern int exit_code;
+
 typedef enum e_token
 {
 	WORD,
