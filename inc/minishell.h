@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 13:25:56 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:11:13 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		is_redir(const char *c, int i);
 int		is_quote(const char c);
 int		check_opened_quotes(char *str);
 int		check_closed_quotes(char *str);
-char	*remove_quotes_from_tok(const char *str);
+char	*remove_quotes_from_tok(char *str);
 int		check_redir_syntax(t_lexer *lexer);
 void	print_lexer(t_lexer *lexer);
 void	free_lexer(t_lexer *lexer);
@@ -125,11 +125,11 @@ void	free_pars(t_cmd *cmd);
 
 /*EXPANDER*/
 char	*join_literal(char *res, const char *token, int *i);
-char	*join_dollar(char *res, const char *token, int *i, t_env *env);
+char	*join_dollar(char *res, const char *token, int *i, t_shell *shell);
 char	*join_char(char *res, char c);
-char	*join_double_quote(char *res, const char *token, int *i, t_env *env);
+char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell);
 //char	*get_env_value(const char *name);
-void	expand_all_tokens(t_lexer *lexer, t_env *env);
+void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
 /*EXEC*/
 int		exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env);
@@ -140,6 +140,10 @@ int		exec_external(t_cmd *cmd, t_env *env);
 void	exec_child(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2]);
 int 	is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
+char	**env_list_to_array(t_env *env);
+int		env_list_size(t_env *env);
+char	*ft_strjoin_path(char *path, char *cmd);
+char	*resolve_cmd_path(char *cmd, t_env *env);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list);
