@@ -50,19 +50,19 @@ int	launch_built(t_shell *shell, char **argv)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		return (get_pwd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (get_echo(argv));
+		return (get_echo(argv, shell->env));
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		return (get_exit(argv));
 	else if (ft_strcmp(argv[0], "env") == 0)
 		return (get_env_built(shell));
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		return (get_unset(shell, argv));
-	// else if (ft_strcmp(argv[0], "export") == 0)
-	//  	return (get_export(shell, (t_cmd *)argv));
+	else if (ft_strcmp(argv[0], "export") == 0)
+		return (get_export(shell, argv));
 	else
 	{
 		if (launch_easter(shell, argv) != -1)
 			return (0);
 	}
 	return (-1);
-}
+}	

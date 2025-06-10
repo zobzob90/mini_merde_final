@@ -68,7 +68,6 @@ static void	init_shell_loop(t_shell *shell)
 			lexer(shell);
 			if (shell->lexer)
 			{
-				expand_all_tokens(shell->lexer, shell);
 				parser(shell);
 				exec_cmds(shell, shell->cmd, shell->env);
 				(free_pars(shell->cmd), shell->cmd = NULL);

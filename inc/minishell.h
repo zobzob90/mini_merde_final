@@ -158,12 +158,23 @@ void	init_shell_input(t_shell *shell, char *input);
 void	exit_clean_shell(t_shell *shell, char *msg);
 
 /*BUILTIN*/
-int		get_echo(char **av);
+int		get_echo(char **av, t_env *env);
 int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);
+int		get_export(t_shell *shell, char **argv);
 int		launch_built(t_shell *shell, char **argv);
 int		get_unset(t_shell *shell, char **argv);
+
+/*BUILTIN EXPORT UTILS*/
+t_env	*create_env_node(const char *key, const char *value, t_shell *shell);
+void 	add_or_update_env(t_env **env, char *key, char *value);
+int		is_valid_export_key(const char *key);
+char	*safe_trim(const char *str);
+void	handle_key(t_env **env, char *arg, t_shell *shell);
+void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell);
+bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell);
+void	ft_sort_str_array(t_env	**arr, int size);
 
 /*EASTER*/
 int		get_drucker(t_shell *shell);
@@ -184,7 +195,6 @@ void	free_pars(t_cmd *cmd);
 void	free_env(t_env *env);
 
 /*UTILS*/
-char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
-void	ft_sort_str_array(char **arr);
+//char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
 
 #endif
