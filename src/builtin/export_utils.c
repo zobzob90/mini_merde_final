@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 13:39:01 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:20:02 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	add_or_update_env(t_env **env, char *key, char *value)
 	t_env	*new;
 
 	tmp = *env;
+	if (value == NULL)
+	{
+		ft_putstr_fd("export : invalid format\n", 2);
+		return ;
+	}
 	while (tmp)
 	{
 		if (strcmp(tmp->key, key) == 0)
