@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strspn.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 11:51:41 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 16:00:45 by ertrigna         ###   ########.fr       */
+/*   Created: 2025/06/09 13:50:04 by ertrigna          #+#    #+#             */
+/*   Updated: 2025/06/09 14:23:09 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	signal_handler(int signal)
+size_t	ft_strspn(const char *s, const char *accept)
 {
-	if (signal == SIGINT)
-	{
-		write (1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (signal == SIGQUIT)
-	{
-		return ;
-	}
-}
+	size_t	i;
+	size_t	j;
 
-void	set_signal_handlers(void)
-{
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	i = 0;
+	while (s[i])
+	{
+		j = 0;
+		while (accept[j])
+		{
+			if (s[i] == accept[j])
+				break ;
+			j++;
+		}
+		if (!accept[j])
+			break ;
+		i++;
+	}
+	return (i);
 }

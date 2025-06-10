@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:32 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/05 11:48:15 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:04:54 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 	close(fd);
 	return (0);
 }
+
+/*Return 1 when the heredoc creation fails and 0 when it's OK*/
 
 int	setup_heredocs(t_cmd *cmd_list)
 {

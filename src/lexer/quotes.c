@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:34:42 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/05/14 14:45:23 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:49:55 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_closed_quotes(char *str)
 	return (1);
 }
 
-char	*remove_quotes_from_tok(const char *str)
+char	*remove_quotes_from_tok(char *str)
 {
 	int		i;
 	int		j;
@@ -82,5 +82,7 @@ char	*remove_quotes_from_tok(const char *str)
 		i++;
 	}
 	new_str[j] = '\0';
+	if (str)
+		free(str);
 	return (new_str);
 }

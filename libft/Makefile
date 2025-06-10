@@ -14,7 +14,8 @@ SRCS = ft_atoi.c ft_atol.c ft_free_tab.c ft_putchar_fd.c ft_putendl_fd.c \
        ft_putstr_fd.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c \
        ft_strlen.c ft_strncmp.c ft_strncpy.c ft_strndup.c ft_substr.c \
 	   ft_isalnum.c ft_bzero.c ft_calloc.c ft_strcpy.c ft_strcat.c \
-	   ft_itoa.c ft_strjoin_free.c ft_isdigit.c ft_isalpha.c ft_isspace.c
+	   ft_itoa.c ft_strjoin_free.c ft_isdigit.c ft_isalpha.c ft_isspace.c \
+	   ft_strlcpy.c ft_strspn.c 
 
 # Dossiers contenant des fichiers supplémentaires
 PRINTF_DIR = ft_printf

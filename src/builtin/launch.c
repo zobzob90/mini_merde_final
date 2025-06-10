@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/05 15:22:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:20:57 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_env_built(t_shell *shell)
 	return (0);
 }
 
-static int get_moulinette(t_shell *shell)
+static int	get_moulinette(t_shell *shell)
 {
 	if (!shell->drucker_mode)
 	{
@@ -44,6 +44,10 @@ static int	launch_easter(t_shell *shell, char **argv)
 		ft_putstr_fd("Tu n'es pas le vrai bash, imposteur ! 🚨\n", 2);
 	else if (ft_strcmp(argv[0], "moulinette") == 0)
 		return (get_moulinette(shell));
+	else if (ft_strcmp(argv[0], "miaou") == 0)
+		ft_putstr_fd("Je suis un gros chat\n", 2);
+	else if (ft_strcmp(argv[0], "Xavier") == 0)
+		ft_putstr_fd("Xavier, notre rais a nous\n", 2);
 	return (-1);
 }
 
@@ -54,7 +58,7 @@ int	launch_built(t_shell *shell, char **argv)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		return (get_pwd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (get_echo(argv));
+		return (get_echo(argv, shell->env));
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		return (get_exit(argv));
 	else if (ft_strcmp(argv[0], "env") == 0)
@@ -62,7 +66,7 @@ int	launch_built(t_shell *shell, char **argv)
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		return (get_unset(shell, argv));
 	else if (ft_strcmp(argv[0], "export") == 0)
-		return (get_export(shell, (t_cmd *)argv));
+		return (get_export(shell, argv));
 	else
 	{
 		if (launch_easter(shell, argv) != -1)

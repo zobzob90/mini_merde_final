@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/03 15:39:48 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:48:49 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,31 @@ char	*join_literal(char *res, const char *token, int *i)
 	res = ft_strjoin_free(res, ft_substr(token, start, *i - start));
 	if (token [*i])
 		(*i)++;
+	printf("single quote = %s\n", res);
 	return (res);
 }
 
-char	*join_dollar(char *res, const char *token, int *i, t_env *env)
+char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 {
 	char	*key;
 	char	*val;
 	int		start;
 
 	(*i)++;
+	if (token[*i] == '?')
+	{
+		val = ft_itoa(shell->exit_code);
+		(*i)++;
+		return (ft_strjoin_free(res, val));
+	}
 	start = *i;
 	while (ft_isalnum(token[*i]) || token[*i] == '_')
 		(*i)++;
 	key = ft_substr(token, start, *i - start);
-	val = get_env_value(env, key);
+	val = get_env_value(shell->env, key);
 	free(key);
 	if (!val)
-		return (NULL);
+		return (res);
 	return (ft_strjoin_free(res, val));
 }
 
@@ -48,22 +55,27 @@ char	*join_char(char *res, char c)
 {
 	char	tmp[2];
 
+	printf("%c\n", c);
 	tmp[0] = c;
 	tmp[1] = '\0';
-	return (ft_strjoin_free(res, ft_strdup(tmp)));
+	return (ft_strjoin(res, ft_strdup(tmp)));
 }
 
-char	*join_double_quote(char *res, const char *token, int *i, t_env *env)
+char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 {
 	(*i)++;
 	while (token[*i] && token[*i] != '\"')
 	{
 		if (token[*i] == '$')
-			res = join_dollar(res, token, i, env);
+			res = join_dollar(res, token, i, shell);
 		else
+		{
 			res = join_char(res, token[(*i)++]);
+			printf ("res = %s\n", res);
+		}
 	}
 	if (token[*i])
 		(*i)++;
+	printf("[DEBUG JOIN_DOUBLE_QUOTE] res = %s\n", res);
 	return (res);
 }

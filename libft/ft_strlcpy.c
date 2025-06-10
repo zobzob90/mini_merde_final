@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 11:51:41 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 16:00:45 by ertrigna         ###   ########.fr       */
+/*   Created: 2025/06/09 12:08:59 by ertrigna          #+#    #+#             */
+/*   Updated: 2025/06/09 12:09:11 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	signal_handler(int signal)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	if (signal == SIGINT)
-	{
-		write (1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (signal == SIGQUIT)
-	{
-		return ;
-	}
-}
+	size_t	i;
 
-void	set_signal_handlers(void)
-{
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	if (!dst || !src)
+		return (0);
+	i = 0;
+	if (dstsize > 0)
+	{
+		while (src[i] && i < dstsize - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	while (src[i])
+		i++;
+	return (i);
 }

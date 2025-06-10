@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:58 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/05 15:23:10 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:02:58 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	is_builtin(char *cmd)
 		|| ft_strcmp(cmd, "exit") == 0 || ft_strcmp(cmd, "michel") == 0
 		|| ft_strcmp(cmd, "jacquie") == 0 || ft_strcmp(cmd, "hell") == 0
 		|| ft_strcmp(cmd, "merde") == 0 || ft_strcmp(cmd, "res") == 0
-		|| ft_strcmp(cmd, "sudo") == 0 || ft_strcmp(cmd, "moulinette") == 0)
+		|| ft_strcmp(cmd, "sudo") == 0 || ft_strcmp(cmd, "moulinette") == 0
+		|| ft_strcmp(cmd, "miaou") == 0 || ft_strcmp(cmd, "Xavier") == 0)
 		return (TRUE);
 	else
 		return (FALSE);
@@ -67,7 +68,6 @@ static void	reset_stdio(int stdin_backup, int stdout_backup)
 		return (get_exit(args));
 	return (1);
 }*/
-
 
 /*Exec builtin in the parent process*/
 

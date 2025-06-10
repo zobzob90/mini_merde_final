@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/05 11:53:01 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:11:13 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		is_redir(const char *c, int i);
 int		is_quote(const char c);
 int		check_opened_quotes(char *str);
 int		check_closed_quotes(char *str);
-char	*remove_quotes_from_tok(const char *str);
+char	*remove_quotes_from_tok(char *str);
 int		check_redir_syntax(t_lexer *lexer);
 void	print_lexer(t_lexer *lexer);
 void	free_lexer(t_lexer *lexer);
@@ -125,11 +125,11 @@ void	free_pars(t_cmd *cmd);
 
 /*EXPANDER*/
 char	*join_literal(char *res, const char *token, int *i);
-char	*join_dollar(char *res, const char *token, int *i, t_env *env);
+char	*join_dollar(char *res, const char *token, int *i, t_shell *shell);
 char	*join_char(char *res, char c);
-char	*join_double_quote(char *res, const char *token, int *i, t_env *env);
+char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell);
 //char	*get_env_value(const char *name);
-void	expand_all_tokens(t_lexer *lexer, t_env *env);
+void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
 /*EXEC*/
 int		exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env);
@@ -140,6 +140,10 @@ int		exec_external(t_cmd *cmd, t_env *env);
 void	exec_child(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2]);
 int 	is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
+char	**env_list_to_array(t_env *env);
+int		env_list_size(t_env *env);
+char	*ft_strjoin_path(char *path, char *cmd);
+char	*resolve_cmd_path(char *cmd, t_env *env);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list);
@@ -154,22 +158,23 @@ void	init_shell_input(t_shell *shell, char *input);
 void	exit_clean_shell(t_shell *shell, char *msg);
 
 /*BUILTIN*/
-int		get_echo(char **av);
+int		get_echo(char **av, t_env *env);
 int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);
-int		get_export(t_shell *shell, t_cmd *cmd);
+int		get_export(t_shell *shell, char **argv);
 int		launch_built(t_shell *shell, char **argv);
 int		get_unset(t_shell *shell, char **argv);
 
 /*BUILTIN EXPORT UTILS*/
 t_env	*create_env_node(const char *key, const char *value, t_shell *shell);
-void	add_or_update_env(t_env **env, const char *key, const char *value, t_shell *shell);
+void 	add_or_update_env(t_env **env, char *key, char *value);
 int		is_valid_export_key(const char *key);
-void	trim_spaces(char *av);
-void	handle_key(t_env **env, char *av, t_shell *shell);
-void	handle_key_value(t_env **env, char *av, char *equal, t_shell *shell);
+char	*safe_trim(const char *str);
+void	handle_key(t_env **env, char *arg, t_shell *shell);
+void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell);
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 /*EASTER*/
 int		get_drucker(t_shell *shell);
@@ -191,6 +196,6 @@ void	free_env(t_env *env);
 
 /*UTILS*/
 char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
-void	ft_sort_str_array(char **arr);
+void	ft_sort_str_array(t_env	**arr, int size);
 
 #endif 

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:42:48 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/05 15:22:37 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:11:08 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_prompt(t_shell *shell)
 			("\001\033[1;32m\002minishell drucker 🎙️ ➤ \001\033[0m\002");
 	else if (shell->drucker_mode == 2)
 		input = readline
-			("\001\033[1;32m\002mini jacquie et michel ➤ \001\033[0m\002");
+			("\001\033[1;32m\002jacquie et mini_michel ➤ \001\033[0m\002");
 	else if (shell->drucker_mode == 3)
 		input = readline
 			("\001\033[1;31m\002mini_hell 🔥 ➤ \001\033[0m\002");
@@ -30,7 +30,7 @@ char	*get_prompt(t_shell *shell)
 			("\001\033[1;32m\002mini_merde 💩 ➤ \001\033[0m\002");
 	else if (shell->drucker_mode == 5)
 		input = readline
-			("\001\033[1;32m\002mini moulinette 🐱‍💻 ➤ \001\033[0m\002");
+			("\001\033[1;32m\002mini_moulinette 🐱‍💻 ➤ \001\033[0m\002");
 	else
 		input = readline
 			("\001\033[1;32m\002minishell ➤ \001\033[0m\002");

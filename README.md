@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 MINI_MERDE
 
 LEXER -> OK normalement pas besoin de changement.
@@ -17,3 +18,4 @@ Les leaks semblent ok a voir pour ajouter un script pour masquer les leaks de re
 Ajouter la gestion des retour de valeur dans l'exec
 
 Revoir signaux, gestion des quotes et expand
+
