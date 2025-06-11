@@ -12,12 +12,14 @@
 
 #include "minishell.h"
 
+int	last_exit_code;
+
+
 void	init_shell(t_shell *shell)
 {
 	shell->env = NULL;
 	shell->lexer = NULL;
 	shell->cmd = NULL;
-	shell->exit_code = 0;
 	shell->input = NULL;
 	shell->drucker_mode = 0;
 	shell->pipe_fd[0] = -2;
@@ -39,7 +41,7 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 {
 	int	tmp_exit_code;
 
-	tmp_exit_code = shell->exit_code;
+	tmp_exit_code = last_exit_code;
 	if (msg)
 		ft_putstr_fd(msg, 2);
 	if (shell->input)

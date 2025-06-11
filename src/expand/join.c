@@ -35,7 +35,7 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 	(*i)++;
 	if (token[*i] == '?')
 	{
-		val = ft_itoa(shell->exit_code);
+		val = ft_itoa(last_exit_code);
 		(*i)++;
 		return (ft_strjoin_free(res, val));
 	}
@@ -54,7 +54,6 @@ char	*join_char(char *res, char c)
 {
 	char	tmp[2];
 
-	printf("%c\n", c);
 	tmp[0] = c;
 	tmp[1] = '\0';
 	return (ft_strjoin(res, ft_strdup(tmp)));

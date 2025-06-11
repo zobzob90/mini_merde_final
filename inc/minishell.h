@@ -33,6 +33,8 @@
 # define TRUE 1
 # define FALSE 0
 
+extern int last_exit_code;
+
 typedef enum e_token
 {
 	WORD,
@@ -80,7 +82,6 @@ typedef struct s_shell
 	t_lexer	*lexer;
 	t_cmd	*cmd;
 	int		pipe_fd[2];
-	int		exit_code;
 	int		drucker_mode;
 	char	*input;
 }	t_shell;
@@ -118,7 +119,7 @@ void	handle_redir(t_shell *shell, t_cmd *cmd, t_lexer *lex);
 void	append_redir(t_redir **redir, t_redir *new);
 void	append_cmd(t_shell *shell, t_cmd *cmd, char *input);
 t_cmd	*append_pipe(t_shell *shell, t_cmd *cmd);
-void	parser_syntax_error(t_shell *shell, const char *msg);
+void	parser_syntax_error(const char *msg);
 void	parser(t_shell *shell);
 void	free_redir(t_redir *redir);
 void	free_pars(t_cmd *cmd);
@@ -128,7 +129,6 @@ char	*join_literal(char *res, const char *token, int *i);
 char	*join_dollar(char *res, const char *token, int *i, t_shell *shell);
 char	*join_char(char *res, char c);
 char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell);
-//char	*get_env_value(const char *name);
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
 /*EXEC*/

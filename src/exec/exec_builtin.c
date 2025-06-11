@@ -64,10 +64,10 @@ int	exec_builtin_parent(t_cmd *cmd, t_shell *shell)
 	if (handle_redir_exec(cmd->redir) != 0)
 	{
 		reset_stdio(stdin_backup, stdout_backup);
-		shell->exit_code = 1;
+		last_exit_code = 1;
 		return (1);
 	}
-	shell->exit_code = launch_built(shell, cmd->cmds);
+	last_exit_code = launch_built(shell, cmd->cmds);
 	reset_stdio(stdin_backup, stdout_backup);
 	return (0);
 }

@@ -42,7 +42,7 @@ static char	*expand_token(char *token, t_shell *shell)
 			res = join_literal(res, token, &i);
 		else if (token[i] == '\"')
 			res = join_double_quote(res, token, &i, shell);
-		else if (token[i] == '$')
+		else if (token[i] == '$' && token[i + 1])
 			res = join_dollar(res, token, &i, shell);
 		else
 			res = join_char(res, token[i++]);
@@ -58,10 +58,8 @@ void	expand_all_tokens(t_lexer *lexer, t_shell *shell)
 
 	while (lexer)
 	{
-		printf("[DEBUG] lexer->value = [%s]\n", lexer->value);
 		if (lexer && lexer->value && contains_expand_chars(lexer->value))
 		{
-			printf("Expanding token: [%s]\n", lexer->value);
 			new = expand_token(lexer->value, shell);
 			if (!new)
 				return ;

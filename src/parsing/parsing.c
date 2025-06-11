@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-void	parser_syntax_error(t_shell *shell, const char *msg)
+void	parser_syntax_error(const char *msg)
 {
 	ft_putstr_fd("Error : Unexpected token `", 2);
 	ft_putstr_fd((char *)msg, 2);
 	ft_putstr_fd("`\n", 2);
-	shell->exit_code = 258;
+	last_exit_code = 258;
 	return ;
 }
 
@@ -31,7 +31,7 @@ void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 		{
 			if (!cmd->cmds || !cmd->cmds[0])
 			{
-				parser_syntax_error(shell, "|");
+				parser_syntax_error("|");
 				return ;
 			}
 			cmd = append_pipe(shell, cmd);
@@ -40,12 +40,12 @@ void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 			|| lexer->type == APPEND || lexer->type == HEREDOC)
 		{
 			handle_redir(shell, cmd, lexer);
-			if (shell->exit_code == 258)
+			if (last_exit_code == 258)
 				return ;
 			lexer = lexer->next;
 		}
 		else
-			parser_syntax_error(shell, lexer->value);
+			parser_syntax_error(lexer->value);
 		lexer = lexer->next;
 	}
 }
@@ -66,7 +66,7 @@ void	parser(t_shell *shell)
 	if (!cmd)
 	{
 		ft_putstr_fd("Error: Malloc failed in parser\n", 2);
-		shell->exit_code = 1;
+		last_exit_code = 1;
 		return ;
 	}
 	shell->cmd = cmd;

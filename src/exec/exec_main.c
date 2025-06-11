@@ -24,14 +24,14 @@ static int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 	return (pid);
 }
 
-static void	update_exit_code(t_shell *shell, int status)
+static void	update_exit_code(int status)
 {
 	if (WIFEXITED(status))
-		shell->exit_code = WEXITSTATUS(status);
+		last_exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		shell->exit_code = 128 + WTERMSIG(status);
+		last_exit_code = 128 + WTERMSIG(status);
 	else
-		shell->exit_code = 1;
+		last_exit_code = 1;
 }
 
 /*Clean the heredoc and update the exit code to 1*/
@@ -39,7 +39,7 @@ static void	update_exit_code(t_shell *shell, int status)
 static int	heredoc_fail(t_shell *shell)
 {
 	cleanup_heredocs(shell->cmd);
-	shell->exit_code = 1;
+	last_exit_code = 1;
 	return (1);
 }
 
@@ -52,7 +52,7 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 	if (last_pid)
 	{
 		wait_all_children(last_pid, &status);
-		update_exit_code(shell, status);
+		update_exit_code(status);
 	}
 	cleanup_heredocs(shell->cmd);
 	return (0);
@@ -72,6 +72,8 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env)
 	last_pid = 0;
 	while (cmd)
 	{
+		if (cmd->cmds == NULL || cmd->cmds[0] == NULL)
+			return (2);
 		if (is_builtin(cmd->cmds[0]) && !cmd->next && !cmd->prev)
 			return (exec_builtin_parent(cmd, shell));
 		if (cmd->next && pipe(shell->pipe_fd) == -1)

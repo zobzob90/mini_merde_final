@@ -56,13 +56,13 @@ void	handle_redir(t_shell *shell, t_cmd *cmd, t_lexer *lex)
 	if (!cmd->cmds || !cmd->cmds[0])
 	{
 		ft_putstr_fd("Error: No command before redirection\n", 2);
-		shell->exit_code = 258;
+		last_exit_code = 258;
 		return ;
 	}
 	if (!lex || !lex->next || lex->next->type != WORD)
 	{
 		ft_putstr_fd("Error: Missing file after redirection\n", 2);
-		shell->exit_code = 258;
+		last_exit_code = 258;
 		return ;
 	}
 	redir = redir_add_node(shell, type, lex->next->value);
