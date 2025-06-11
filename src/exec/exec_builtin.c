@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:58 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/10 11:02:58 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:02:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	is_builtin(char *cmd)
 		|| ft_strcmp(cmd, "jacquie") == 0 || ft_strcmp(cmd, "hell") == 0
 		|| ft_strcmp(cmd, "merde") == 0 || ft_strcmp(cmd, "res") == 0
 		|| ft_strcmp(cmd, "sudo") == 0 || ft_strcmp(cmd, "moulinette") == 0
-		|| ft_strcmp(cmd, "miaou") == 0 || ft_strcmp(cmd, "Xavier") == 0)
+		|| ft_strcmp(cmd, "miaou") == 0 || ft_strcmp(cmd, "Xavier") == 0
+		||ft_strcmp(cmd, ":") == 0 || ft_strcmp(cmd, "!") == 0)
 		return (TRUE);
 	else
 		return (FALSE);
@@ -88,10 +89,10 @@ int	exec_builtin_parent(t_cmd *cmd, t_shell *shell)
 	if (handle_redir_exec(cmd->redir) != 0)
 	{
 		reset_stdio(stdin_backup, stdout_backup);
-		shell->exit_code = 1;
+		last_exit_code = 1;
 		return (1);
 	}
-	shell->exit_code = launch_built(shell, cmd->cmds);
+	last_exit_code = launch_built(shell, cmd->cmds);
 	reset_stdio(stdin_backup, stdout_backup);
 	return (0);
 }

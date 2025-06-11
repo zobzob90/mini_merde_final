@@ -6,25 +6,11 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:47 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/10 10:57:20 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:56:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*char	*get_env_value(const char *name)
-{
-	char	*value;
-	// int		len;
-	// len = ft_strlen(name);
-	// ft_printf("len = %d\n", len);
-	value = getenv(name);
-	ft_printf("%s\n", value);
-	if (!value)
-		return ("");
-	else
-		return (value);
-}*/
 
 static int	contains_expand_chars(const char *str)
 {
@@ -43,29 +29,21 @@ static char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
 	int		i;
+	int		len;
 
+	len = ft_strlen(token);
 	res = ft_calloc(1, 1);
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (token && token[i])
+	while (i < len)
 	{
-		printf("Token[%d] = %c\n", i, token[i]);
 		if (token[i] == '\'')
-		{
-			printf("I'm a simple quote\n");
 			res = join_literal(res, token, &i);
-		}
 		else if (token[i] == '\"')
-		{
-			printf("I'm a double quote\n");
 			res = join_double_quote(res, token, &i, shell);
-		}
-		else if (token[i] == '$')
-		{
-			printf("I'm a dollar\n");
+		else if (token[i] == '$' && token[i + 1] != '\0')
 			res = join_dollar(res, token, &i, shell);
-		}
 		else
 			res = join_char(res, token[i++]);
 		if (!res)

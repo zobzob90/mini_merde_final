@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/10 11:11:13 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:40:36 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define PATH_MAX 4096
 # define TRUE 1
 # define FALSE 0
+
+extern int last_exit_code;
 
 typedef enum e_token
 {
@@ -158,7 +160,7 @@ void	init_shell_input(t_shell *shell, char *input);
 void	exit_clean_shell(t_shell *shell, char *msg);
 
 /*BUILTIN*/
-int		get_echo(char **av, t_env *env);
+int		get_echo(char **av);
 int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);

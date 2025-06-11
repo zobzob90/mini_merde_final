@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/10 11:04:12 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:02:56 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,6 @@ char	*get_executable_path(t_cmd *cmd, t_env *env)
 	else
 		path = resolve_cmd_path(cmd->cmds[0], env);
 	return (path);
-}
-
-int	check_exec_access(char *path)
-{
-	if (access(path, X_OK) != 0)
-	{
-		perror("access before execve");
-		return (0);
-	}
-	return (1);
 }
 
 char	**prepare_envp(t_env *env, char *path)
@@ -48,12 +38,15 @@ char	**prepare_envp(t_env *env, char *path)
 
 void	handle_execve_failure(char *path, char **envp, const char *cmd)
 {
+	int err;
+
+	err = errno;
 	perror(cmd);
 	free(path);
 	ft_free_tab(envp);
-	if (errno == EACCES)
+	if (err == EACCES)
 		exit(126);
-	else if (errno == ENOENT)
+	else if (err == ENOENT)
 		exit(127);
 	else
 		exit(1);
@@ -69,11 +62,6 @@ int	exec_external(t_cmd *cmd, t_env *env)
 	path = get_executable_path(cmd, env);
 	if (!path)
 		return (127);
-	if (!check_exec_access(path))
-	{
-		free(path);
-		return (126);
-	}
 	envp = prepare_envp(env, path);
 	if (!envp)
 	{

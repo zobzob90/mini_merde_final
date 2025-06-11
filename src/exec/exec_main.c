@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/10 11:05:24 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:07:41 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env)
 	last_pid = 0;
 	while (cmd)
 	{
+		if (cmd->cmds == NULL || cmd->cmds[0] == NULL)
+			return (2);
 		if (is_builtin(cmd->cmds[0]) && !cmd->next && !cmd->prev)
 			return (exec_builtin_parent(cmd, shell));
 		if (cmd->next && pipe(shell->pipe_fd) == -1)

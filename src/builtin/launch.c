@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 14:20:57 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:58:34 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int	launch_easter(t_shell *shell, char **argv)
 	return (-1);
 }
 
+
 int	launch_built(t_shell *shell, char **argv)
 {
 	if (ft_strcmp(argv[0], "cd") == 0)
@@ -58,7 +59,7 @@ int	launch_built(t_shell *shell, char **argv)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		return (get_pwd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (get_echo(argv, shell->env));
+		return (get_echo(argv));
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		return (get_exit(argv));
 	else if (ft_strcmp(argv[0], "env") == 0)
@@ -67,6 +68,10 @@ int	launch_built(t_shell *shell, char **argv)
 		return (get_unset(shell, argv));
 	else if (ft_strcmp(argv[0], "export") == 0)
 		return (get_export(shell, argv));
+	else if (ft_strcmp(argv[0], ":") == 0)
+		return (0);
+	else if (ft_strcmp(argv[0], "!") == 0)
+		return (1);
 	else
 	{
 		if (launch_easter(shell, argv) != -1)

@@ -6,19 +6,21 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/05/27 14:50:11 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:47:55 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	last_exit_code;
 
 void	init_shell(t_shell *shell)
 {
 	shell->env = NULL;
 	shell->lexer = NULL;
 	shell->cmd = NULL;
-	shell->exit_code = 0;
 	shell->input = NULL;
+	shell->exit_code = 0;
 	shell->drucker_mode = 0;
 	shell->pipe_fd[0] = -2;
 	shell->pipe_fd[1] = -2;
@@ -39,7 +41,7 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 {
 	int	tmp_exit_code;
 
-	tmp_exit_code = shell->exit_code;
+	tmp_exit_code = last_exit_code;
 	if (msg)
 		ft_putstr_fd(msg, 2);
 	if (shell->input)
@@ -63,13 +65,13 @@ static void	init_shell_loop(t_shell *shell)
 			exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
 		else
 		{
-			add_history(input);
-			init_shell_input(shell, input);
-			lexer(shell);
+			(add_history(input), init_shell_input(shell, input), lexer(shell));
 			if (shell->lexer)
 			{
 				parser(shell);
-				exec_cmds(shell, shell->cmd, shell->env);
+				if (shell->exit_code != 258)
+					exec_cmds(shell, shell->cmd, shell->env);
+				shell->exit_code = 0;
 				(free_pars(shell->cmd), shell->cmd = NULL);
 				(free_lexer(shell->lexer), shell->lexer = NULL);
 			}
