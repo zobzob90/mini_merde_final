@@ -58,7 +58,7 @@ int	launch_built(t_shell *shell, char **argv)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		return (get_pwd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (get_echo(argv, shell->env));
+		return (get_echo(argv));
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		return (get_exit(argv));
 	else if (ft_strcmp(argv[0], "env") == 0)

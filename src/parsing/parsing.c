@@ -54,9 +54,7 @@ void	clean_all_quotes(t_lexer *lexer)
 {
 	while (lexer)
 	{
-		printf ("[DEBUG W/ QUOTES] lexer->values = %s \n", lexer->value);
 		lexer->value = remove_quotes_from_tok(lexer->value);
-		printf ("[DEBUG W/O QUOTES] lexer->values = %s \n", lexer->value);
 		lexer = lexer->next;
 	}
 }
@@ -72,6 +70,6 @@ void	parser(t_shell *shell)
 		return ;
 	}
 	shell->cmd = cmd;
-	//clean_all_quotes(shell->lexer);
+	expand_all_tokens(shell->lexer, shell);
 	parse_tokens(shell, shell->lexer, cmd);
 }

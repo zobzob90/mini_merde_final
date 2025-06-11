@@ -23,7 +23,6 @@ char	*join_literal(char *res, const char *token, int *i)
 	res = ft_strjoin_free(res, ft_substr(token, start, *i - start));
 	if (token [*i])
 		(*i)++;
-	printf("single quote = %s\n", res);
 	return (res);
 }
 
@@ -69,13 +68,9 @@ char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 		if (token[*i] == '$')
 			res = join_dollar(res, token, i, shell);
 		else
-		{
 			res = join_char(res, token[(*i)++]);
-			printf ("res = %s\n", res);
-		}
 	}
 	if (token[*i])
 		(*i)++;
-	printf("[DEBUG JOIN_DOUBLE_QUOTE] res = %s\n", res);
 	return (res);
 }

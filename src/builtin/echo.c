@@ -12,43 +12,21 @@
 
 #include "minishell.h"
 
-static char	*get_env_va(const char *name, t_env *env)
-{
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, name) == 0)
-			return (tmp->value);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-static void	echo_args(char **av, t_env *env, int start)
+static void	echo_args(char **av, int start)
 {
 	int		i;
-	char	*val;
 
 	i = start;
 	while (av[i])
 	{
-		if (av[i][0] == '$')
-		{
-			val = get_env_va(av[i] + 1, env);
-			if (val)
-				ft_printf("%s", val);
-		}
-		else
-			ft_printf("%s", av[i]);
+		ft_printf("%s", av[i]);
 		if (av[i + 1])
 			ft_printf(" ");
 		i++;
 	}
 }
 
-int	get_echo(char **av, t_env *env)
+int	get_echo(char **av)
 {
 	int	i;
 	int	n_flag;
@@ -61,7 +39,7 @@ int	get_echo(char **av, t_env *env)
 		n_flag = 0;
 		i++;
 	}
-	echo_args(av, env, i);
+	echo_args(av, i);
 	if (n_flag)
 		ft_printf("\n");
 	return (0);

@@ -12,20 +12,6 @@
 
 #include "minishell.h"
 
-/*char	*get_env_value(const char *name)
-{
-	char	*value;
-	// int		len;
-	// len = ft_strlen(name);
-	// ft_printf("len = %d\n", len);
-	value = getenv(name);
-	ft_printf("%s\n", value);
-	if (!value)
-		return ("");
-	else
-		return (value);
-}*/
-
 static int	contains_expand_chars(const char *str)
 {
 	if (!str)
@@ -43,29 +29,21 @@ static char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
 	int		i;
+	int		len;
 
+	len = ft_strlen(token);
 	res = ft_calloc(1, 1);
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (token && token[i])
+	while (i < len)
 	{
-		printf("Token[%d] = %c\n", i, token[i]);
 		if (token[i] == '\'')
-		{
-			printf("I'm a simple quote\n");
 			res = join_literal(res, token, &i);
-		}
 		else if (token[i] == '\"')
-		{
-			printf("I'm a double quote\n");
 			res = join_double_quote(res, token, &i, shell);
-		}
 		else if (token[i] == '$')
-		{
-			printf("I'm a dollar\n");
 			res = join_dollar(res, token, &i, shell);
-		}
 		else
 			res = join_char(res, token[i++]);
 		if (!res)
@@ -80,8 +58,10 @@ void	expand_all_tokens(t_lexer *lexer, t_shell *shell)
 
 	while (lexer)
 	{
+		printf("[DEBUG] lexer->value = [%s]\n", lexer->value);
 		if (lexer && lexer->value && contains_expand_chars(lexer->value))
 		{
+			printf("Expanding token: [%s]\n", lexer->value);
 			new = expand_token(lexer->value, shell);
 			if (!new)
 				return ;

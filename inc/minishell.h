@@ -158,7 +158,7 @@ void	init_shell_input(t_shell *shell, char *input);
 void	exit_clean_shell(t_shell *shell, char *msg);
 
 /*BUILTIN*/
-int		get_echo(char **av, t_env *env);
+int		get_echo(char **av);
 int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);
