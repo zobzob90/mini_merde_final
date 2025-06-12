@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/12 11:03:37 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:32:29 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	update_exit_code(t_shell *shell, int status)
 		shell->exit_code = 128 + WTERMSIG(status);
 	else
 		shell->exit_code = 1;
+	g_last_exit_code = shell->exit_code;
 }
 
 /*Clean the heredoc and update the exit code to 1*/
@@ -53,6 +54,7 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 	{
 		wait_all_children(last_pid, &status);
 		update_exit_code(shell, status);
+		g_last_exit_code = shell->exit_code;
 	}
 	cleanup_heredocs(shell->cmd);
 	return (0);

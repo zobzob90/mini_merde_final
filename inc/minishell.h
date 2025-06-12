@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 11:29:53 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:03:16 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <signal.h>
