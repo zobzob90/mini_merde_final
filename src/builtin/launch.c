@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/11 14:58:34 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:23:00 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ static int	launch_easter(t_shell *shell, char **argv)
 	return (-1);
 }
 
-
-int	launch_built(t_shell *shell, char **argv)
+int	launch_built(t_shell *shell, char **argv, t_cmd *cmd)
 {
 	if (ft_strcmp(argv[0], "cd") == 0)
 		return (get_cd(argv));
@@ -60,7 +59,7 @@ int	launch_built(t_shell *shell, char **argv)
 		return (get_pwd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		return (get_echo(argv));
-	else if (ft_strcmp(argv[0], "exit") == 0)
+	else if (ft_strcmp(argv[0], "exit") == 0 && !cmd->next && !cmd->prev)
 		return (get_exit(argv));
 	else if (ft_strcmp(argv[0], "env") == 0)
 		return (get_env_built(shell));

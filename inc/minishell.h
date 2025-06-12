@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/11 15:40:36 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:29:53 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define TRUE 1
 # define FALSE 0
 
-extern int last_exit_code;
+extern int g_last_exit_code;
 
 typedef enum e_token
 {
@@ -134,12 +134,12 @@ char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell);
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
 /*EXEC*/
-int		exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env);
+int		exec_cmds(t_shell *shell, t_cmd *cmd);
 int		handle_redir_exec(t_redir *redir);
 void	wait_all_children(pid_t last_pid, int *status);
 int		wait_and_return_status(pid_t pid);
 int		exec_external(t_cmd *cmd, t_env *env);
-void	exec_child(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2]);
+void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int 	is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
 char	**env_list_to_array(t_env *env);
@@ -165,7 +165,7 @@ int		get_exit(char **av);
 int		get_cd(char **av);
 int		get_pwd(char **av);
 int		get_export(t_shell *shell, char **argv);
-int		launch_built(t_shell *shell, char **argv);
+int		launch_built(t_shell *shell, char **argv, t_cmd *cmd);
 int		get_unset(t_shell *shell, char **argv);
 
 /*BUILTIN EXPORT UTILS*/

@@ -6,13 +6,13 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/11 15:47:55 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:28:07 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	last_exit_code;
+int	g_last_exit_code;
 
 void	init_shell(t_shell *shell)
 {
@@ -41,7 +41,7 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 {
 	int	tmp_exit_code;
 
-	tmp_exit_code = last_exit_code;
+	tmp_exit_code = g_last_exit_code;
 	if (msg)
 		ft_putstr_fd(msg, 2);
 	if (shell->input)
@@ -70,7 +70,7 @@ static void	init_shell_loop(t_shell *shell)
 			{
 				parser(shell);
 				if (shell->exit_code != 258)
-					exec_cmds(shell, shell->cmd, shell->env);
+					exec_cmds(shell, shell->cmd);
 				shell->exit_code = 0;
 				(free_pars(shell->cmd), shell->cmd = NULL);
 				(free_lexer(shell->lexer), shell->lexer = NULL);

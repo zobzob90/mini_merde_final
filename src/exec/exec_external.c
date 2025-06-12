@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/11 15:02:56 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:27:06 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**prepare_envp(t_env *env, char *path)
 
 void	handle_execve_failure(char *path, char **envp, const char *cmd)
 {
-	int err;
+	int	err;
 
 	err = errno;
 	perror(cmd);

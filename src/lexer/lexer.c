@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:19:53 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/10 10:49:30 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:23:20 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,6 @@ static int	handle_word(t_shell *shell, t_lexer **lexer, char *input, int i)
 	free(word);
 	return (i + len);
 }
-
-// Ancien code:
-// static int	handle_word(t_shell *shell, t_lexer **lexer, char *input, int i)
-// {
-// 	int		len;
-// 	char	*word;
-// 	char	*clean;
-
-// 	len = extract_world_len(shell, input, i);
-// 	word = ft_substr(input, i, len);
-// 	if (!word)
-// 		exit_clean_shell(shell, "Error in malloc word\n");
-// 	expand_all_tokens(shell->lexer, shell);
-// 	clean = remove_quotes_from_tok(word);
-// 	free(word);
-// 	if (!clean)
-// 		exit_clean_shell(shell, "Error in remove_quotes_from_tok\n");
-// 	add_new_word(lexer, shell, clean);
-// 	free(clean);
-// 	return (i + len);
-// }
 
 void	lexer(t_shell *shell)
 {

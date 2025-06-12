@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/11 15:44:57 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:28:58 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 	(*i)++;
 	if (token[*i] == '?')
 	{
-		val = ft_itoa(last_exit_code);
+		val = ft_itoa(g_last_exit_code);
 		(*i)++;
 		return (ft_strjoin_free(res, val));
 	}

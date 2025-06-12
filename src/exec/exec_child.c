@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:30:12 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/10 11:03:18 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:27:19 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	has_infile_redir(t_cmd *cmd)
 
 /*Main exec for child processes*/
 
-void	exec_child(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2])
+void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 {
+	int	ret;
+
 	if (prev_fd != -1 && !has_infile_redir(cmd))
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
@@ -49,7 +51,10 @@ void	exec_child(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2])
 		exit(1);
 	if (!cmd->cmds || !cmd->cmds[0])
 		exit(0);
-	exec_external(cmd, env);
-	perror(cmd->cmds[0]);
-	exit(127);
+	if (is_builtin(cmd->cmds[0]))
+	{
+		ret = launch_built(shell, cmd->cmds, cmd);
+		exit (ret);
+	}
+	(exec_external(cmd, shell->env), perror(cmd->cmds[0]), exit(127));
 }

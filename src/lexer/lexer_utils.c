@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:24:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/11 15:50:03 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:28:44 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_redir_syntax(t_lexer *lexer)
 			if (!lexer->next || lexer->next->type != WORD)
 			{
 				ft_putstr_fd("Error: Syntax error near unexpected token\n", 2);
-				last_exit_code = 2;
+				g_last_exit_code = 2;
 				return (0);
 			}
 		}

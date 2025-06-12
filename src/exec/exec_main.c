@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/11 16:07:41 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:03:37 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 
 /*Main fonction of the exec*/
 
-int	exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env)
+int	exec_cmds(t_shell *shell, t_cmd *cmd)
 {
 	int		prev_fd;
 	pid_t	pid;
@@ -82,7 +82,7 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd, t_env *env)
 		if (pid == -1)
 			return (perror("fork"), 1);
 		if (pid == 0)
-			exec_child(cmd, env, prev_fd, shell->pipe_fd);
+			exec_child(cmd, shell, prev_fd, shell->pipe_fd);
 		last_pid = handle_parent(pid, cmd, shell->pipe_fd, &prev_fd);
 		cmd = cmd->next;
 	}

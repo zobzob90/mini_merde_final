@@ -6,12 +6,11 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:49:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/11 14:58:07 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:26:21 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static void	echo_args(char **av, int start)
 {
