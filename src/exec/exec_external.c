@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/12 13:30:52 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:23:27 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	exec_external(t_cmd *cmd, t_env *env)
 		return (1);
 	path = get_executable_path(cmd, env);
 	if (!path)
-		return (127);
+		return (print_cmd_not_found(cmd->cmds[0]));
 	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
 		ft_printf("%s: Is a directory\n", path);

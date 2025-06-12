@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:30:12 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/12 13:41:22 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:48:14 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,5 @@ void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 		ret = launch_built(shell, cmd->cmds, cmd);
 		exit (ret);
 	}
-	(exec_external(cmd, shell->env), exit(127));
+	(exec_external(cmd, shell->env), exit(126));
 }

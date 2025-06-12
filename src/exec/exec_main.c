@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/12 13:32:29 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:17:30 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 	return (pid);
 }
 
-static void	update_exit_code(t_shell *shell, int status)
+int	update_exit_code(t_shell *shell, int status)
 {
 	if (WIFEXITED(status))
 		shell->exit_code = WEXITSTATUS(status);
@@ -33,6 +33,7 @@ static void	update_exit_code(t_shell *shell, int status)
 	else
 		shell->exit_code = 1;
 	g_last_exit_code = shell->exit_code;
+	return (g_last_exit_code);
 }
 
 /*Clean the heredoc and update the exit code to 1*/
@@ -57,7 +58,7 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 		g_last_exit_code = shell->exit_code;
 	}
 	cleanup_heredocs(shell->cmd);
-	return (0);
+	return (g_last_exit_code);
 }
 
 /*Main fonction of the exec*/

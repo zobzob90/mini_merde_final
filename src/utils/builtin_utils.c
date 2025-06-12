@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:35 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 13:39:12 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:48:14 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,11 @@ int	is_valid_export_key(const char *key)
 		i++;
 	}
 	return (1);
+}
+
+int	print_cmd_not_found(char *cmd)
+{
+	ft_printf("%s: command not found\n", cmd);
+	g_last_exit_code = 127;
+	return (127);
 }

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 12:03:16 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:48:28 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	wait_all_children(pid_t last_pid, int *status);
 int		wait_and_return_status(pid_t pid);
 int		exec_external(t_cmd *cmd, t_env *env);
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
+int		update_exit_code(t_shell *shell, int status);
 int 	is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
 char	**env_list_to_array(t_env *env);
@@ -198,7 +199,7 @@ void	free_pars(t_cmd *cmd);
 void	free_env(t_env *env);
 
 /*UTILS*/
-char	*ft_strjoin_3(const char *s1, const char *s2, const char *s3);
+int		print_cmd_not_found(char *cmd);
 void	ft_sort_str_array(t_env	**arr, int size);
 
 #endif 
