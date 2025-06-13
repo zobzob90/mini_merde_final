@@ -20,7 +20,7 @@ char	*join_literal(char *res, const char *token, int *i)
 	start = *i;
 	while (token[*i] && token[*i] != '\'')
 		(*i)++;
-	res = ft_strjoin_free(res, ft_substr(token, start, *i - start));
+	res = ft_strjoin_free(res, ft_substr(token, start, *i - start), 3);
 	if (!res)
 		return (NULL);
 	if (token [*i])
@@ -28,28 +28,47 @@ char	*join_literal(char *res, const char *token, int *i)
 	return (res);
 }
 
+static char	*handle_exit_code(char *res, int *i)
+{
+	char	*val;
+	char	*joined;
+
+	val = ft_itoa(g_last_exit_code);
+	if (!val)
+		return (NULL);
+	(*i)++;
+	if (!res)
+		return (val);
+	joined = ft_strjoin_free(res, val, 3);
+	return (joined);
+}
+
 char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 {
 	char	*key;
 	char	*val;
+	char	*val_dup;
 	int		start;
 
 	(*i)++;
 	if (token[*i] == '?')
-	{
-		val = ft_itoa(g_last_exit_code);
-		(*i)++;
-		return (ft_strjoin_free(res, val));
-	}
+		return (handle_exit_code(res, i));
 	start = *i;
 	while (ft_isalnum(token[*i]) || token[*i] == '_')
 		(*i)++;
 	key = ft_substr(token, start, *i - start);
+	if (!key)
+		return (NULL);
 	val = get_env_value(shell->env, key);
 	free(key);
 	if (!val)
 		return (res);
-	return (ft_strjoin_free(res, val));
+	val_dup = ft_strdup(val);
+	if (!val_dup)
+		return (NULL);
+	if (res)
+		return (ft_strjoin_free(res, val_dup, 3));
+	return (val_dup);
 }
 
 char	*join_char(char *res, char c)
