@@ -79,7 +79,9 @@ char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 	(*i)++;
 	while (token[*i] && token[*i] != '\"')
 	{
-		if (token[*i] == '$')
+		if (token[*i] == '$' && token[*i + 1]
+			&& (ft_isalnum(token[*i + 1])
+				|| token[*i + 1] == '?' || token[*i + 1] == '_'))
 			res = join_dollar(res, token, i, shell);
 		else
 			res = join_char(res, token[(*i)++]);

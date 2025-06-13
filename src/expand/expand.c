@@ -42,7 +42,8 @@ static char	*expand_token(char *token, t_shell *shell)
 			res = join_literal(res, token, &i);
 		else if (token[i] == '\"')
 			res = join_double_quote(res, token, &i, shell);
-		else if (token[i] == '$' && token[i + 1] != '\0')
+		else if (token[i] == '$' && token[i + 1]
+			&& (ft_isalnum(token[i + 1]) || token[i + 1] == '?'))
 			res = join_dollar(res, token, &i, shell);
 		else
 			res = join_char(res, token[i++]);
