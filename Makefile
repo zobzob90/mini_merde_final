@@ -17,6 +17,7 @@ SRCS = src/main.c \
 		src/lexer/print_debug.c \
 		src/expand/expand.c \
 		src/expand/join.c \
+		src/expand/join_dollar.c \
 		src/parsing/parsing_utils.c \
 		src/parsing/pars_init.c \
 		src/parsing/parsing.c \

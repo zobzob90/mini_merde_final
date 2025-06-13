@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:16:21 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/13 11:44:58 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:03:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 # include <stdlib.h>
 # include "get_next_line/get_next_line.h"
 # include "ft_printf/ft_printf.h"
+
+#define FREE_NONE 0
+#define FREE_S1 1
+#define FREE_S2 2
+#define FREE_ALL 3
 
 /*ascii to int or long int*/
 long int	ft_atol(const char *str);
@@ -38,6 +43,7 @@ char		*ft_strdup(const char *src);
 char		*ft_strndup(const char *src, size_t n);
 char		*ft_strjoin(char *s1, const char *s2);
 char		*ft_strjoin_free(char *s1, char *s2);
+char		*ft_strjoin_ctr_free(char *s1, char *s2, int to_free);
 char		*ft_strcat(char *dest, char *src);
 size_t		ft_strspn(const char *s, const char *accept);
 /*print c or str*/

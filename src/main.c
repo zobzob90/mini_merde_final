@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 11:28:07 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:06:23 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 
 static void	init_shell_loop(t_shell *shell)
 {
-	char	*input;
+	char	*input = 0;
 
 	while (1)
 	{
@@ -73,7 +73,9 @@ static void	init_shell_loop(t_shell *shell)
 					exec_cmds(shell, shell->cmd);
 				shell->exit_code = 0;
 				(free_pars(shell->cmd), shell->cmd = NULL);
+
 				(free_lexer(shell->lexer), shell->lexer = NULL);
+
 			}
 			free(input);
 			if (shell->input)
@@ -87,7 +89,6 @@ int	main(int ac, char *av[], char **envp)
 	t_shell	shell;
 
 	(void)av;
-	(void)envp;
 	if (ac != 1)
 		printf("Error: Too many arguments\n");
 	(init_shell(&shell), init_env(&shell, envp),

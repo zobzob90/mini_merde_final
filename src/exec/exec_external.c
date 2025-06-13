@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/13 11:24:06 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:04:12 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ void	exec_external(t_cmd *cmd, t_env *env)
 		(free(path), g_last_exit_code = 1);
 		exit (1);
 	}
-	execve(path, cmd->cmds, envp); 
+	execve(path, cmd->cmds, envp);
 	handle_execve_failure(path, envp, cmd->cmds[0]);
 }

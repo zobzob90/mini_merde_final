@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/13 11:42:13 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:11:13 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,27 @@
 char	*join_literal(char *res, const char *token, int *i)
 {
 	int	start;
+	char *sub;
 
 	(*i)++;
 	start = *i;
 	while (token[*i] && token[*i] != '\'')
 		(*i)++;
-	res = ft_strjoin_free(res, ft_substr(token, start, *i - start));
+	sub = ft_substr(token, start, *i - start);
+	if (!sub)
+	{
+		free(res);
+		return (NULL);
+	}
+	res = ft_strjoin_free(res, sub);
 	if (!res)
 		return (NULL);
-	if (token [*i])
+	if (token[*i])
 		(*i)++;
 	return (res);
 }
 
-char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
+/*char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 {
 	char	*key;
 	char	*val;
@@ -49,8 +56,8 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 	free(key);
 	if (!val)
 		return (res);
-	return (ft_strjoin_free(res, val));
-}
+	return (ft_strjoin_ctr_free(res, val, 1));
+}*/
 
 char	*join_char(char *res, char c)
 {
@@ -79,7 +86,9 @@ char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 	(*i)++;
 	while (token[*i] && token[*i] != '\"')
 	{
-		if (token[*i] == '$')
+		if (token[*i] == '$' && token[*i + 1]
+			&& (ft_isalnum(token[*i + 1])
+				|| token[*i + 1] == '?' || token[*i + 1] == '_'))
 			res = join_dollar(res, token, i, shell);
 		else
 			res = join_char(res, token[(*i)++]);
