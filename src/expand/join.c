@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/12 11:28:58 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:42:13 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*join_literal(char *res, const char *token, int *i)
 	while (token[*i] && token[*i] != '\'')
 		(*i)++;
 	res = ft_strjoin_free(res, ft_substr(token, start, *i - start));
+	if (!res)
+		return (NULL);
 	if (token [*i])
 		(*i)++;
 	return (res);
@@ -53,10 +55,23 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 char	*join_char(char *res, char c)
 {
 	char	tmp[2];
+	char	*tmp_dup;
+	char	*joined;
 
 	tmp[0] = c;
 	tmp[1] = '\0';
-	return (ft_strjoin(res, ft_strdup(tmp)));
+	tmp_dup = ft_strdup(tmp);
+	if (!tmp_dup)
+		return (NULL);
+	joined = ft_strjoin(res, tmp_dup);
+	free(tmp_dup);
+	if (!joined)
+	{
+		free(res);
+		return (NULL);
+	}
+	free(res);
+	return (joined);
 }
 
 char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
@@ -68,6 +83,8 @@ char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 			res = join_dollar(res, token, i, shell);
 		else
 			res = join_char(res, token[(*i)++]);
+		if (!res)
+			return (NULL);
 	}
 	if (token[*i])
 		(*i)++;

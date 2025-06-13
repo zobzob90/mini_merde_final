@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 14:48:28 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:16:18 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int		exec_cmds(t_shell *shell, t_cmd *cmd);
 int		handle_redir_exec(t_redir *redir);
 void	wait_all_children(pid_t last_pid, int *status);
 int		wait_and_return_status(pid_t pid);
-int		exec_external(t_cmd *cmd, t_env *env);
+void	exec_external(t_cmd *cmd, t_env *env);
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int		update_exit_code(t_shell *shell, int status);
 int 	is_builtin(char *cmd);
@@ -148,6 +148,7 @@ char	**env_list_to_array(t_env *env);
 int		env_list_size(t_env *env);
 char	*ft_strjoin_path(char *path, char *cmd);
 char	*resolve_cmd_path(char *cmd, t_env *env);
+int		is_directory(const char *path);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list);
