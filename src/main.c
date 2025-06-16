@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 17:06:09 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:05:23 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 
 static void	init_shell_loop(t_shell *shell)
 {
-	char	*input = 0;
+	char	*input;
 
 	while (1)
 	{
