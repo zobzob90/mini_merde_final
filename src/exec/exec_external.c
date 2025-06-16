@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/13 17:04:12 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:08:20 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,16 @@ int	is_directory(const char *path)
 	return (0);
 }
 
-void	handle_execve_failure(char *path, char **envp, const char *cmd)
+void	handle_execve_failure(char *path, char **envp, const char *cmd, t_shell *shell)
 {
 	int	err;
 
 	err = errno;
 	perror(cmd);
+	(void)shell;
 	free(path);
 	ft_free_tab(envp);
+	exit_clean_shell(shell, "TEST A_AKB\n");
 	if (err == EACCES || (path && is_directory(path)))
 		exit(126);
 	else if (err == ENOENT || err == EFAULT)
@@ -61,8 +63,9 @@ void	handle_execve_failure(char *path, char **envp, const char *cmd)
 		exit(1);
 }
 
-void	exec_external(t_cmd *cmd, t_env *env)
+void	exec_external(t_cmd *cmd, t_shell *shell)
 {
+	t_env *env = shell->env;
 	char		*path;
 	char		**envp;
 	struct stat	sb;
@@ -73,20 +76,24 @@ void	exec_external(t_cmd *cmd, t_env *env)
 	if (!path || *path == '\0')
 	{
 		print_cmd_not_found(cmd->cmds[0]);
+		exit_clean_shell(shell, "TEST127");
 		exit (127);
 	}
 	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
+		
 		ft_printf("%s: Is a directory\n", path);
 		(free(path), g_last_exit_code = 126);
+		exit_clean_shell(shell, "TEST128\n");
 		exit (126);
 	}
 	envp = prepare_envp(env, path);
+	
 	if (!envp)
 	{
 		(free(path), g_last_exit_code = 1);
 		exit (1);
 	}
 	execve(path, cmd->cmds, envp);
-	handle_execve_failure(path, envp, cmd->cmds[0]);
+	handle_execve_failure(path, envp, cmd->cmds[0], shell);
 }

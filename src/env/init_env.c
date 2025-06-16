@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:47:34 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/03 13:44:15 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:57:26 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,18 @@ t_env	*new_node(char *env_str)
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return (free(new_node), NULL);
+		return (NULL);
 	equal_pos = ft_strchr(env_str, '=');
 	if (!equal_pos)
 		return (free(new_node), NULL);
 	new_node->key = ft_strndup(env_str, equal_pos - env_str);
+	if (!new_node->key)
+		return (free(new_node), NULL);
 	new_node->value = ft_strdup(equal_pos + 1);
 	if (!new_node->value)
-	{
-		free(new_node->key);
-		return (free(new_node), NULL);
-	}
-	if (!new_node->key || !*new_node->key)
-	{
-		free(new_node->value);
-		return (free(new_node), NULL);
-	}
+		return (free(new_node->key), free(new_node), NULL);
+	if (!*new_node->key)
+		return (free(new_node->value), free(new_node->key), free(new_node), NULL);
 	new_node->next = NULL;
 	return (new_node);
 }

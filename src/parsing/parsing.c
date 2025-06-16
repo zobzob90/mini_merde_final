@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:23:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 13:52:55 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:03:59 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,9 @@ void	parser(t_shell *shell)
 	shell->cmd = cmd;
 	expand_all_tokens(shell->lexer, shell);
 	parse_tokens(shell, shell->lexer, cmd);
+	if (shell->exit_code == 2)
+	{
+		free_pars(shell->cmd);
+		shell->cmd = NULL;
+	}
 }

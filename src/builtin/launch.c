@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 11:23:00 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:27:16 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ static int	get_moulinette(t_shell *shell)
 		ft_putstr_fd("Moulinette hack le shell 🐱‍💻\n", 1);
 	}
 	return (0);
+}
+
+static int get_built_excl(char **argv)
+{
+	if (ft_strcmp(argv[0], ":") == 0)
+		return (0);
+	else if (ft_strcmp(argv[0], "!") == 0)
+		return (1);
+	return (-1);
 }
 
 static int	launch_easter(t_shell *shell, char **argv)
@@ -60,17 +69,15 @@ int	launch_built(t_shell *shell, char **argv, t_cmd *cmd)
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		return (get_echo(argv));
 	else if (ft_strcmp(argv[0], "exit") == 0 && !cmd->next && !cmd->prev)
-		return (get_exit(argv));
+		exit(get_exit(argv, shell));
 	else if (ft_strcmp(argv[0], "env") == 0)
 		return (get_env_built(shell));
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		return (get_unset(shell, argv));
 	else if (ft_strcmp(argv[0], "export") == 0)
 		return (get_export(shell, argv));
-	else if (ft_strcmp(argv[0], ":") == 0)
-		return (0);
-	else if (ft_strcmp(argv[0], "!") == 0)
-		return (1);
+	else if (ft_strcmp(argv[0], "!") == 0 || ft_strcmp(argv[0], ":") == 0)
+		return (get_built_excl(argv));
 	else
 	{
 		if (launch_easter(shell, argv) != -1)

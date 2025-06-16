@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/13 16:04:07 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:49:46 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int		exec_cmds(t_shell *shell, t_cmd *cmd);
 int		handle_redir_exec(t_redir *redir);
 void	wait_all_children(pid_t last_pid, int *status);
 int		wait_and_return_status(pid_t pid);
-void	exec_external(t_cmd *cmd, t_env *env);
+void	exec_external(t_cmd *cmd, t_shell *shell);
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int		update_exit_code(t_shell *shell, int status);
 int 	is_builtin(char *cmd);
@@ -164,7 +164,7 @@ void	exit_clean_shell(t_shell *shell, char *msg);
 
 /*BUILTIN*/
 int		get_echo(char **av);
-int		get_exit(char **av);
+int		get_exit(char **av, t_shell *shell);
 int		get_cd(char **av);
 int		get_pwd(char **av);
 int		get_export(t_shell *shell, char **argv);

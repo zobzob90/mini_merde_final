@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:13:17 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/05/23 11:16:30 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:07:10 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,18 @@
 
 void	free_shell(t_shell *shell)
 {
-	if (shell->input)
-		free(shell->input);
-	if (shell->cmd)
-		free_pars(shell->cmd);
-	if (shell->lexer)
-		free_lexer(shell->lexer);
+	
 	if (shell->env)
 		free_env(shell->env);
+	if (shell->lexer)
+		free_lexer(shell->lexer);
+	if (shell->cmd)
+		free_pars(shell->cmd);
+	if (shell->input)
+	{
+		free(shell->input);
+		shell->input = NULL;	
+	}
 }
 
 void	free_redir(t_redir *redir)
@@ -55,16 +59,17 @@ void	free_pars(t_cmd *cmd)
 	}
 }
 
-void	free_env(t_env *env)
+void free_env(t_env *env)
 {
 	t_env	*tmp;
 
 	while (env)
 	{
-		tmp = env;
-		env = env->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-	}
+		tmp = env->next;
+		free(env->key);
+    	if (env->value)
+			free(env->value);
+		free(env);
+		env = tmp;
+    }
 }

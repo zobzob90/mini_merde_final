@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/13 17:06:23 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:06:09 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	init_shell_input(t_shell *shell, char *input)
 {
 	if (!input)
 		return ;
+	if (shell->input && ft_strcmp(shell->input, input) == 0)
+		return ;
 	if (shell->input)
 		free(shell->input);
 	shell->input = ft_strdup(input);
@@ -44,12 +46,8 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 	tmp_exit_code = g_last_exit_code;
 	if (msg)
 		ft_putstr_fd(msg, 2);
-	if (shell->input)
-	{
-		free(shell->input);
-		shell->input = NULL;
-	}
-	free_shell(shell);
+	if (shell)
+		free_shell(shell);
 	rl_clear_history();
 	exit(tmp_exit_code);
 }
@@ -66,20 +64,16 @@ static void	init_shell_loop(t_shell *shell)
 		else
 		{
 			(add_history(input), init_shell_input(shell, input), lexer(shell));
+			free(input);
 			if (shell->lexer)
 			{
 				parser(shell);
-				if (shell->exit_code != 258)
+				if (shell->exit_code != 258 && shell->exit_code != 2)
 					exec_cmds(shell, shell->cmd);
-				shell->exit_code = 0;
 				(free_pars(shell->cmd), shell->cmd = NULL);
-
 				(free_lexer(shell->lexer), shell->lexer = NULL);
-
+				shell->exit_code = 0;
 			}
-			free(input);
-			if (shell->input)
-				(free(shell->input), shell->input = NULL);
 		}
 	}
 }

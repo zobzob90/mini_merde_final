@@ -6,13 +6,13 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:57:11 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/03 15:01:37 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:35:47 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_exit(char **av)
+int	get_exit(char **av, t_shell *shell)
 {
 	int	status;
 	int	i;
@@ -28,7 +28,7 @@ int	get_exit(char **av)
 		{
 			if (!ft_isdigit(av[1][i]))
 				(ft_printf("exit: %s: numeric argument required\n", av[1]),
-					exit(2));
+					exit (2));
 			i++;
 		}
 		if (av[2])
@@ -38,5 +38,6 @@ int	get_exit(char **av)
 		}
 		status = ft_atoi(av[1]);
 	}
-	exit(status);
+	exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
+	return (status % 256);
 }
