@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/16 17:10:06 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:48:05 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,5 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd)
 		last_pid = handle_parent(pid, cmd, shell->pipe_fd, &prev_fd);
 		cmd = cmd->next;
 	}
-
 	return (finalize_execution(shell, last_pid));
 }

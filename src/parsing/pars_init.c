@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:58:45 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 16:55:52 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:47:17 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_redir	*new_redir(void)
 	return (redir);
 }
 
-void	print_pars(t_cmd *cmd)
+/*void	print_pars(t_cmd *cmd)
 {
 	int		i;
 	t_redir	*redir;
@@ -97,4 +97,4 @@ void	print_pars(t_cmd *cmd)
 			printf("-> PIPE to next command\n");
 		cmd = cmd->next;
 	}
-}
+}*/

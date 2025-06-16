@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 15:27:16 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:47:32 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	get_moulinette(t_shell *shell)
 	return (0);
 }
 
-static int get_built_excl(char **argv)
+static int	get_built_excl(char **argv)
 {
 	if (ft_strcmp(argv[0], ":") == 0)
 		return (0);

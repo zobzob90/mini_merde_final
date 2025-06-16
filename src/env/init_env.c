@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:47:34 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 11:57:26 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:45:47 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_env	*new_node(char *env_str)
 	if (!new_node->value)
 		return (free(new_node->key), free(new_node), NULL);
 	if (!*new_node->key)
-		return (free(new_node->value), free(new_node->key), free(new_node), NULL);
+		return (free(new_node->value), free(new_node->key),
+			free(new_node), NULL);
 	new_node->next = NULL;
 	return (new_node);
 }

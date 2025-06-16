@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/13 16:11:13 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:46:57 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*join_literal(char *res, const char *token, int *i)
 {
-	int	start;
-	char *sub;
+	int		start;
+	char	*sub;
 
 	(*i)++;
 	start = *i;

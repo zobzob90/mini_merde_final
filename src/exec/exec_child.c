@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:30:12 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/16 15:49:06 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:55:41 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	has_infile_redir(t_cmd *cmd)
 	return (0);
 }
 
-static int is_invalid_cmd(char *cmd)
+static int	is_invalid_cmd(char *cmd)
 {
 	if (!cmd || !*cmd)
 		return (1);
@@ -37,13 +37,13 @@ static int is_invalid_cmd(char *cmd)
 	return (0);
 }
 
-static void handle_invalid_cmd(char *cmd)
+static void	handle_invalid_cmd(char *cmd)
 {
 	if (is_invalid_cmd(cmd))
 		exit (print_cmd_not_found(cmd));
 }
 
-static void setup_pipes_and_redir(t_cmd *cmd, int prev_fd, int pipefd[2])
+static void	setup_pipes_and_redir(t_cmd *cmd, int prev_fd, int pipefd[2])
 {
 	if (prev_fd != -1 && !has_infile_redir(cmd))
 	{

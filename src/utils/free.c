@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:13:17 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 17:07:10 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:44:56 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	free_shell(t_shell *shell)
 {
-	
 	if (shell->env)
 		free_env(shell->env);
 	if (shell->lexer)
@@ -24,7 +23,7 @@ void	free_shell(t_shell *shell)
 	if (shell->input)
 	{
 		free(shell->input);
-		shell->input = NULL;	
+		shell->input = NULL;
 	}
 }
 
@@ -59,7 +58,7 @@ void	free_pars(t_cmd *cmd)
 	}
 }
 
-void free_env(t_env *env)
+void	free_env(t_env *env)
 {
 	t_env	*tmp;
 
@@ -67,9 +66,9 @@ void free_env(t_env *env)
 	{
 		tmp = env->next;
 		free(env->key);
-    	if (env->value)
+		if (env->value)
 			free(env->value);
 		free(env);
 		env = tmp;
-    }
+	}
 }
