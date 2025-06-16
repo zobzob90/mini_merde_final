@@ -39,7 +39,7 @@ static int is_invalid_cmd(char *cmd)
 
 static void handle_invalid_cmd(char *cmd)
 {
-	if (is_invalid_cmd(cmd))
+	if (is_invalid_cmd(cmd) && cmd)
 		exit (print_cmd_not_found(cmd));
 }
 

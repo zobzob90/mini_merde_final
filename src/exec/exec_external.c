@@ -67,6 +67,7 @@ void	exec_external(t_cmd *cmd, t_env *env)
 	char		**envp;
 	struct stat	sb;
 
+	printf ("cmd = %s\n", cmd->cmds[0]);
 	if (!cmd || !cmd->cmds || !cmd->cmds[0])
 		exit (1);
 	path = get_executable_path(cmd, env);

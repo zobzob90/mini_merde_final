@@ -75,6 +75,11 @@ int	is_valid_export_key(const char *key)
 
 int	print_cmd_not_found(char *cmd)
 {
+	if (!cmd || !*cmd)
+	{
+		g_last_exit_code = 0;
+		return (0);
+	}
 	ft_printf("%s: command not found\n", cmd);
 	g_last_exit_code = 127;
 	return (127);

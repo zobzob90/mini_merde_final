@@ -69,7 +69,7 @@ static void	init_shell_loop(t_shell *shell)
 			if (shell->lexer)
 			{
 				parser(shell);
-				if (shell->exit_code != 258)
+				if (shell->exit_code != 258 && shell->exit_code != 2)
 					exec_cmds(shell, shell->cmd);
 				shell->exit_code = 0;
 				(free_pars(shell->cmd), shell->cmd = NULL);
