@@ -19,3 +19,11 @@ Ajouter la gestion des retour de valeur dans l'exec
 
 Revoir signaux, gestion des quotes et expand
 
+
+
+NOTE LEAK
+
+""
+''
+cat | exit
+leak dans l'expand si not found 
