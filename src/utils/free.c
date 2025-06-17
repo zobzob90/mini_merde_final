@@ -14,6 +14,8 @@
 
 void	free_shell(t_shell *shell)
 {
+	if (!shell)
+		return ;
 	if (shell->env)
 		free_env(shell->env);
 	if (shell->lexer)

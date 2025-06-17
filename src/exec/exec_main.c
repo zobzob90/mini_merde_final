@@ -81,6 +81,8 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd)
 			return (exec_builtin_parent(cmd, shell));
 		if (cmd->next && pipe(shell->pipe_fd) == -1)
 			return (perror("pipe"), -1);
+// signal(SIGINT,  SIG_IGN);
+// signal(SIGQUIT, SIG_IGN);
 		pid = fork();
 		if (pid == -1)
 			return (perror("fork"), 1);
