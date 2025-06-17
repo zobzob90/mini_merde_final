@@ -67,11 +67,11 @@ void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 	int	ret;
 
 	if (!cmd->cmds || !cmd->cmds[0])
-		(free(shell),exit(0));
+		(free(shell), exit(0));
 	handle_invalid_cmd(cmd->cmds[0]);
 	setup_pipes_and_redir(cmd, prev_fd, pipefd);
 	if (handle_redir_exec(cmd->redir))
-		(free(shell),exit(1));
+		(free(shell), exit(1));
 	if (is_builtin(cmd->cmds[0]))
 	{
 		ret = launch_built(shell, cmd->cmds, cmd);

@@ -19,10 +19,10 @@
 # include "get_next_line/get_next_line.h"
 # include "ft_printf/ft_printf.h"
 
-#define FREE_NONE 0
-#define FREE_S1 1
-#define FREE_S2 2
-#define FREE_ALL 3
+# define FREE_NONE 0
+# define FREE_S1 1
+# define FREE_S2 2
+# define FREE_ALL 3
 
 /*ascii to int or long int*/
 long int	ft_atol(const char *str);

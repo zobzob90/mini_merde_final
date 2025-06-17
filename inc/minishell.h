@@ -34,7 +34,7 @@
 # define TRUE 1
 # define FALSE 0
 
-extern int g_last_exit_code;
+extern int	g_last_exit_code;
 
 typedef enum e_token
 {
@@ -130,7 +130,8 @@ void	free_pars(t_cmd *cmd);
 char	*join_literal(char *res, const char *token, int *i);
 char	*join_dollar(char *res, const char *token, int *i, t_shell *shell);
 char	*join_char(char *res, char c);
-char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell);
+char	*join_double_quote(char *res, const char *token,
+			int *i, t_shell *shell);
 //char	*get_env_value(const char *name);
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
@@ -142,7 +143,7 @@ int		wait_and_return_status(pid_t pid);
 void	exec_external(t_cmd *cmd, t_shell *shell);
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int		update_exit_code(t_shell *shell, int status);
-int 	is_builtin(char *cmd);
+int		is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
 char	**env_list_to_array(t_env *env);
 int		env_list_size(t_env *env);
@@ -173,11 +174,12 @@ int		get_unset(t_shell *shell, char **argv);
 
 /*BUILTIN EXPORT UTILS*/
 t_env	*create_env_node(const char *key, const char *value, t_shell *shell);
-void 	add_or_update_env(t_env **env, char *key, char *value);
+void	add_or_update_env(t_env **env, char *key, char *value);
 int		is_valid_export_key(const char *key);
 char	*safe_trim(const char *str);
 void	handle_key(t_env **env, char *arg, t_shell *shell);
-void	handle_key_value(t_env **env, char *arg, char *equal_pos, t_shell *shell);
+void	handle_key_value(t_env **env, char *arg,
+			char *equal_pos, t_shell *shell);
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
