@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Check if the string contains characters
+that require expansion ('$','\'','"').*/
+
 static int	contains_expand_chars(const char *str)
 {
 	if (!str)
@@ -24,6 +27,8 @@ static int	contains_expand_chars(const char *str)
 	}
 	return (0);
 }
+
+/*Expand variables and quotes within a token according to shell rules.*/
 
 static char	*expand_token(char *token, t_shell *shell)
 {
@@ -52,6 +57,8 @@ static char	*expand_token(char *token, t_shell *shell)
 	}
 	return (res);
 }
+
+/*Expand all expandable tokens in the lexer linked list.*/
 
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell)
 {

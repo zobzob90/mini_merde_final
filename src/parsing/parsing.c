@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Print a syntax error message and set the shell's exit codes.*/
+
 void	parser_syntax_error(t_shell *shell, const char *msg)
 {
 	ft_putstr_fd("Error : Unexpected token `", 2);
@@ -21,6 +23,9 @@ void	parser_syntax_error(t_shell *shell, const char *msg)
 	g_last_exit_code = 2;
 	return ;
 }
+
+/*Parse the lexer tokens and build the command structure,
+handling pipes and redirections.*/
 
 void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 {
@@ -49,6 +54,8 @@ void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 	}
 }
 
+/*Remove surrounding quotes from each token in the lexer list.*/
+
 void	clean_all_quotes(t_lexer *lexer)
 {
 	while (lexer)
@@ -57,6 +64,9 @@ void	clean_all_quotes(t_lexer *lexer)
 		lexer = lexer->next;
 	}
 }
+
+/*Entry point for the parser: initializes command structures,
+expands tokens, and parses the lexer.*/
 
 void	parser(t_shell *shell)
 {

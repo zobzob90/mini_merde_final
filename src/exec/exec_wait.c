@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*Wait the end of all children*/
+/*Wait the end of all children.*/
 
 void	wait_all_children(pid_t last_pid, int *status)
 {
@@ -28,7 +28,7 @@ void	wait_all_children(pid_t last_pid, int *status)
 	}
 }
 
-/*Wait the end of the process designed by pid and return the status*/
+/*Wait the end of the process designed by pid and return the status.*/
 
 int	wait_and_return_status(pid_t pid)
 {

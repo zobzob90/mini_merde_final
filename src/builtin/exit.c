@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Checks if the given string represents a valid
+numeric argument (optional sign followed by digits).*/
+
 static int	is_numeric_arg(char *str)
 {
 	int	i;
@@ -27,6 +30,9 @@ static int	is_numeric_arg(char *str)
 	}
 	return (1);
 }
+
+/*Implements the built-in 'exit' command, handling numeric
+arguments and cleanup before exiting the shell.*/
 
 int	get_exit(char **av, t_shell *shell)
 {

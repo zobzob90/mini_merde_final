@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*Check is there an infile redirection in the command*/
+/*Checks if the command has an input redirection.*/
 
 int	has_infile_redir(t_cmd *cmd)
 {
@@ -28,6 +28,8 @@ int	has_infile_redir(t_cmd *cmd)
 	return (0);
 }
 
+/*Returns true if the command string is invalid (NULL, empty, or "-").*/
+
 static int	is_invalid_cmd(char *cmd)
 {
 	if (!cmd || !*cmd)
@@ -37,11 +39,16 @@ static int	is_invalid_cmd(char *cmd)
 	return (0);
 }
 
+/*Exits the process printing an error if the command is invalid.*/
+
 static void	handle_invalid_cmd(char *cmd)
 {
 	if (is_invalid_cmd(cmd))
 		exit (print_cmd_not_found(cmd));
 }
+
+/*Sets up input/output file descriptors for pipes
+and redirections before exec.*/
 
 static void	setup_pipes_and_redir(t_cmd *cmd, int prev_fd, int pipefd[2])
 {
@@ -60,7 +67,8 @@ static void	setup_pipes_and_redir(t_cmd *cmd, int prev_fd, int pipefd[2])
 	}
 }
 
-/*Main exec for child processes*/
+/*Executes a child process command handling builtins, external commands,
+redirections, and pipes.*/
 
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 {

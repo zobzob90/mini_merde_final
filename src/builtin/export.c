@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Converts the linked list of environment variables
+into an array for easier processing and sorting.*/
+
 static t_env	**env_to_array(t_env *env, int *size)
 {
 	t_env	*tmp;
@@ -41,6 +44,8 @@ static t_env	**env_to_array(t_env *env, int *size)
 	return (array);
 }
 
+/*Prints all environment variables in a sorted, export-compatible format.*/
+
 static int	print_export(t_env *env)
 {
 	t_env	**array;
@@ -63,6 +68,9 @@ static int	print_export(t_env *env)
 	free(array);
 	return (0);
 }
+
+/*Implements the built-in 'export' command, either printing
+or updating environment variables.*/
 
 int	get_export(t_shell *shell, char **argv)
 {

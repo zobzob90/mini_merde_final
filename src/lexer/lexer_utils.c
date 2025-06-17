@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Check if the character is a whitespace character.*/
+
 int	is_space(const char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n'
@@ -20,12 +22,16 @@ int	is_space(const char c)
 	return (0);
 }
 
+/*Check if the character is a pipe and return PIPE if true.*/
+
 int	is_pipe(const char c)
 {
 	if (c == '|')
 		return (PIPE);
 	return (0);
 }
+
+/*Check if the character(s) represent a redirection and return its type.*/
 
 int	is_redir(const char *c, int i)
 {
@@ -45,6 +51,9 @@ int	is_redir(const char *c, int i)
 	}
 	return (0);
 }
+
+/*Validate redirection syntax by ensuring each redirection
+is followed by a WORD.*/
 
 int	check_redir_syntax(t_lexer *lexer)
 {

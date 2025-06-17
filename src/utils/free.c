@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Frees all allocated resources within the shell structure safely.*/
+
 void	free_shell(t_shell *shell)
 {
 	if (!shell)
@@ -29,6 +31,9 @@ void	free_shell(t_shell *shell)
 	}
 }
 
+/*Frees a linked list of redirection structures
+and their associated file strings.*/
+
 void	free_redir(t_redir *redir)
 {
 	t_redir	*temp;
@@ -41,6 +46,9 @@ void	free_redir(t_redir *redir)
 		free(temp);
 	}
 }
+
+/*Frees a linked list of command structures including commands,
+paths, and redirections.*/
 
 void	free_pars(t_cmd *cmd)
 {
@@ -59,6 +67,9 @@ void	free_pars(t_cmd *cmd)
 		free(temp);
 	}
 }
+
+/*Frees a linked list of environment variable structures
+including keys and values.*/
 
 void	free_env(t_env *env)
 {

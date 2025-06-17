@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Returns the appropriate path for the 'cd' command based
+on user input or environment variables.*/
+
 static char	*get_cd_path(char **av)
 {
 	if (av[1] == NULL || av[1][0] == '\0')
@@ -21,11 +24,16 @@ static char	*get_cd_path(char **av)
 	return (av[1]);
 }
 
+/*Prints an error message to stderr and returns 1 to indicate failure.*/
+
 static int	print_error(char *msg)
 {
 	ft_putstr_fd(msg, 2);
 	return (1);
 }
+
+/*Updates the PWD and OLDPWD environment variables after
+changing the working directory.*/
 
 static void	update_pwd_env(const char *oldpwd)
 {
@@ -38,6 +46,9 @@ static void	update_pwd_env(const char *oldpwd)
 			setenv("OLDPWD", oldpwd, 1);
 	}
 }
+
+/*Implements the built-in 'cd' command: changes the current
+directory and manages related environment variables.*/
 
 int	get_cd(char **av)
 {

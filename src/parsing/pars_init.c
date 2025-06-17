@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+/*Initialize a t_cmd struct with default NULL values.*/
+
 void	init_cmd(t_cmd *cmd)
 {
 	cmd->cmds = NULL;
@@ -21,12 +23,16 @@ void	init_cmd(t_cmd *cmd)
 	cmd->redir = NULL;
 }
 
+/*Initialize a t_redir struct with default values.*/
+
 void	init_redir(t_redir *redir)
 {
 	redir->type = 0;
 	redir->file = NULL;
 	redir->next = NULL;
 }
+
+/*Allocate and initialize a new t_cmd; return pointer or NULL on failure.*/
 
 t_cmd	*new_cmd(void)
 {
@@ -41,6 +47,8 @@ t_cmd	*new_cmd(void)
 	init_cmd(cmd);
 	return (cmd);
 }
+
+/*Allocate and initialize a new t_redir; return pointer or NULL on failure.*/
 
 t_redir	*new_redir(void)
 {

@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Prints the arguments starting from a given index, separated by spaces.*/
+
 static void	echo_args(char **av, int start)
 {
 	int		i;
@@ -25,6 +27,9 @@ static void	echo_args(char **av, int start)
 		i++;
 	}
 }
+
+/*Implements the built-in 'echo' command, handling the optional
+'-n' flag to suppress the trailing newline.*/
 
 int	get_echo(char **av)
 {

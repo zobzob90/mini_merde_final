@@ -12,11 +12,16 @@
 
 #include "minishell.h"
 
+/*Implements the built-in 'env' command by printing
+the current environment variables.*/
+
 int	get_env_built(t_shell *shell)
 {
 	print_env(shell->env);
 	return (0);
 }
+
+/*Activates a special 'moulinette' easter egg mode in the shell.*/
 
 static int	get_moulinette(t_shell *shell)
 {
@@ -28,6 +33,8 @@ static int	get_moulinette(t_shell *shell)
 	return (0);
 }
 
+/*Handles special built-in commands ':' and '!' with predefined return values.*/
+
 static int	get_built_excl(char **argv)
 {
 	if (ft_strcmp(argv[0], ":") == 0)
@@ -36,6 +43,8 @@ static int	get_built_excl(char **argv)
 		return (1);
 	return (-1);
 }
+
+/*Launches hidden or humorous easter egg commands based on the user input.*/
 
 static int	launch_easter(t_shell *shell, char **argv)
 {
@@ -59,6 +68,9 @@ static int	launch_easter(t_shell *shell, char **argv)
 		ft_putstr_fd("Xavier, notre rais a nous\n", 2);
 	return (-1);
 }
+
+/*Dispatches and executes the appropriate built-in shell command
+or easter egg if matched.*/
 
 int	launch_built(t_shell *shell, char **argv, t_cmd *cmd)
 {

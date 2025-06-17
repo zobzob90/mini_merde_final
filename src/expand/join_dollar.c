@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Extract the environment variable key starting at position *i in token.*/
+
 static char	*expand_env_key(const char *token, int *i)
 {
 	int		start;
@@ -23,6 +25,8 @@ static char	*expand_env_key(const char *token, int *i)
 	key = ft_substr(token, start, *i - start);
 	return (key);
 }
+
+/*Append the environment variable value to the existing result string.*/
 
 static char	*expand_env_value(char *res, const char *val)
 {
@@ -38,12 +42,16 @@ static char	*expand_env_value(char *res, const char *val)
 	return (result);
 }
 
+/*Handle invalid dollar expansions by advancing index without appending.*/
+
 static char	*handle_invalid_dollar(char *res, const char *token, int *i)
 {
 	if (token[*i])
 		(*i)++;
 	return (res);
 }
+
+/*Append the last exit code value to the result string.*/
 
 static char	*handle_exit_code(char *res, int *i)
 {
@@ -59,6 +67,9 @@ static char	*handle_exit_code(char *res, int *i)
 	joined = ft_strjoin_ctr_free(res, val, 3);
 	return (joined);
 }
+
+/*Process and expand a dollar sign variable in the token,
+appending its value to res.*/
 
 char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 {

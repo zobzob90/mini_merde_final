@@ -14,6 +14,9 @@
 
 int	g_last_exit_code;
 
+/*Initializes the shell structure with default values
+and invalid pipe descriptors.*/
+
 void	init_shell(t_shell *shell)
 {
 	shell->env = NULL;
@@ -25,6 +28,9 @@ void	init_shell(t_shell *shell)
 	shell->pipe_fd[0] = -2;
 	shell->pipe_fd[1] = -2;
 }
+
+/*Sets or updates the shell input string,
+freeing the previous one if different.*/
 
 void	init_shell_input(t_shell *shell, char *input)
 {
@@ -39,6 +45,8 @@ void	init_shell_input(t_shell *shell, char *input)
 		exit_clean_shell(shell, "Error\n");
 }
 
+/*Cleans up the shell and exits the program, printing an optional message.*/
+
 void	exit_clean_shell(t_shell *shell, char *msg)
 {
 	int	tmp_exit_code;
@@ -51,6 +59,9 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 	rl_clear_history();
 	exit(tmp_exit_code);
 }
+
+/*Runs the main interactive shell loop handling input,
+parsing, execution, and cleanup.*/
 
 static void	init_shell_loop(t_shell *shell)
 {
@@ -77,6 +88,9 @@ static void	init_shell_loop(t_shell *shell)
 		}
 	}
 }
+
+/*Entry point: initializes shell, environment, signals,
+and starts the shell loop.*/
 
 int	main(int ac, char *av[], char **envp)
 {

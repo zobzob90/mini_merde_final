@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Get the full executable path for a command.*/
+
 char	*get_executable_path(t_cmd *cmd, t_env *env)
 {
 	char	*path;
@@ -22,6 +24,8 @@ char	*get_executable_path(t_cmd *cmd, t_env *env)
 		path = resolve_cmd_path(cmd->cmds[0], env);
 	return (path);
 }
+
+/*Convert environment linked list to envp array.*/
 
 char	**prepare_envp(t_env *env, char *path)
 {
@@ -36,6 +40,8 @@ char	**prepare_envp(t_env *env, char *path)
 	return (envp);
 }
 
+/*Check if given path is a directory.*/
+
 int	is_directory(const char *path)
 {
 	struct stat	st;
@@ -44,6 +50,8 @@ int	is_directory(const char *path)
 		return (S_ISDIR(st.st_mode));
 	return (0);
 }
+
+/*Handle execve failure and exit.*/
 
 void	handle_execve_fail(char *path, char **envp, char *cmd, t_shell *shell)
 {
@@ -61,6 +69,8 @@ void	handle_execve_fail(char *path, char **envp, char *cmd, t_shell *shell)
 	else
 		exit(1);
 }
+
+/*Execute an external command using execve.*/
 
 void	exec_external(t_cmd *cmd, t_shell *shell)
 {

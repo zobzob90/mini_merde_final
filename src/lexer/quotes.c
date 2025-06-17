@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Return 1 if single quote, 2 if double quote, 0 otherwise.*/
+
 int	is_quote(const char c)
 {
 	if (c == '\'')
@@ -20,6 +22,9 @@ int	is_quote(const char c)
 		return (2);
 	return (0);
 }
+
+/*Check for unmatched opening quotes in the string
+and return quote type if unclosed.*/
 
 int	check_opened_quotes(char *str)
 {
@@ -42,6 +47,8 @@ int	check_opened_quotes(char *str)
 	return (quote);
 }
 
+/*Print error message if quotes are unclosed; return 0 if error, 1 if OK.*/
+
 int	check_closed_quotes(char *str)
 {
 	int	quote;
@@ -57,6 +64,9 @@ int	check_closed_quotes(char *str)
 	}
 	return (1);
 }
+
+/*Return a new string with all surrounding quotes
+removed (preserving literal characters).*/
 
 char	*remove_quotes_from_tok(char *str)
 {
