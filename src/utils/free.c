@@ -19,11 +19,20 @@ void	free_shell(t_shell *shell)
 	if (!shell)
 		return ;
 	if (shell->env)
+	{
 		free_env(shell->env);
+		shell->env = NULL;
+	}
 	if (shell->lexer)
+	{
 		free_lexer(shell->lexer);
+		shell->lexer = NULL;
+	}
 	if (shell->cmd)
+	{
 		free_pars(shell->cmd);
+		shell->cmd = NULL;
+	}
 	if (shell->input)
 	{
 		free(shell->input);
@@ -54,6 +63,7 @@ void	free_pars(t_cmd *cmd)
 {
 	t_cmd	*temp;
 
+	printf("[DEBUG FREE_PARS] coucou\n");
 	while (cmd)
 	{
 		temp = cmd;

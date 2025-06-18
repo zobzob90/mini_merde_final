@@ -19,10 +19,17 @@ char	*ft_strjoin(char *s1, const char *s2)
 	char			*new_str;
 
 	if (!s1 || !s2)
+	{
+		printf("je suis une salope\n");
 		return (NULL);
+	}
 	new_str = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	printf("je sujis laaaa\n");
 	if (!new_str)
+	{
+		printf("je suis un caca\n");
 		return (NULL);
+	}
 	i = 0;
 	while (s1[i])
 	{
@@ -36,5 +43,6 @@ char	*ft_strjoin(char *s1, const char *s2)
 		j++;
 	}
 	new_str[i + j] = '\0';
+	printf("[DEBUG STRJOIN] new_str= %s\n", new_str);
 	return (new_str);
 }

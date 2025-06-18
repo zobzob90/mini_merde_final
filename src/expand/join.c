@@ -21,15 +21,19 @@ char	*join_literal(char *res, const char *token, int *i)
 
 	(*i)++;
 	start = *i;
+	printf("[DEBUG JOIN_LITERAL] token = %c\n", token[start]);
 	while (token[*i] && token[*i] != '\'')
 		(*i)++;
 	sub = ft_substr(token, start, *i - start);
+	printf("[DEBUG JOIN_LITERAL] sub = %s\n", sub);
 	if (!sub)
 	{
 		free(sub);
 		return (NULL);
 	}
-	res = ft_strjoin_free(res, sub);
+	printf("[DEBUG JOIN_LITERAL] res = %s\n", res);
+	res = ft_strdup(sub);
+	printf("[DEBUG JOIN_LITERAL] res = %s\n", res);
 	if (!res)
 	{
 		free(sub);

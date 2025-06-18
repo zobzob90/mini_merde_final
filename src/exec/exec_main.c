@@ -79,6 +79,7 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd)
 	last_pid = 0;
 	while (cmd)
 	{
+		printf("[DEBUG EXEC_CMDS] %s\n", cmd->cmds[0]);
 		if (cmd->cmds == NULL || cmd->cmds[0] == NULL)
 			return (2);
 		if (is_builtin(cmd->cmds[0]) && !cmd->next && !cmd->prev)

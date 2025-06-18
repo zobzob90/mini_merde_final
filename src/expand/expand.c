@@ -82,6 +82,7 @@ static char	*expand_token(char *token, t_shell *shell)
 				return (NULL);
 			}
 		}
+		free(res);
 		res = tmp;
 	}
 	return (res);

@@ -36,7 +36,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 		j++;
 	}
 	new_str[i + j] = '\0';
-	free(s1);
 	free(s2);
+	printf("[DEBUG STRJOIN_FREE] new_str = %s\n", new_str);
 	return (new_str);
 }

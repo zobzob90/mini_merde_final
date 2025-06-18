@@ -55,7 +55,10 @@ void	exit_clean_shell(t_shell *shell, char *msg)
 	if (msg)
 		ft_putstr_fd(msg, 2);
 	if (shell)
+	{
+		clear_history();
 		free_shell(shell);
+	}
 	rl_clear_history();
 	exit(tmp_exit_code);
 }
