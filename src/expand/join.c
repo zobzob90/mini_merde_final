@@ -26,14 +26,18 @@ char	*join_literal(char *res, const char *token, int *i)
 	sub = ft_substr(token, start, *i - start);
 	if (!sub)
 	{
-		free(res);
+		free(sub);
 		return (NULL);
 	}
 	res = ft_strjoin_free(res, sub);
 	if (!res)
+	{
+		free(sub);
 		return (NULL);
+	}
 	if (token[*i])
 		(*i)++;
+	free(sub);
 	return (res);
 }
 
