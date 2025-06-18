@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-/*Transform the struct env in a **char*/
+/*Convert linked list of environment variables into a
+NULL-terminated array of "key=value" strings.*/
 
 char	**env_list_to_array(t_env *env)
 {

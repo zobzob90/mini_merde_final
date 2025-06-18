@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*Return the size of the chained link of env variable*/
+/*Count the number of environment variable nodes in the linked list.*/
 
 int	env_list_size(t_env *env)
 {
@@ -27,7 +27,7 @@ int	env_list_size(t_env *env)
 	return (count);
 }
 
-/*Join path with the cmd name*/
+/*Concatenate path and command into a full path, adding '/' if needed.*/
 
 char	*ft_strjoin_path(char *path, char *cmd)
 {
@@ -55,6 +55,8 @@ char	*ft_strjoin_path(char *path, char *cmd)
 	ft_strcat(res, cmd);
 	return (res);
 }
+
+/*Find the full executable path of cmd by searching directories in PATH.*/
 
 char	*resolve_cmd_path(char *cmd, t_env *env)
 {

@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Free all memory associated with the lexer linked list.*/
+
 void	free_lexer(t_lexer *lexer)
 {
 	t_lexer	*tmp;
@@ -25,6 +27,8 @@ void	free_lexer(t_lexer *lexer)
 		free(tmp);
 	}
 }
+
+/*Print each token in the lexer list with its corresponding type.*/
 
 void	print_lexer(t_lexer *lexer)
 {

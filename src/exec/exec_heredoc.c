@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*Generate a random name for the heredoc's temporary file*/
+/*Generate a random name for the heredoc's temporary file.*/
 
 char	*generate_tmp_filename(void)
 {
@@ -41,7 +41,7 @@ char	*generate_tmp_filename(void)
 	return (name);
 }
 
-/*Copy the heredoc content in a temporary file*/
+/*Copy the heredoc content in a temporary file.*/
 
 static int	write_heredoc_file(const char *filename, const char *limiter)
 {
@@ -69,7 +69,7 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 	return (0);
 }
 
-/*Return 1 when the heredoc creation fails and 0 when it's OK*/
+/*Return 1 when the heredoc creation fails and 0 when it's OK.*/
 
 int	setup_heredocs(t_cmd *cmd_list)
 {
@@ -98,6 +98,8 @@ int	setup_heredocs(t_cmd *cmd_list)
 	}
 	return (0);
 }
+
+/*Remove temporary heredoc files from all commands.*/
 
 void	cleanup_heredocs(t_cmd *cmd_list)
 {

@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Checks if a given string is a valid environment variable name.*/
+
 static int	is_valid_key(const char *key)
 {
 	if (!key || !*key || ft_isdigit(key[0]))
@@ -24,6 +26,8 @@ static int	is_valid_key(const char *key)
 	}
 	return (1);
 }
+
+/*Removes an environment variable from the shell's environment list by key.*/
 
 static void	unset_env_var(t_shell *shell, const char *key)
 {
@@ -49,6 +53,9 @@ static void	unset_env_var(t_shell *shell, const char *key)
 		current = current->next;
 	}
 }
+
+/*Implements the built-in 'unset' command, removing specified
+environment variables if their keys are valid.*/
 
 int	get_unset(t_shell *shell, char **argv)
 {

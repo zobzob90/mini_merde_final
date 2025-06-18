@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Retrieves the value of an environment variable by
+its key from the linked list.*/
+
 char	*get_env_value(t_env *env, const char *key)
 {
 	while (env)

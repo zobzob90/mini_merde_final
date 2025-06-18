@@ -36,7 +36,7 @@ char	*ft_strjoin_ctr_free(char *s1, char *s2, int to_free)
 	while (s1[i])
 	{
 		new_str[i] = s1[i];
-		i++;	
+		i++;
 	}
 	while (s2[j])
 	{

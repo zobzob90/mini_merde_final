@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Check if the string contains characters
+that require expansion ('$','\'','"').*/
+
 static int	contains_expand_chars(const char *str)
 {
 	if (!str)
@@ -25,33 +28,66 @@ static int	contains_expand_chars(const char *str)
 	return (0);
 }
 
+/*Expand variables and quotes within a token according to shell rules.*/
+
 static char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
+	char	*tmp;
 	int		i;
 	int		len;
 
 	len = ft_strlen(token);
 	res = ft_calloc(1, 1);
+	tmp = NULL;
 	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < len)
 	{
 		if (token[i] == '\'')
-			res = join_literal(res, token, &i);
+		{
+			tmp = join_literal(tmp, token, &i);
+			if (!tmp)
+			{
+				free(res);
+				return (NULL);
+			}
+		}
 		else if (token[i] == '\"')
-			res = join_double_quote(res, token, &i, shell);
+		{
+			tmp = join_double_quote(tmp, token, &i, shell);
+			if (!tmp)
+			{
+				free(res);
+				return (NULL);
+			}
+		}
 		else if (token[i] == '$' && token[i + 1]
 			&& (ft_isalnum(token[i + 1]) || token[i + 1] == '?'))
-			res = join_dollar(res, token, &i, shell);
+		{
+			tmp = join_dollar(tmp, token, &i, shell);
+			if (!tmp)
+			{
+				free(res);
+				return (NULL);
+			}
+		}
 		else
-			res = join_char(res, token[i++]);
-		if (!res)
-			return (NULL);
+		{
+			tmp = join_char(tmp, token[i++]);
+			if (!tmp)
+			{
+				free(res);
+				return (NULL);
+			}
+		}
+		res = tmp;
 	}
 	return (res);
 }
+
+/*Expand all expandable tokens in the lexer linked list.*/
 
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell)
 {

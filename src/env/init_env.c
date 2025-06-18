@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Creates a new environment variable node from a "key=value"
+string or returns NULL on failure.*/
+
 t_env	*new_node(char *env_str)
 {
 	t_env	*new_node;
@@ -35,6 +38,9 @@ t_env	*new_node(char *env_str)
 	new_node->next = NULL;
 	return (new_node);
 }
+
+/*Adds a new environment variable node if the key
+does not already exist in the list.*/
 
 static void	add_env_if_missing(t_env **env, const char *key, const char *value)
 {
@@ -60,6 +66,9 @@ static void	add_env_if_missing(t_env **env, const char *key, const char *value)
 		}	
 	}
 }
+
+/*Initializes the shell environment list from the provided envp array,
+adding a default TERM if missing.*/
 
 void	init_env(t_shell *shell, char **envp)
 {
@@ -88,6 +97,8 @@ void	init_env(t_shell *shell, char **envp)
 	}
 	add_env_if_missing(&shell->env, "TERM", "xterm-256color");
 }
+
+/*Prints all environment variables in the format "key=value".*/
 
 void	print_env(t_env *env)
 {

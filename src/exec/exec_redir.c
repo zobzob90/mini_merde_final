@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-/**/
+/*Open a file descriptor for the given redirection based on its type.*/
+
 static int	open_redir_fd(t_redir *redir)
 {
 	int	fd;
@@ -33,7 +34,7 @@ static int	open_redir_fd(t_redir *redir)
 	return (fd);
 }
 
-/*Close old FD and open a new one when necessary*/
+/*Duplicate oldfd to newfd, closing oldfd afterward, handling errors.*/
 
 static int	dup_fd(int oldfd, int newfd)
 {
@@ -49,7 +50,7 @@ static int	dup_fd(int oldfd, int newfd)
 	return (0);
 }
 
-/*Manage the file descriptors for the redirections*/
+/*Open redirection file and update input/output fd variables accordingly.*/
 
 static int	handle_redir_fd(t_redir *redir, int *fd_in, int *fd_out)
 {
@@ -75,7 +76,7 @@ static int	handle_redir_fd(t_redir *redir, int *fd_in, int *fd_out)
 	return (0);
 }
 
-/*Main fonction for redirections*/
+/*Process all redirections: open files and redirect standard input/output.*/
 
 int	handle_redir_exec(t_redir *redir)
 {

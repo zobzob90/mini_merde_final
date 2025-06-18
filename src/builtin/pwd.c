@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Implements the built-in 'pwd' command by printing
+the current working directory.*/
+
 int	get_pwd(char **av)
 {
 	char	cwd[PATH_MAX];

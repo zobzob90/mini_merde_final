@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Manage parent process file descriptors after forking a child.*/
+
 static int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 {
 	if (*prev_fd != -1)
@@ -23,6 +25,8 @@ static int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 	}
 	return (pid);
 }
+
+/*Update shell exit code based on child process termination status.*/
 
 int	update_exit_code(t_shell *shell, int status)
 {
@@ -36,7 +40,7 @@ int	update_exit_code(t_shell *shell, int status)
 	return (g_last_exit_code);
 }
 
-/*Clean the heredoc and update the exit code to 1*/
+/*Clean the heredoc and update the exit code to 1.*/
 
 static int	heredoc_fail(t_shell *shell)
 {
@@ -45,7 +49,7 @@ static int	heredoc_fail(t_shell *shell)
 	return (1);
 }
 
-/*Wait the children and clean the heredocs*/
+/*Wait the children and clean the heredocs.*/
 
 static int	finalize_execution(t_shell *shell, pid_t last_pid)
 {
@@ -61,7 +65,7 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 	return (g_last_exit_code);
 }
 
-/*Main fonction of the exec*/
+/*Main fonction of the exec.*/
 
 int	exec_cmds(t_shell *shell, t_cmd *cmd)
 {

@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-/*Check if the command is a builtin*/
+/*Checks if a command string matches a recognized built-in command;
+returns TRUE or FALSE.*/
 
 int	is_builtin(char *cmd)
 {
@@ -32,6 +33,9 @@ int	is_builtin(char *cmd)
 		return (FALSE);
 }
 
+/*Restores standard input and output file descriptors from backups,
+closing backups afterwards.*/
+
 static void	reset_stdio(int stdin_backup, int stdout_backup)
 {
 	if (stdin_backup != -1)
@@ -46,7 +50,8 @@ static void	reset_stdio(int stdin_backup, int stdout_backup)
 	}
 }
 
-/*Exec builtin in the parent process*/
+/*Executes a built-in command in the parent process
+with redirection handling and restores stdio.*/
 
 int	exec_builtin_parent(t_cmd *cmd, t_shell *shell)
 {

@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Returns a customized shell prompt string based
+on the current 'drucker_mode' setting.*/
+
 char	*get_prompt(t_shell *shell)
 {
 	char	*input;

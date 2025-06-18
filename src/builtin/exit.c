@@ -12,30 +12,43 @@
 
 #include "minishell.h"
 
+/*Checks if the given string represents a valid
+numeric argument (optional sign followed by digits).*/
+
+static int	is_numeric_arg(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '-' || str[0] == '+')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+/*Implements the built-in 'exit' command, handling numeric
+arguments and cleanup before exiting the shell.*/
+
 int	get_exit(char **av, t_shell *shell)
 {
 	int	status;
-	int	i;
 
 	status = 0;
-	i = 0;
 	ft_printf("exit\n");
 	if (av[1])
 	{
-		if (av[1][0] == '-' || av[1][0] == '+')
-			i++;
-		while (av[1][i])
+		if (!is_numeric_arg(av[1]))
 		{
-			if (!ft_isdigit(av[1][i]))
-				(ft_printf("exit: %s: numeric argument required\n", av[1]),
-					exit (2));
-			i++;
+			ft_printf("exit: %s: numeric argument required\n", av[1]);
+			exit(2);
 		}
 		if (av[2])
-		{
-			ft_printf("minishell : exit: too many arguments\n");
-			return (1);
-		}
+			return (ft_printf("minishell : exit: too many arguments\n"), 1);
 		status = ft_atoi(av[1]);
 	}
 	exit_clean_shell(shell, "Allez, salut mon pote !👋\n");

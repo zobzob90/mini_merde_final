@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Handle incoming signals (e.g., SIGINT, SIGQUIT)
+and update readline and global exit code.*/
+
 void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -27,6 +30,8 @@ void	signal_handler(int signal)
 		return ;
 	}
 }
+
+/*Set up the signal handlers for SIGINT and SIGQUIT used in the shell.*/
 
 void	set_signal_handlers(void)
 {

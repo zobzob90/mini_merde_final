@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Handle pipe and redirection operators, adding them as tokens to the lexer.*/
+
 static int	handle_operator(t_shell *shell, t_lexer **lexer, char *input, int i)
 {
 	t_token	type;
@@ -38,6 +40,8 @@ static int	handle_operator(t_shell *shell, t_lexer **lexer, char *input, int i)
 	return (i);
 }
 
+/*Calculate the length of a word token, accounting for quoted substrings.*/
+
 static int	extract_world_len(t_shell *shell, char *input, int start)
 {
 	int		j;
@@ -63,6 +67,8 @@ static int	extract_world_len(t_shell *shell, char *input, int start)
 	return (j);
 }
 
+/*Extract and expand a word token from input, then add it to the lexer.*/
+
 static int	handle_word(t_shell *shell, t_lexer **lexer, char *input, int i)
 {
 	int		len;
@@ -77,6 +83,9 @@ static int	handle_word(t_shell *shell, t_lexer **lexer, char *input, int i)
 	free(word);
 	return (i + len);
 }
+
+/*Main lexer function that tokenizes the input
+string into a linked list of tokens.*/
 
 void	lexer(t_shell *shell)
 {

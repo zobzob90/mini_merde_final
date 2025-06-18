@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Create and return a new redirection node with given type and file.
+On error, returns NULL.*/
+
 t_redir	*redir_add_node(t_shell *shell, t_token type, char *file)
 {
 	t_redir	*redir;
@@ -32,6 +35,8 @@ t_redir	*redir_add_node(t_shell *shell, t_token type, char *file)
 	return (redir);
 }
 
+/*Append a new redirection node to the end of the redir linked list.*/
+
 void	append_redir(t_redir **redir, t_redir *new)
 {
 	t_redir	*temp;
@@ -46,6 +51,9 @@ void	append_redir(t_redir **redir, t_redir *new)
 		temp = temp->next;
 	temp->next = new;
 }
+
+/*Parse a redirection token from the lexer
+and add it to the command's redirection list.*/
 
 void	handle_redir(t_shell *shell, t_cmd *cmd, t_lexer *lex)
 {
@@ -68,6 +76,8 @@ void	handle_redir(t_shell *shell, t_cmd *cmd, t_lexer *lex)
 	redir = redir_add_node(shell, type, lex->next->value);
 	append_redir(&cmd->redir, redir);
 }
+
+/*Append a new argument to the cmd->cmds array, reallocating as needed.*/
 
 void	append_cmd(t_shell *shell, t_cmd *cmd, char *input)
 {
@@ -96,6 +106,9 @@ void	append_cmd(t_shell *shell, t_cmd *cmd, char *input)
 		ft_free_tab(cmd->cmds);
 	cmd->cmds = temp;
 }
+
+/*Create a new command node, link it to the current one via pipe,
+and return it.*/
 
 t_cmd	*append_pipe(t_shell *shell, t_cmd *cmd)
 {

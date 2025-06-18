@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*Append characters inside single quotes literally to res.*/
+
 char	*join_literal(char *res, const char *token, int *i)
 {
 	int		start;
@@ -35,29 +37,7 @@ char	*join_literal(char *res, const char *token, int *i)
 	return (res);
 }
 
-/*char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
-{
-	char	*key;
-	char	*val;
-	int		start;
-
-	(*i)++;
-	if (token[*i] == '?')
-	{
-		val = ft_itoa(g_last_exit_code);
-		(*i)++;
-		return (ft_strjoin_free(res, val));
-	}
-	start = *i;
-	while (ft_isalnum(token[*i]) || token[*i] == '_')
-		(*i)++;
-	key = ft_substr(token, start, *i - start);
-	val = get_env_value(shell->env, key);
-	free(key);
-	if (!val)
-		return (res);
-	return (ft_strjoin_ctr_free(res, val, 1));
-}*/
+/*Append a single character c to the res string.*/
 
 char	*join_char(char *res, char c)
 {
@@ -80,6 +60,9 @@ char	*join_char(char *res, char c)
 	free(res);
 	return (joined);
 }
+
+/*Append characters inside double quotes to res,
+expanding variables as needed.*/
 
 char	*join_double_quote(char *res, const char *token, int *i, t_shell *shell)
 {

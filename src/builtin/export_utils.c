@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*Creates a new environment variable node with the given key and value,
+exiting on allocation failure.*/
+
 t_env	*create_env_node(const char *key, const char *value, t_shell *shell)
 {
 	t_env	*new_node;
@@ -25,6 +28,9 @@ t_env	*create_env_node(const char *key, const char *value, t_shell *shell)
 		exit_clean_shell(shell, "Error: Malloc failed in create_env_node");
 	return (new_node);
 }
+
+/*Adds a new environment variable or updates an existing
+one if the key already exists.*/
 
 void	add_or_update_env(t_env **env, char *key, char *value)
 {
@@ -53,6 +59,9 @@ void	add_or_update_env(t_env **env, char *key, char *value)
 	*env = new;
 }
 
+/*Handles export of a key without a value, validating the key
+before adding it to the environment.*/
+
 void	handle_key(t_env **env, char *arg, t_shell *shell)
 {
 	char	*key;
@@ -70,6 +79,9 @@ void	handle_key(t_env **env, char *arg, t_shell *shell)
 	}
 	free(key);
 }
+
+/*Handles export of a key-value pair by splitting and validating
+both components before storing them.*/
 
 void	handle_key_value(t_env **env, char *arg, char *equal, t_shell *shell)
 {
@@ -91,6 +103,9 @@ void	handle_key_value(t_env **env, char *arg, char *equal, t_shell *shell)
 	free(key);
 	free(value);
 }
+
+/*Processes an export argument, optionally joining it with the next
+if needed, and adds it to the environment.*/
 
 bool	export_args(t_env **env, char *arg, char *next_arg, t_shell *shell)
 {

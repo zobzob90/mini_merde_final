@@ -12,12 +12,16 @@
 
 #include "minishell.h"
 
+/*Initialize a lexer node with default values.*/
+
 void	init_lexer(t_lexer *lexer)
 {
 	lexer->value = NULL;
 	lexer->type = WORD;
 	lexer->next = NULL;
 }
+
+/*Allocate and append a new token of a given type to the lexer list.*/
 
 void	add_new_token(t_lexer **lexer, t_shell *shell, t_token type)
 {	
@@ -43,6 +47,8 @@ void	add_new_token(t_lexer **lexer, t_shell *shell, t_token type)
 		new_token->next = NULL;
 	}
 }
+
+/*Allocate and append a new WORD token with a given value to the lexer list.*/
 
 void	add_new_word(t_lexer **lexer, t_shell *shell, char *value)
 {
