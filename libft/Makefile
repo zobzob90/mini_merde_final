@@ -9,6 +9,15 @@ NAME = libft.a
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
+define progress_bar
+	@echo -n "["
+	@for i in $$(seq 1 20); do \
+		sleep 0.003; \
+		printf "#"; \
+	done
+	@echo "] Done! 🚀"
+endef
+
 # Fichiers sources
 SRCS = ft_atoi.c ft_atol.c ft_free_tab.c ft_putchar_fd.c ft_putendl_fd.c \
        ft_putstr_fd.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c \
@@ -50,6 +59,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(AR) $(NAME) $(OBJS)
+	$(progress_bar)
 	@echo "✅ Compilation de $(NAME) terminée."
 
 # Compilation des fichiers objets
@@ -59,7 +69,7 @@ $(NAME): $(OBJS)
 # Nettoyage des fichiers objets
 clean:
 	@$(RM) $(OBJS)
-	@echo "🧹 Suppression des fichiers objets terminée."
+	@echo "🧹 Suppression des fichiers objets de la libft terminée."
 
 # Nettoyage complet (objets + bibliothèque)
 fclean: clean

@@ -35,10 +35,7 @@ static int	is_invalid_cmd(char *cmd)
 	if (!cmd || !*cmd)
 		return (1);
 	if (ft_strcmp(cmd, "-") == 0)
-	{
-		printf("[DEBUG IS_INVALID_CMD] cmd = %s\n", cmd);
 		return (1);
-	}
 	return (0);
 }
 
@@ -83,7 +80,6 @@ void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 	if (!cmd->cmds || !cmd->cmds[0])
 		(free(shell), exit(0));
 	handle_invalid_cmd(cmd->cmds[0], shell);
-	printf("[DEBUG EXEC_CHILD], je ne suis pas cense etre ici\n");
 	setup_pipes_and_redir(cmd, prev_fd, pipefd);
 	if (handle_redir_exec(cmd->redir))
 		(free(shell), exit(1));
