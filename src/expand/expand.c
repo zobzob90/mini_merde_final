@@ -38,6 +38,7 @@ static char	*expand_token(char *token, t_shell *shell)
 
 	len = ft_strlen(token);
 	res = ft_calloc(1, 1);
+	printf("coucou\n");
 	if (!res)
 		return (NULL);
 	i = 0;
