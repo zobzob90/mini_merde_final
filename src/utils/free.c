@@ -63,7 +63,6 @@ void	free_pars(t_cmd *cmd)
 {
 	t_cmd	*temp;
 
-	printf("[DEBUG FREE_PARS] coucou\n");
 	while (cmd)
 	{
 		temp = cmd;

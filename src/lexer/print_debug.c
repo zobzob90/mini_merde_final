@@ -18,7 +18,6 @@ void	free_lexer(t_lexer *lexer)
 {
 	t_lexer	*tmp;
 
-	printf("[DEBUG FREE_LEXER] coucou\n");
 	while (lexer)
 	{
 		tmp = lexer;

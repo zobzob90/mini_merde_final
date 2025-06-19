@@ -21,7 +21,6 @@ char	*join_literal(char *res, const char *token, int *i)
 
 	(*i)++;
 	start = *i;
-	printf("[DEBUG JOIN_LITERAL] token = %c\n", token[start]);
 	while (token[*i] && token[*i] != '\'')
 		(*i)++;
 	sub = ft_substr(token, start, *i - start);
@@ -31,9 +30,7 @@ char	*join_literal(char *res, const char *token, int *i)
 		free(sub);
 		return (NULL);
 	}
-	printf("[DEBUG JOIN_LITERAL] res = %s\n", res);
 	res = ft_strdup(sub);
-	printf("[DEBUG JOIN_LITERAL] res = %s\n", res);
 	if (!res)
 	{
 		free(sub);
@@ -49,24 +46,18 @@ char	*join_literal(char *res, const char *token, int *i)
 
 char	*join_char(char *res, char c)
 {
-	char	tmp[2];
-	char	*tmp_dup;
-	char	*joined;
+	char tmp[2];
+    char *joined;
 
-	tmp[0] = c;
-	tmp[1] = '\0';
-	tmp_dup = ft_strdup(tmp);
-	if (!tmp_dup)
-		return (NULL);
-	joined = ft_strjoin(res, tmp_dup);
-	free(tmp_dup);
-	if (!joined)
-	{
-		free(res);
-		return (NULL);
-	}
-	free(res);
-	return (joined);
+    tmp[0] = c;
+    tmp[1] = '\0';
+
+    if (!res)
+        return ft_strdup(tmp);
+
+    joined = ft_strjoin(res, tmp);
+    free(res);
+    return joined;
 }
 
 /*Append characters inside double quotes to res,
