@@ -18,6 +18,7 @@ char	*join_literal(char *res, const char *token, int *i)
 {
 	int		start;
 	char	*sub;
+	char	*joined;
 
 	(*i)++;
 	start = *i;
@@ -26,20 +27,11 @@ char	*join_literal(char *res, const char *token, int *i)
 	sub = ft_substr(token, start, *i - start);
 	printf("[DEBUG JOIN_LITERAL] sub = %s\n", sub);
 	if (!sub)
-	{
-		free(sub);
 		return (NULL);
-	}
-	res = ft_strdup(sub);
-	if (!res)
-	{
-		free(sub);
-		return (NULL);
-	}
+	joined = ft_strjoin_ctr_free(res, sub, 3);
 	if (token[*i])
 		(*i)++;
-	free(sub);
-	return (res);
+	return (joined);
 }
 
 /*Append a single character c to the res string.*/
