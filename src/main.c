@@ -6,31 +6,13 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 14:33:35 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:15:27 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_last_exit_code;
-
-/*Initializes the shell structure with default values
-and invalid pipe descriptors.*/
-
-void	init_shell(t_shell *shell)
-{
-	shell->env = NULL;
-	shell->lexer = NULL;
-	shell->cmd = NULL;
-	shell->input = NULL;
-	shell->exit_code = 0;
-	shell->tmp_exit_code = 0;
-	shell->drucker_mode = 0;
-	shell->pipe_fd[0] = -2;
-	shell->pipe_fd[1] = -2;
-	shell->fd_in = -1;
-	shell->fd_out = -1;
-}
 
 /*Sets or updates the shell input string,
 freeing the previous one if different.*/
@@ -51,7 +33,7 @@ void	init_shell_input(t_shell *shell, char *input)
 /*Cleans up the shell and exits the program, printing an optional message.*/
 void	exit_clean_shell(t_shell *shell, char *msg)
 {
-	int tmp;
+	int	tmp;
 
 	if (shell->exit_code != 0)
 		tmp = shell->exit_code;
@@ -88,7 +70,7 @@ static void	init_shell_loop(t_shell *shell)
 
 	while (1)
 	{
-		input = get_prompt(shell); // readline customisé
+		input = get_prompt(shell);
 		if (!input)
 			exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
 		add_history(input);
@@ -122,6 +104,6 @@ int	main(int ac, char **av, char **envp)
 	init_env(&shell, envp);
 	set_signal_handlers();
 	init_shell_loop(&shell);
-	exit_clean_shell(&shell, NULL); 
+	exit_clean_shell(&shell, NULL);
 	return (0);
 }

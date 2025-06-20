@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:23:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 15:52:48 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:10:06 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	parser(t_shell *shell)
 		return ;
 	}
 	if (!check_redir_syntax(shell, shell->lexer))
-		return;
+		return ;
 	shell->cmd = cmd;
 	expand_all_tokens(shell->lexer, shell);
 	parse_tokens(shell, shell->lexer, cmd);

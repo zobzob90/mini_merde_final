@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:47 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/20 11:17:41 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:09:38 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ static char	*expand_token(char *token, t_shell *shell)
 		else if (token[i] == '\"')
 			res = join_double_quote(res, token, &i, shell);
 		else if (token[i] == '$' && token[i + 1]
-			&& (ft_isalnum(token[i + 1]) || token[i + 1] == '?' || token[i + 1] == '_'))
+			&& (ft_isalnum(token[i + 1]) || token[i + 1] == '?'
+				|| token[i + 1] == '_'))
 			res = join_dollar(res, token, &i, shell);
 		else
 			res = join_char(res, token[i++]);
-
 		if (!res)
 			return (NULL);
 	}

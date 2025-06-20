@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:35 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 11:29:00 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:14:35 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,22 @@ int	print_cmd_not_found(t_shell *shell, char *cmd)
 		ft_printf("%s: command not found\n", cmd);
 	shell->exit_code = 127;
 	return (127);
+}
+
+/*Initializes the shell structure with default values
+and invalid pipe descriptors.*/
+
+void	init_shell(t_shell *shell)
+{
+	shell->env = NULL;
+	shell->lexer = NULL;
+	shell->cmd = NULL;
+	shell->input = NULL;
+	shell->exit_code = 0;
+	shell->tmp_exit_code = 0;
+	shell->drucker_mode = 0;
+	shell->pipe_fd[0] = -2;
+	shell->pipe_fd[1] = -2;
+	shell->fd_in = -1;
+	shell->fd_out = -1;
 }

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:20:41 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 17:01:22 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:10:31 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,6 @@ void	handle_redir(t_shell *shell, t_cmd *cmd, t_lexer *lex)
 	}
 	redir = redir_add_node(shell, type, lex->next->value);
 	append_redir(&cmd->redir, redir);
-	// if ((!cmd->cmds || !cmd->cmds[0]) && (type == REDIR_IN))
-    // {
-    //     ft_putstr_fd("Error: No command before redirection\n", 2);
-    //     shell->exit_code = 2;
-    // }
 }
 
 /*Append a new argument to the cmd->cmds array, reallocating as needed.*/

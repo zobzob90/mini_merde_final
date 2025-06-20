@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 17:15:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:06:59 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ int		is_directory(const char *path);
 /*EXEC_UTILS*/
 char	**env_list_to_array(t_env *env);
 int		exec_redir_only(t_cmd *cmd, t_shell *shell, int prev_fd);
-int		exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid);
+int		exec_external_cmd(t_cmd *cmd, t_shell *shell,
+			int *prev_fd, pid_t *last_pid);
 int		try_exec_builtin(t_cmd *cmd, t_shell *shell);
 int		handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd);
 int		skip_empty_node(t_cmd **cmd);

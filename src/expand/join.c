@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/20 11:16:43 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:09:10 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,16 @@ char	*join_literal(char *res, const char *token, int *i)
 
 char	*join_char(char *res, char c)
 {
-	char tmp[2];
-    char *joined;
+	char	tmp[2];
+	char	*joined;
 
-    tmp[0] = c;
-    tmp[1] = '\0';
-
-    if (!res)
-        return ft_strdup(tmp);
-
-    joined = ft_strjoin(res, tmp);
-    free(res);
-    return joined;
+	tmp[0] = c;
+	tmp[1] = '\0';
+	if (!res)
+		return (ft_strdup(tmp));
+	joined = ft_strjoin(res, tmp);
+	free(res);
+	return (joined);
 }
 
 /*Append characters inside double quotes to res,

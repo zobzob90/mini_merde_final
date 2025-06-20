@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:30:12 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/20 16:47:49 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:06:15 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 
 	if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
 	{
-    	handle_redir_exec(cmd->redir);
-    	free_shell(shell);
-    	exit(0);
+		handle_redir_exec(cmd->redir);
+		free_shell(shell);
+		exit(0);
 	}
 	handle_invalid_cmd(cmd->cmds[0], shell);
 	setup_pipes_and_redir(cmd, prev_fd, pipefd);
 	if (handle_redir_exec(cmd->redir))
-		(free(shell), exit(1));
+		(free_shell(shell), exit(1));
 	if (is_builtin(cmd->cmds[0]))
 	{
 		ret = launch_built(shell, cmd->cmds, cmd);
