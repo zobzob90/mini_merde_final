@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/20 15:49:43 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:42:51 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void	exec_external(t_cmd *cmd, t_shell *shell)
 	}
 	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
-		ft_printf("%s: Is a directory\n", path);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
 		(free(path), shell->exit_code = 126,
 			exit_clean_shell(shell, NULL), exit(126));
 	}

@@ -66,7 +66,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(INC) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
 	$(progress_bar)
 	@echo "✅ Compilation de $(NAME) terminée."
-	@echo -e "\033[32m" 
+	@echo "\033[32m" 
 	@echo "\033[5m"  # Active le clignotement
 	@figlet "MINISHELL"
 	@echo "\033[0m"  # Réinitialise les styles

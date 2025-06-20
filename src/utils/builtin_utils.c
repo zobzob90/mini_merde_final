@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:35 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 20:14:35 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:47:06 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,12 @@ int	is_valid_export_key(const char *key)
 int	print_cmd_not_found(t_shell *shell, char *cmd)
 {
 	if (!cmd || !*cmd)
-		ft_printf("Command not found and can't be installed\n");
+		ft_putstr_fd("Command not found and will not be installed\n", 2);
 	else
-		ft_printf("%s: command not found\n", cmd);
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
 	shell->exit_code = 127;
 	return (127);
 }
