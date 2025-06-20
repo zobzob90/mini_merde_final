@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/19 16:42:34 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:33:35 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	init_shell(t_shell *shell)
 	shell->drucker_mode = 0;
 	shell->pipe_fd[0] = -2;
 	shell->pipe_fd[1] = -2;
+	shell->fd_in = -1;
+	shell->fd_out = -1;
 }
 
 /*Sets or updates the shell input string,

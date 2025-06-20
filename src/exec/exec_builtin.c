@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:58 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/19 14:53:57 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:59:25 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ int	is_builtin(char *cmd)
 /*Restores standard input and output file descriptors from backups,
 closing backups afterwards.*/
 
-static void	reset_stdio(int stdin_backup, int stdout_backup)
+static void	reset_stdio(t_shell *shell)
 {
-	if (stdin_backup != -1)
+	if (shell->fd_in != -1)
 	{
-		dup2(stdin_backup, STDIN_FILENO);
-		close(stdin_backup);
+		dup2(shell->fd_in, STDIN_FILENO);
+		close(shell->fd_in);
 	}
-	if (stdout_backup != -1)
+	if (shell->fd_out != -1)
 	{
-		dup2(stdout_backup, STDOUT_FILENO);
-		close(stdout_backup);
+		dup2(shell->fd_out, STDOUT_FILENO);
+		close(shell->fd_out);
 	}
 }
 
@@ -55,27 +55,25 @@ with redirection handling and restores stdio.*/
 
 int	exec_builtin_parent(t_cmd *cmd, t_shell *shell)
 {
-	int	stdin_backup;
-	int	stdout_backup;
 	int	ret;
 
-	stdin_backup = dup(STDIN_FILENO);
-	if (stdin_backup == -1)
+	shell->fd_in = dup(STDIN_FILENO);
+	if (shell->fd_in == -1)
 		return (perror("dup stdin"), 1);
-	stdout_backup = dup(STDOUT_FILENO);
-	if (stdout_backup == -1)
+	shell->fd_out = dup(STDOUT_FILENO);
+	if (shell->fd_out == -1)
 	{
-		close (stdin_backup);
+		close (shell->fd_in);
 		return (perror("dup stdout"), 1);
 	}
 	if (handle_redir_exec(cmd->redir) != 0)
 	{
-		reset_stdio(stdin_backup, stdout_backup);
+		reset_stdio(shell);
 		shell->exit_code = 1;
 		return (1);
 	}
 	ret = launch_built(shell, cmd->cmds, cmd);
-	reset_stdio(stdin_backup, stdout_backup);
+	reset_stdio(shell);
 	shell->exit_code = ret;
 	return (ret);
 }

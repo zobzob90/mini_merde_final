@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:57:11 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 11:53:58 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:39:43 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	get_exit(char **av, t_shell *shell)
 		}
 		status = ft_atoi(av[1]);
 	}
+	close(shell->fd_in);
+	close(shell->fd_out);
 	free_shell(shell);
 	return (status % 256);
 }

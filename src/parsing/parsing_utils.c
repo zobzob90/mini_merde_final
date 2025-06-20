@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:20:41 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/19 14:59:45 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:54:17 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ void	handle_redir(t_shell *shell, t_cmd *cmd, t_lexer *lex)
 	t_redir	*redir;
 
 	type = lex->type;
-	if (!cmd->cmds || !cmd->cmds[0])
-	{
-		ft_putstr_fd("Error: No command before redirection\n", 2);
-		shell->exit_code = 2;
-		return ;
-	}
+	// if (!cmd->cmds || !cmd->cmds[0])
+	// {
+	// 	ft_putstr_fd("Error: No command before redirection\n", 2);
+	// 	shell->exit_code = 2;
+	// 	return ;
+	// }
 	if (!lex || !lex->next || lex->next->type != WORD)
 	{
 		ft_putstr_fd("Error: Missing file after redirection\n", 2);

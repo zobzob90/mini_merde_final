@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/19 16:01:30 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:06:06 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ typedef struct s_shell
 	t_lexer	*lexer;
 	t_cmd	*cmd;
 	int		pipe_fd[2];
+	int		fd_in;
+	int		fd_out;
 	int		exit_code;
 	int		tmp_exit_code;
 	int		drucker_mode;
@@ -151,6 +153,7 @@ int		env_list_size(t_env *env);
 char	*ft_strjoin_path(char *path, char *cmd);
 char	*resolve_cmd_path(char *cmd, t_env *env);
 int		is_directory(const char *path);
+int		has_outfile_redir(t_cmd *cmd);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list);
