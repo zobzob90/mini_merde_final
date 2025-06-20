@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:18 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/16 17:46:57 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:16:43 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*join_literal(char *res, const char *token, int *i)
 {
 	int		start;
 	char	*sub;
+	char	*joined;
 
 	(*i)++;
 	start = *i;
@@ -25,40 +26,29 @@ char	*join_literal(char *res, const char *token, int *i)
 		(*i)++;
 	sub = ft_substr(token, start, *i - start);
 	if (!sub)
-	{
-		free(res);
 		return (NULL);
-	}
-	res = ft_strjoin_free(res, sub);
-	if (!res)
-		return (NULL);
+	joined = ft_strjoin_ctr_free(res, sub, 3);
 	if (token[*i])
 		(*i)++;
-	return (res);
+	return (joined);
 }
 
 /*Append a single character c to the res string.*/
 
 char	*join_char(char *res, char c)
 {
-	char	tmp[2];
-	char	*tmp_dup;
-	char	*joined;
+	char tmp[2];
+    char *joined;
 
-	tmp[0] = c;
-	tmp[1] = '\0';
-	tmp_dup = ft_strdup(tmp);
-	if (!tmp_dup)
-		return (NULL);
-	joined = ft_strjoin(res, tmp_dup);
-	free(tmp_dup);
-	if (!joined)
-	{
-		free(res);
-		return (NULL);
-	}
-	free(res);
-	return (joined);
+    tmp[0] = c;
+    tmp[1] = '\0';
+
+    if (!res)
+        return ft_strdup(tmp);
+
+    joined = ft_strjoin(res, tmp);
+    free(res);
+    return joined;
 }
 
 /*Append characters inside double quotes to res,

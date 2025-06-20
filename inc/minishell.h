@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 16:49:46 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:01:30 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_shell
 	t_cmd	*cmd;
 	int		pipe_fd[2];
 	int		exit_code;
+	int		tmp_exit_code;
 	int		drucker_mode;
 	char	*input;
 }	t_shell;
@@ -106,7 +107,7 @@ int		is_quote(const char c);
 int		check_opened_quotes(char *str);
 int		check_closed_quotes(char *str);
 char	*remove_quotes_from_tok(char *str);
-int		check_redir_syntax(t_lexer *lexer);
+int		check_redir_syntax(t_shell *shell, t_lexer *lexer);
 void	print_lexer(t_lexer *lexer);
 void	free_lexer(t_lexer *lexer);
 void	lexer(t_shell *shell);
@@ -202,7 +203,7 @@ void	free_pars(t_cmd *cmd);
 void	free_env(t_env *env);
 
 /*UTILS*/
-int		print_cmd_not_found(char *cmd);
+int		print_cmd_not_found(t_shell *shell, char *cmd);
 void	ft_sort_str_array(t_env	**arr, int size);
 
 #endif 

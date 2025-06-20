@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 14:00:24 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/13 16:14:08 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:38:29 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ static char	*handle_invalid_dollar(char *res, const char *token, int *i)
 
 /*Append the last exit code value to the result string.*/
 
-static char	*handle_exit_code(char *res, int *i)
+static char	*handle_exit_code(char *res, int *i, t_shell *shell)
 {
 	char	*val;
 	char	*joined;
 
-	val = ft_itoa(g_last_exit_code);
+	val = ft_itoa(shell->tmp_exit_code);
 	if (!val)
 		return (NULL);
 	(*i)++;
@@ -78,7 +78,7 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell)
 
 	(*i)++;
 	if (token[*i] == '?')
-		return (handle_exit_code(res, i));
+		return (handle_exit_code(res, i, shell));
 	if (!ft_isalpha(token[*i]) && token[*i] != '_')
 		return (handle_invalid_dollar(res, token, i));
 	key = expand_env_key(token, i);

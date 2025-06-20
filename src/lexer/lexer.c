@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:19:53 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 11:23:20 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:12:33 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	lexer(t_shell *shell)
 	char	*input;
 
 	i = 0;
-	lexer = NULL;
+	lexer = shell->lexer;
 	input = shell->input;
 	if (!check_closed_quotes(input))
 		return ;
@@ -107,7 +107,7 @@ void	lexer(t_shell *shell)
 		else
 			i = handle_word(shell, &lexer, input, i);
 	}
-	if (!check_redir_syntax(lexer))
+	if (!check_redir_syntax(shell, lexer))
 	{
 		free_lexer(lexer);
 		shell->lexer = NULL;

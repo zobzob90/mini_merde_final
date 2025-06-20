@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:57:11 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 15:35:47 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:53:58 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,17 @@ int	get_exit(char **av, t_shell *shell)
 		if (!is_numeric_arg(av[1]))
 		{
 			ft_printf("exit: %s: numeric argument required\n", av[1]);
+			free_shell(shell);
 			exit(2);
 		}
 		if (av[2])
-			return (ft_printf("minishell : exit: too many arguments\n"), 1);
+		{
+			ft_printf("minishell : exit: too many arguments\n");\
+			free_shell(shell);
+			exit(2);
+		}
 		status = ft_atoi(av[1]);
 	}
-	exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
+	free_shell(shell);
 	return (status % 256);
 }

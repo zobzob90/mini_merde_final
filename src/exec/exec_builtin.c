@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:58 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/12 11:31:36 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:53:57 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ int	exec_builtin_parent(t_cmd *cmd, t_shell *shell)
 	if (handle_redir_exec(cmd->redir) != 0)
 	{
 		reset_stdio(stdin_backup, stdout_backup);
-		g_last_exit_code = 1;
+		shell->exit_code = 1;
 		return (1);
 	}
 	ret = launch_built(shell, cmd->cmds, cmd);
 	reset_stdio(stdin_backup, stdout_backup);
-	g_last_exit_code = ret;
+	shell->exit_code = ret;
 	return (ret);
 }

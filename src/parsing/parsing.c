@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:23:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 17:03:59 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:33:21 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	parser_syntax_error(t_shell *shell, const char *msg)
 	ft_putstr_fd((char *)msg, 2);
 	ft_putstr_fd("`\n", 2);
 	shell->exit_code = 2;
-	g_last_exit_code = 2;
 	return ;
 }
 
@@ -44,7 +43,7 @@ void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 			|| lexer->type == APPEND || lexer->type == HEREDOC)
 		{
 			handle_redir(shell, cmd, lexer);
-			if (g_last_exit_code == 2 || shell->exit_code == 2)
+			if (shell->exit_code == 2)
 				return ;
 			lexer = lexer->next;
 		}
@@ -79,6 +78,8 @@ void	parser(t_shell *shell)
 		g_last_exit_code = 1;
 		return ;
 	}
+	if (!check_redir_syntax(shell, shell->lexer))
+		return;
 	shell->cmd = cmd;
 	expand_all_tokens(shell->lexer, shell);
 	parse_tokens(shell, shell->lexer, cmd);

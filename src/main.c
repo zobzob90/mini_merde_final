@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 18:05:23 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:42:34 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_shell(t_shell *shell)
 	shell->cmd = NULL;
 	shell->input = NULL;
 	shell->exit_code = 0;
+	shell->tmp_exit_code = 0;
 	shell->drucker_mode = 0;
 	shell->pipe_fd[0] = -2;
 	shell->pipe_fd[1] = -2;
@@ -46,61 +47,79 @@ void	init_shell_input(t_shell *shell, char *input)
 }
 
 /*Cleans up the shell and exits the program, printing an optional message.*/
-
 void	exit_clean_shell(t_shell *shell, char *msg)
 {
-	int	tmp_exit_code;
+	int tmp;
 
-	tmp_exit_code = g_last_exit_code;
+	if (shell->exit_code != 0)
+		tmp = shell->exit_code;
+	else
+		tmp = shell->tmp_exit_code;
 	if (msg)
 		ft_putstr_fd(msg, 2);
 	if (shell)
 		free_shell(shell);
 	rl_clear_history();
-	exit(tmp_exit_code);
+	exit(tmp);
+}
+
+static void	reset_loop(t_shell *shell)
+{
+	if (shell->cmd)
+		free_pars(shell->cmd);
+	if (shell->lexer)
+		free_lexer(shell->lexer);
+	if (shell->input)
+		free(shell->input);
+	shell->cmd = NULL;
+	shell->lexer = NULL;
+	shell->input = NULL;
+	shell->tmp_exit_code = shell->exit_code;
+	shell->exit_code = 0;
 }
 
 /*Runs the main interactive shell loop handling input,
 parsing, execution, and cleanup.*/
-
 static void	init_shell_loop(t_shell *shell)
 {
 	char	*input;
 
 	while (1)
 	{
-		input = get_prompt(shell);
+		input = get_prompt(shell); // readline customisé
 		if (!input)
 			exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
-		else
-		{
-			(add_history(input), init_shell_input(shell, input), lexer(shell));
-			free(input);
-			if (shell->lexer)
-			{
-				parser(shell);
-				if (shell->exit_code != 258 && shell->exit_code != 2)
-					exec_cmds(shell, shell->cmd);
-				(free_pars(shell->cmd), shell->cmd = NULL);
-				(free_lexer(shell->lexer), shell->lexer = NULL);
-				shell->exit_code = 0;
-			}
-		}
+		add_history(input);
+		shell->input = ft_strdup(input);
+		free(input);
+		if (!shell->input)
+			exit_clean_shell(shell, "malloc error: input\n");
+		lexer(shell);
+		if (shell->lexer)
+			parser(shell);
+		if (shell->cmd)
+			exec_cmds(shell, shell->cmd);
+		shell->tmp_exit_code = shell->exit_code;
+		reset_loop(shell);
 	}
 }
 
 /*Entry point: initializes shell, environment, signals,
 and starts the shell loop.*/
-
-int	main(int ac, char *av[], char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
 
 	(void)av;
 	if (ac != 1)
+	{
 		printf("Error: Too many arguments\n");
-	(init_shell(&shell), init_env(&shell, envp),
-		set_signal_handlers(), init_shell_loop(&shell));
-	exit_clean_shell(&shell, NULL);
+		return (1);
+	}
+	init_shell(&shell);
+	init_env(&shell, envp);
+	set_signal_handlers();
+	init_shell_loop(&shell);
+	exit_clean_shell(&shell, NULL); 
 	return (0);
 }

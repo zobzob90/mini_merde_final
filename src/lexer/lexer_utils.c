@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:24:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 11:28:44 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:12:06 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	is_redir(const char *c, int i)
 /*Validate redirection syntax by ensuring each redirection
 is followed by a WORD.*/
 
-int	check_redir_syntax(t_lexer *lexer)
+int	check_redir_syntax(t_shell *shell, t_lexer *lexer)
 {
 	while (lexer)
 	{
@@ -65,7 +65,7 @@ int	check_redir_syntax(t_lexer *lexer)
 			if (!lexer->next || lexer->next->type != WORD)
 			{
 				ft_putstr_fd("Error: Syntax error near unexpected token\n", 2);
-				g_last_exit_code = 2;
+				shell->exit_code = 2;
 				return (0);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:44:28 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/09 13:35:44 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:18:18 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,5 @@ int	get_export(t_shell *shell, char **argv)
 			i++;
 		i++;
 	}
-	return (0);
+	return (shell->exit_code);
 }

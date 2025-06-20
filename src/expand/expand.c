@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:47 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/13 14:21:52 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:17:41 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,56 +33,28 @@ static int	contains_expand_chars(const char *str)
 static char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
-	char	*tmp;
 	int		i;
 	int		len;
 
 	len = ft_strlen(token);
 	res = ft_calloc(1, 1);
-	tmp = NULL;
 	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < len)
 	{
 		if (token[i] == '\'')
-		{
-			tmp = join_literal(tmp, token, &i);
-			if (!tmp)
-			{
-				free(res);
-				return (NULL);
-			}
-		}
+			res = join_literal(res, token, &i);
 		else if (token[i] == '\"')
-		{
-			tmp = join_double_quote(tmp, token, &i, shell);
-			if (!tmp)
-			{
-				free(res);
-				return (NULL);
-			}
-		}
+			res = join_double_quote(res, token, &i, shell);
 		else if (token[i] == '$' && token[i + 1]
-			&& (ft_isalnum(token[i + 1]) || token[i + 1] == '?'))
-		{
-			tmp = join_dollar(tmp, token, &i, shell);
-			if (!tmp)
-			{
-				free(res);
-				return (NULL);
-			}
-		}
+			&& (ft_isalnum(token[i + 1]) || token[i + 1] == '?' || token[i + 1] == '_'))
+			res = join_dollar(res, token, &i, shell);
 		else
-		{
-			tmp = join_char(tmp, token[i++]);
-			if (!tmp)
-			{
-				free(res);
-				return (NULL);
-			}
-		}
-		res = tmp;
+			res = join_char(res, token[i++]);
+
+		if (!res)
+			return (NULL);
 	}
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:30:12 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/16 17:55:41 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:26:15 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,20 @@ static int	is_invalid_cmd(char *cmd)
 {
 	if (!cmd || !*cmd)
 		return (1);
-	if (ft_strcmp(cmd, "-") == 0)
+	if (ft_strcmp(cmd, "-") == 0 || ft_strcmp(cmd, "") == 0)
 		return (1);
 	return (0);
 }
 
 /*Exits the process printing an error if the command is invalid.*/
 
-static void	handle_invalid_cmd(char *cmd)
+static void	handle_invalid_cmd(char *cmd, t_shell *shell)
 {
 	if (is_invalid_cmd(cmd))
-		exit (print_cmd_not_found(cmd));
+	{
+		print_cmd_not_found(shell, cmd);
+		exit_clean_shell(shell, NULL);
+	}
 }
 
 /*Sets up input/output file descriptors for pipes
@@ -76,7 +79,7 @@ void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2])
 
 	if (!cmd->cmds || !cmd->cmds[0])
 		(free(shell), exit(0));
-	handle_invalid_cmd(cmd->cmds[0]);
+	handle_invalid_cmd(cmd->cmds[0], shell);
 	setup_pipes_and_redir(cmd, prev_fd, pipefd);
 	if (handle_redir_exec(cmd->redir))
 		(free(shell), exit(1));

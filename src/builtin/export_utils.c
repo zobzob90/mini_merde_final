@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/11 11:05:48 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:02:57 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	handle_key(t_env **env, char *arg, t_shell *shell)
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
+		shell->exit_code = 1;
 	}
 	free(key);
 }
@@ -99,6 +100,7 @@ void	handle_key_value(t_env **env, char *arg, char *equal, t_shell *shell)
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
+		shell->exit_code = 1;
 	}
 	free(key);
 	free(value);
