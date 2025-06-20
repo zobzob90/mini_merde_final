@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 15:06:06 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:15:05 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,18 @@ void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int		update_exit_code(t_shell *shell, int status);
 int		is_builtin(char *cmd);
 int		exec_builtin_parent(t_cmd *cmd, t_shell *shell);
-char	**env_list_to_array(t_env *env);
 int		env_list_size(t_env *env);
 char	*ft_strjoin_path(char *path, char *cmd);
 char	*resolve_cmd_path(char *cmd, t_env *env);
 int		is_directory(const char *path);
-int		has_outfile_redir(t_cmd *cmd);
+
+/*EXEC_UTILS*/
+char	**env_list_to_array(t_env *env);
+int		exec_redir_only(t_cmd *cmd, t_shell *shell, int prev_fd);
+int		exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid);
+int		try_exec_builtin(t_cmd *cmd, t_shell *shell);
+int		handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd);
+int		skip_empty_node(t_cmd **cmd);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list);

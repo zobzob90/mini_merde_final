@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/20 15:50:11 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:14:47 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*Manage parent process file descriptors after forking a child.*/
 
-static int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
+int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
@@ -68,27 +68,27 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 int	exec_cmds(t_shell *shell, t_cmd *cmd)
 {
 	int		prev_fd;
-	pid_t	pid;
 	pid_t	last_pid;
+	int		ret;
 
-	if (setup_heredocs(cmd) != 0)
-		return (heredoc_fail(shell));
 	prev_fd = -1;
 	last_pid = 0;
+	if (setup_heredocs(cmd) != 0)
+		return (heredoc_fail(shell));
 	while (cmd)
 	{
-		if (cmd->cmds == NULL || cmd->cmds[0] == NULL)
-			return (2);
-		if (is_builtin(cmd->cmds[0]) && !cmd->next && !cmd->prev)
-			return (exec_builtin_parent(cmd, shell));
-		if (cmd->next && pipe(shell->pipe_fd) == -1)
-			return (perror("pipe"), -1);
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork"), 1);
-		if (pid == 0)
-			exec_child(cmd, shell, prev_fd, shell->pipe_fd);
-		last_pid = handle_parent(pid, cmd, shell->pipe_fd, &prev_fd);
+		if (skip_empty_node(&cmd))
+			continue ;
+		if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
+		{
+			(exec_redir_only(cmd, shell, prev_fd), cmd = cmd->next);
+			continue ;
+		}
+		ret = try_exec_builtin(cmd, shell);
+		if (ret != -1)
+			return (ret);
+		if (exec_external_cmd(cmd, shell, &prev_fd, &last_pid) != 0)
+			return (-1);
 		cmd = cmd->next;
 	}
 	return (finalize_execution(shell, last_pid));

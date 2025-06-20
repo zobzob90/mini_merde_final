@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:51:41 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/13 16:01:55 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:34:51 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	signal_handler(int signal)
 		write (1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		rl_redisplay();
 		g_last_exit_code = 130;
 	}
 	else if (signal == SIGQUIT)
