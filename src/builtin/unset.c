@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:55:54 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/05/26 11:25:56 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:02:55 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,10 @@ int	get_unset(t_shell *shell, char **argv)
 	i = 1;
 	while (argv[i])
 	{
-		if (!is_valid_key(argv[i]))
-		{
-			ft_putstr_fd("minishell: unset: `", 2);
-			ft_putstr_fd(argv[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-		}
-		else
+		if (is_valid_key(argv[i]))
 			unset_env_var(shell, argv[i]);
 		i++;
 	}
-	return (0);
+	shell->exit_code = 0;
+	return (shell->exit_code);
 }
