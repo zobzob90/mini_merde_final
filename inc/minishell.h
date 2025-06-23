@@ -206,6 +206,7 @@ int		get_reset(t_shell *shell);
 void	signal_handler(int signal);
 void	set_signal_handlers(void);
 void	exit_sigint(t_shell *shell);
+void	heredoc_sigint(int sig);
 
 /*FREE*/
 void	free_shell(t_shell *shell);

@@ -48,12 +48,21 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 	int		fd;
 	char	*line;
 
+	signal(SIGINT, heredoc_sigint);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return (perror("heredoc open"), 1);
+	g_signal = 0;
 	while (1)
 	{
 		line = readline("> ");
+		if (g_signal == SIGINT)
+		{
+        	free(line);
+        	close(fd);
+			unlink(filename);
+        	break;
+    	}
 		if (!line)
 			break ;
 		if (ft_strcmp(line, limiter) == 0)
@@ -65,6 +74,7 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	signal(SIGINT, SIG_DFL);
 	close(fd);
 	return (0);
 }

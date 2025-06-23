@@ -50,3 +50,13 @@ void	exit_sigint(t_shell *shell)
 	g_signal = 0;
 		return ;
 }
+
+void	heredoc_sigint(int sig)
+{
+	(void)sig;
+
+	g_signal = SIGINT;
+	rl_replace_line("", 0);
+	rl_done = 1;
+	write(1, "\n", 1);
+}
