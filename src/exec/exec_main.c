@@ -32,15 +32,12 @@ int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 
 int	update_exit_code(t_shell *shell, int status)
 {
-	printf("WIFEXITED=%d, WIFSIGNALED=%d, WTERMSIG=%d\n",
-        WIFEXITED(status), WIFSIGNALED(status), WTERMSIG(status));
 	if (WIFEXITED(status))
 		shell->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		shell->exit_code = 128 + WTERMSIG(status);
 	else
 		shell->exit_code = 1;
-	printf("[UPDATE_EXIT_CODE] shell->exit_code = %d\n",shell->exit_code);
 	return (shell->exit_code);
 }
 

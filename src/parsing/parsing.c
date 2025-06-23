@@ -75,7 +75,7 @@ void	parser(t_shell *shell)
 	if (!cmd)
 	{
 		ft_putstr_fd("Error: Malloc failed in parser\n", 2);
-		g_last_exit_code = 1;
+		g_signal = 1;
 		return ;
 	}
 	if (!check_redir_syntax(shell, shell->lexer))

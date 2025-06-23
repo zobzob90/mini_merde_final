@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_last_exit_code;
+int	g_signal;
 
 /*Sets or updates the shell input string,
 freeing the previous one if different.*/
@@ -73,6 +73,7 @@ static void	init_shell_loop(t_shell *shell)
 		input = get_prompt(shell);
 		if (!input)
 			exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
+		exit_sigint(shell);
 		add_history(input);
 		shell->input = ft_strdup(input);
 		free(input);
@@ -84,6 +85,7 @@ static void	init_shell_loop(t_shell *shell)
 		if (shell->cmd)
 			exec_cmds(shell, shell->cmd);
 		shell->tmp_exit_code = shell->exit_code;
+		exit_sigint(shell);
 		reset_loop(shell);
 	}
 }

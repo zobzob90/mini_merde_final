@@ -34,7 +34,7 @@
 # define TRUE 1
 # define FALSE 0
 
-extern int	g_last_exit_code;
+extern int	g_signal;
 
 typedef enum e_token
 {
@@ -205,6 +205,7 @@ int		get_reset(t_shell *shell);
 /*SIGNAL*/
 void	signal_handler(int signal);
 void	set_signal_handlers(void);
+void	exit_sigint(t_shell *shell);
 
 /*FREE*/
 void	free_shell(t_shell *shell);
