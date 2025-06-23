@@ -23,6 +23,8 @@ int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
+	waitpid(pid, NULL, 0);
+	set_signal_handlers();
 	return (pid);
 }
 
@@ -30,12 +32,15 @@ int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 
 int	update_exit_code(t_shell *shell, int status)
 {
+	printf("WIFEXITED=%d, WIFSIGNALED=%d, WTERMSIG=%d\n",
+        WIFEXITED(status), WIFSIGNALED(status), WTERMSIG(status));
 	if (WIFEXITED(status))
 		shell->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		shell->exit_code = 128 + WTERMSIG(status);
 	else
 		shell->exit_code = 1;
+	printf("[UPDATE_EXIT_CODE] shell->exit_code = %d\n",shell->exit_code);
 	return (shell->exit_code);
 }
 
@@ -54,9 +59,11 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 {
 	int	status;
 
+	status = 0;
 	if (last_pid)
 	{
-		wait_all_children(last_pid, &status);
+		waitpid(last_pid, &status, 0);
+		printf("Raw status from waitpid: %d\n", status);
 		update_exit_code(shell, status);
 	}
 	cleanup_heredocs(shell->cmd);

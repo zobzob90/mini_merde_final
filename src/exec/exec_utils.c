@@ -60,15 +60,34 @@ int	exec_redir_only(t_cmd *cmd, t_shell *shell, int prev_fd)
 int	exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid)
 {
 	pid_t	pid;
+	int		status;
 
+	status = 0;
 	if (cmd->next && pipe(shell->pipe_fd) == -1)
 		return (perror("pipe"), -1);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		exec_child(cmd, shell, *prev_fd, shell->pipe_fd);
-	*last_pid = handle_parent(pid, cmd, shell->pipe_fd, prev_fd);
+		exit(EXIT_FAILURE);
+	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+
+	*last_pid = pid;
+	if (!cmd->next)
+	{
+		waitpid(pid, &status, 0);
+		update_exit_code(shell, status);
+		*last_pid = 0;
+		set_signal_handlers();
+	}
+	else
+		*last_pid = handle_parent(pid, cmd, shell->pipe_fd, prev_fd);
 	return (0);
 }
 

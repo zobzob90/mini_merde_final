@@ -19,9 +19,10 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		write (1, "\n", 1);
+		(void)signal;
 		rl_replace_line("", 0);
 		rl_on_new_line();
+		write(1, "\n", 1);
 		rl_redisplay();
 		g_last_exit_code = 130;
 	}
