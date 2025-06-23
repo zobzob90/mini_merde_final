@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:51:22 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/20 15:50:37 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:54:24 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,13 @@ int	handle_redir_exec(t_redir *redir)
 		if (!redir->file)
 			return (write(2, "Invalid redirection file\n", 25), 1);
 		if (handle_redir_fd(redir, &fd_in, &fd_out))
+		{
+			if (fd_in != -1)
+				close(fd_in);
+			if (fd_out != -1)
+				close(fd_out);
 			return (1);
+		}
 		redir = redir->next;
 	}
 	if (fd_in != -1 && dup_fd(fd_in, STDIN_FILENO))

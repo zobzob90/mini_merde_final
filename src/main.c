@@ -6,14 +6,13 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:20 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 20:15:27 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:28:55 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_last_exit_code;
-
+int	g_signal;
 /*Sets or updates the shell input string,
 freeing the previous one if different.*/
 
@@ -73,6 +72,7 @@ static void	init_shell_loop(t_shell *shell)
 		input = get_prompt(shell);
 		if (!input)
 			exit_clean_shell(shell, "Allez, salut mon pote !👋\n");
+		exit_sigint(shell);
 		add_history(input);
 		shell->input = ft_strdup(input);
 		free(input);
@@ -84,6 +84,7 @@ static void	init_shell_loop(t_shell *shell)
 		if (shell->cmd)
 			exec_cmds(shell, shell->cmd);
 		shell->tmp_exit_code = shell->exit_code;
+		exit_sigint(shell);
 		reset_loop(shell);
 	}
 }

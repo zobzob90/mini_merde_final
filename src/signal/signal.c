@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:51:41 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 17:34:18 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:28:24 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		write (1, "\n", 1);
+		g_signal = SIGINT;
+		(void)signal;
 		rl_replace_line("", 0);
 		rl_on_new_line();
+		write(1, "\n", 1);
 		rl_redisplay();
-		g_last_exit_code = 130;
 	}
 	else if (signal == SIGQUIT)
 	{
+		g_signal = SIGQUIT;
 		return ;
 	}
 }
@@ -37,4 +39,14 @@ void	set_signal_handlers(void)
 {
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	exit_sigint(t_shell *shell)
+{
+	if (g_signal == SIGINT)
+		shell->tmp_exit_code = 130;
+	if (g_signal == SIGQUIT)
+		shell->tmp_exit_code = 131;
+	g_signal = 0;
+	return ;
 }

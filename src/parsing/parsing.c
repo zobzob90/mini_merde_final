@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:23:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 20:10:06 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:57:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	parser(t_shell *shell)
 	if (!cmd)
 	{
 		ft_putstr_fd("Error: Malloc failed in parser\n", 2);
-		g_last_exit_code = 1;
+		g_signal = 1;
 		return ;
 	}
 	if (!check_redir_syntax(shell, shell->lexer))

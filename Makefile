@@ -40,6 +40,7 @@ SRCS = src/main.c \
 		src/exec/exec_path.c \
 		src/exec/exec_redir.c \
 		src/exec/exec_utils.c \
+		src/exec/exec_utils_2.c \
 		src/exec/exec_wait.c \
 		src/builtin/cd.c \
 		src/builtin/echo.c \

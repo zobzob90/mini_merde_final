@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 20:06:59 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:58:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define TRUE 1
 # define FALSE 0
 
-extern int	g_last_exit_code;
+extern int	g_signal;
 
 typedef enum e_token
 {
@@ -205,6 +205,7 @@ int		get_reset(t_shell *shell);
 /*SIGNAL*/
 void	signal_handler(int signal);
 void	set_signal_handlers(void);
+void	exit_sigint(t_shell *shell);
 
 /*FREE*/
 void	free_shell(t_shell *shell);

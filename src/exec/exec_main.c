@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/20 17:14:47 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:09:21 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
+	waitpid(pid, NULL, 0);
+	set_signal_handlers();
 	return (pid);
 }
 
@@ -54,9 +56,10 @@ static int	finalize_execution(t_shell *shell, pid_t last_pid)
 {
 	int	status;
 
+	status = 0;
 	if (last_pid)
 	{
-		wait_all_children(last_pid, &status);
+		waitpid(last_pid, &status, 0);
 		update_exit_code(shell, status);
 	}
 	cleanup_heredocs(shell->cmd);
