@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/23 17:58:22 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:47:25 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include "../libft/libft.h"
 
 # define PATH_MAX 4096
+# define MAX_PIPE 256
 # define TRUE 1
 # define FALSE 0
 
@@ -135,7 +136,7 @@ char	*join_dollar(char *res, const char *token, int *i, t_shell *shell);
 char	*join_char(char *res, char c);
 char	*join_double_quote(char *res, const char *token,
 			int *i, t_shell *shell);
-//char	*get_env_value(const char *name);
+char	*expand_token(char *token, t_shell *shell);
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
 
 /*EXEC*/
@@ -143,6 +144,7 @@ int		exec_cmds(t_shell *shell, t_cmd *cmd);
 int		handle_redir_exec(t_redir *redir);
 void	wait_all_children(pid_t last_pid, int *status);
 int		wait_and_return_status(pid_t pid);
+int		check_exec_errors(char *path, t_cmd *cmd, t_shell *shell);
 void	exec_external(t_cmd *cmd, t_shell *shell);
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int		update_exit_code(t_shell *shell, int status);
@@ -163,7 +165,7 @@ int		handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd);
 int		skip_empty_node(t_cmd **cmd);
 
 /*HEREDOC*/
-int		setup_heredocs(t_cmd *cmd_list);
+int		setup_heredocs(t_cmd *cmd_list, t_shell *shell);
 void	cleanup_heredocs(t_cmd *cmd_list);
 
 /*REDIR*/
@@ -177,7 +179,7 @@ void	exit_clean_shell(t_shell *shell, char *msg);
 /*BUILTIN*/
 int		get_echo(char **av);
 int		get_exit(char **av, t_shell *shell);
-int		get_cd(char **av);
+int		get_cd(t_shell *shell, char **av);
 int		get_pwd(char **av);
 int		get_export(t_shell *shell, char **argv);
 int		launch_built(t_shell *shell, char **argv, t_cmd *cmd);

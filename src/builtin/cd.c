@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:57:05 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 19:21:32 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 12:38:21 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,42 @@ static int	print_error(char *msg)
 	return (1);
 }
 
+static void	update_env_var(t_env *env, const char *key, const char *value)
+{
+	t_env	*cur;
+
+	cur = env;
+	while (cur)
+	{
+		if (ft_strcmp(cur->key, key) == 0)
+		{
+			free(cur->value);
+			cur->value = ft_strdup(value);
+			return ;
+		}
+		cur = cur->next;
+	}
+}
+
 /*Updates the PWD and OLDPWD environment variables after
 changing the working directory.*/
 
-static void	update_pwd_env(const char *oldpwd)
+static void	update_pwd_env(t_shell *shell, const char *oldpwd)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		setenv("PWD", cwd, 1);
+		update_env_var(shell->env, "PWD", cwd);
 		if (oldpwd)
-			setenv("OLDPWD", oldpwd, 1);
+			update_env_var(shell->env, "OLDPWD", oldpwd);
 	}
 }
 
 /*Implements the built-in 'cd' command: changes the current
 directory and manages related environment variables.*/
 
-int	get_cd(char **av)
+int	get_cd(t_shell *shell, char **av)
 {
 	char	oldpwd[PATH_MAX];
 	char	cwd[PATH_MAX];
@@ -67,7 +84,7 @@ int	get_cd(char **av)
 	}
 	if (chdir(path) == -1)
 		return (perror("Minishell: cd"), 1);
-	update_pwd_env(oldpwd);
+	update_pwd_env(shell, oldpwd);
 	if (av[1] && ft_strcmp(av[1], "-") == 0)
 	{
 		if (getcwd(cwd, sizeof(cwd)))

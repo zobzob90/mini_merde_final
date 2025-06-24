@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:32:47 by valentin          #+#    #+#             */
-/*   Updated: 2025/06/20 20:09:38 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:47:08 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	contains_expand_chars(const char *str)
 
 /*Expand variables and quotes within a token according to shell rules.*/
 
-static char	*expand_token(char *token, t_shell *shell)
+char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/23 18:42:31 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:56:47 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,24 +76,11 @@ void	exec_external(t_cmd *cmd, t_shell *shell)
 {
 	char		*path;
 	char		**envp;
-	struct stat	sb;
 
 	if (!cmd || !cmd->cmds || !cmd->cmds[0])
 		exit (1);
 	path = get_executable_path(cmd, shell->env);
-	if (!path || *path == '\0')
-	{
-		print_cmd_not_found(shell, cmd->cmds[0]);
-		exit_clean_shell(shell, NULL);
-		exit (127);
-	}
-	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
-	{
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		(free(path), shell->exit_code = 126,
-			exit_clean_shell(shell, NULL), exit(126));
-	}
+	check_exec_errors(path, cmd, shell);
 	envp = prepare_envp(shell->env, path);
 	if (!envp)
 		(free(path), shell->exit_code = 1, exit(1));

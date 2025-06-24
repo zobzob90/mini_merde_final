@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 INC = -Iinc -Ilibft
 LIBFT_DIR = libft
@@ -34,6 +34,7 @@ SRCS = src/main.c \
 		src/parsing/parsing.c \
 		src/exec/exec_builtin.c \
 		src/exec/exec_external.c \
+		src/exec/exec_external_utils.c \
 		src/exec/exec_child.c \
 		src/exec/exec_heredoc.c \
 		src/exec/exec_main.c \

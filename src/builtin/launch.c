@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/16 17:47:32 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 12:37:09 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ or easter egg if matched.*/
 int	launch_built(t_shell *shell, char **argv, t_cmd *cmd)
 {
 	if (ft_strcmp(argv[0], "cd") == 0)
-		return (get_cd(argv));
+		return (get_cd(shell, argv));
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		return (get_pwd(argv));
 	else if (ft_strcmp(argv[0], "echo") == 0)
