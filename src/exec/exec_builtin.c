@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:58 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/20 15:59:25 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:53:55 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	is_builtin(char *cmd)
 		|| ft_strcmp(cmd, "merde") == 0 || ft_strcmp(cmd, "res") == 0
 		|| ft_strcmp(cmd, "sudo") == 0 || ft_strcmp(cmd, "moulinette") == 0
 		|| ft_strcmp(cmd, "miaou") == 0 || ft_strcmp(cmd, "Xavier") == 0
-		||ft_strcmp(cmd, ":") == 0 || ft_strcmp(cmd, "!") == 0)
+		||ft_strcmp(cmd, ":") == 0 || ft_strcmp(cmd, "!") == 0
+		||ft_strcmp(cmd, "kevin") == 0)
 		return (TRUE);
 	else
 		return (FALSE);

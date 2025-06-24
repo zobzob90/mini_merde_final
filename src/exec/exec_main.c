@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 17:04:23 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:41:00 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ static int	heredoc_fail(t_shell *shell)
 	return (1);
 }
 
+static int	handle_builtin_return(t_shell *shell, int ret)
+{
+    shell->exit_code = ret;
+    return (ret);
+}
+
 static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 {
 	int		prev_fd;
@@ -59,6 +65,7 @@ static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 	i = 0;
 	while (cmd)
 	{
+		pids[i] = 0;
 		if (skip_empty_node(&cmd))
 			continue ;
 		if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
@@ -68,7 +75,7 @@ static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 		}
 		ret = try_exec_builtin(cmd, shell);
 		if (ret != -1)
-			return (ret);
+			return (handle_builtin_return(shell, ret));
 		if (exec_external_cmd(cmd, shell, &prev_fd, &(pids[i])) != 0)
 			return (-1);
 		i++;
@@ -89,12 +96,12 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd)
 	i = 0;
 	status = 0;
 	if (setup_heredocs(cmd, shell) != 0)
-	{
 		return (heredoc_fail(shell));
-	}
 	i = launch_pipeline(shell, cmd, pids);
 	if (i < 0)
 		return (-1);
+	if (i == 0 || (i == 1 && pids[0] == 0))
+		return (shell->exit_code);
 	j = 0;
 	while (j < i)
 	{

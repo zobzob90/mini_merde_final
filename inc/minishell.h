@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/24 14:47:25 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:53:14 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	init_env(t_shell *shell, char **envp);
 void	print_env(t_env *env);
 void	free_env(t_env *env);
 char	*get_env_value(t_env *env, const char *key);
+int		get_env_built(t_shell *shell);
 
 /*LEXER*/
 void	init_lexer(t_lexer *lexer);

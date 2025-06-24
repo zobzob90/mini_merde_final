@@ -54,7 +54,8 @@ SRCS = src/main.c \
 		src/easter/michel.c \
 		src/easter/michel_prompt.c \
 		src/utils/free.c \
-		src/utils/builtin_utils.c
+		src/utils/builtin_utils.c \
+		src/utils/builtin_utils_2.c
 
 OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
 DEPS = $(OBJS:.o=.d)

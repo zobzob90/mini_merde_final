@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:42:48 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/23 17:30:49 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:52:03 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ char	*get_prompt(t_shell *shell)
 	else if (shell->drucker_mode == 5)
 		input = readline
 			("\001\033[1;32m\002mini_moulinette 🐱‍💻 ➤ \001\033[0m\002");
+	else if (shell->drucker_mode == 6)
+		input = readline
+			("\001\033[1;32m\002kevin_shell 🍆 ➤ \001\033[0m\002");
 	else
 		input = readline
 			("\001\033[1;32m\002minishell ➤ \001\033[0m\002");

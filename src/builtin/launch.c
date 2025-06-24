@@ -6,18 +6,19 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/24 12:37:09 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:51:06 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*Implements the built-in 'env' command by printing
-the current environment variables.*/
-
-int	get_env_built(t_shell *shell)
+static	int	sentiment_de_sau6(t_shell *shell)
 {
-	print_env(shell->env);
+	if (!shell->drucker_mode)
+	{
+		shell->drucker_mode = 6;
+		ft_putstr_fd("Kevin corrige le shell 🍆\n", 1);
+	}
 	return (0);
 }
 
@@ -58,6 +59,8 @@ static int	launch_easter(t_shell *shell, char **argv)
 		return (get_reset(shell));
 	else if (ft_strcmp(argv[0], "merde") == 0)
 		return (get_shit(shell));
+	else if (ft_strcmp(argv[0], "kevin") == 0)
+		return (sentiment_de_sau6(shell));
 	else if (ft_strncmp(argv[0], "sudo", 4) == 0)
 		ft_putstr_fd("Tu n'es pas le vrai bash, imposteur ! 🚨\n", 2);
 	else if (ft_strcmp(argv[0], "moulinette") == 0)
