@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 11:53:08 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/24 12:41:58 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:27:46 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	handle_not_a_directory(t_shell *shell, char *path)
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": Not a directory\n", 2);
 	shell->exit_code = 126;
+	free(path);
 	exit_clean_shell(shell, NULL);
 	exit(126);
 }
@@ -34,6 +35,7 @@ static void	handle_is_directory(t_shell *shell, char *path)
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": Is a directory\n", 2);
 	shell->exit_code = 126;
+	free(path);
 	exit_clean_shell(shell, NULL);
 	exit(126);
 }

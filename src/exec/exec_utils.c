@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:19 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 14:41:38 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:22:44 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	exec_redir_only(t_cmd *cmd, t_shell *shell, int prev_fd)
 
 static void	cleanup_pipe(t_shell *shell, pid_t pid, int *last_pid, int *status)
 {
-	waitpid(pid, status, 0);
+	(void)pid;
+	(void)last_pid;
 	update_exit_code(shell, *status);
-	*last_pid = 0;
 	set_signal_handlers();
 	if (shell->pipe_fd[0] >= 0)
 		close(shell->pipe_fd[0]);
@@ -90,6 +90,6 @@ int	exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid)
 	if (!cmd->next)
 		cleanup_pipe(shell, pid, last_pid, &status);
 	else
-		*last_pid = handle_parent(pid, cmd, shell->pipe_fd, prev_fd);
+		handle_parent(pid, cmd, shell->pipe_fd, prev_fd);
 	return (0);
 }

@@ -6,10 +6,9 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 14:45:25 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:04:23 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -24,7 +23,6 @@ int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
-	waitpid(pid, NULL, 0);
 	set_signal_handlers();
 	return (pid);
 }
@@ -51,34 +49,14 @@ static int	heredoc_fail(t_shell *shell)
 	return (1);
 }
 
-/*Wait the children and clean the heredocs.*/
-
-static int	finalize_execution(t_shell *shell, pid_t last_pid)
-{
-	int	status;
-
-	status = 0;
-	if (last_pid)
-	{
-		waitpid(last_pid, &status, 0);
-		update_exit_code(shell, status);
-	}
-	cleanup_heredocs(shell->cmd);
-	return (shell->exit_code);
-}
-
-/*Main fonction of the exec.*/
-
-int	exec_cmds(t_shell *shell, t_cmd *cmd)
+static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 {
 	int		prev_fd;
-	pid_t	last_pid;
+	int		i;
 	int		ret;
 
 	prev_fd = -1;
-	last_pid = 0;
-	if (setup_heredocs(cmd, shell) != 0)
-		return (heredoc_fail(shell));
+	i = 0;
 	while (cmd)
 	{
 		if (skip_empty_node(&cmd))
@@ -91,9 +69,39 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd)
 		ret = try_exec_builtin(cmd, shell);
 		if (ret != -1)
 			return (ret);
-		if (exec_external_cmd(cmd, shell, &prev_fd, &last_pid) != 0)
+		if (exec_external_cmd(cmd, shell, &prev_fd, &(pids[i])) != 0)
 			return (-1);
+		i++;
 		cmd = cmd->next;
 	}
-	return (finalize_execution(shell, last_pid));
+	return (i);
+}
+
+/*Main fonction of the exec.*/
+
+int	exec_cmds(t_shell *shell, t_cmd *cmd)
+{
+	pid_t	pids[MAX_PIPE];
+	int		j;
+	int		i;
+	int		status;
+
+	i = 0;
+	status = 0;
+	if (setup_heredocs(cmd, shell) != 0)
+	{
+		return (heredoc_fail(shell));
+	}
+	i = launch_pipeline(shell, cmd, pids);
+	if (i < 0)
+		return (-1);
+	j = 0;
+	while (j < i)
+	{
+		waitpid(pids[j], &status, 0);
+		j++;
+	}
+	update_exit_code(shell, status);
+	cleanup_heredocs(shell->cmd);
+	return (shell->exit_code);
 }

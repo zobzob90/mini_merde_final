@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:26:33 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/12 14:28:33 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:01:24 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ char	*ft_strjoin_path(char *path, char *cmd)
 
 char	*resolve_cmd_path(char *cmd, t_env *env)
 {
-	char	**paths;
-	char	*full;
-	char	*path_var;
-	int		i;
+	struct stat	sb;
+	char		**paths;
+	char		*full;
+	char		*path_var;
+	int			i;
 
 	path_var = get_env_value(env, "PATH");
 	if (!path_var)
@@ -77,10 +78,10 @@ char	*resolve_cmd_path(char *cmd, t_env *env)
 		full = ft_strjoin_path(paths[i], cmd);
 		if (!full)
 			return (ft_free_tab(paths), NULL);
-		if (access(full, X_OK) == 0)
+		if (access(full, X_OK) == 0 && stat(full, &sb) == 0
+			&&S_ISREG(sb.st_mode))
 			return (ft_free_tab(paths), full);
-		free(full);
-		i++;
+		(free(full), i++);
 	}
 	ft_free_tab(paths);
 	return (NULL);

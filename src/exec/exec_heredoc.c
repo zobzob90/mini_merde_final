@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:32 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 14:44:55 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:57:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char	*generate_tmp_filename(void)
 
 /*Copy the heredoc content in a temporary file.*/
 
-static int	write_heredoc_file(const char *filename, const char *limiter, t_shell *shell)
+static int	write_heredoc_file(const char *filename,
+		const char *limiter, t_shell *shell)
 {
 	int		fd;
 	char	*line;
@@ -87,7 +88,8 @@ int	setup_heredocs(t_cmd *cmd_list, t_shell *shell)
 			if (redir->type == HEREDOC)
 			{
 				filename = generate_tmp_filename();
-				if (!filename || write_heredoc_file(filename, redir->file, shell))
+				if (!filename || write_heredoc_file(filename,
+						redir->file, shell))
 					return (1);
 				free(redir->file);
 				redir->file = filename;
