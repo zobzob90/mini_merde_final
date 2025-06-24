@@ -137,6 +137,7 @@ char	*join_double_quote(char *res, const char *token,
 			int *i, t_shell *shell);
 //char	*get_env_value(const char *name);
 void	expand_all_tokens(t_lexer *lexer, t_shell *shell);
+char	*expand_token(char *token, t_shell *shell);
 
 /*EXEC*/
 int		exec_cmds(t_shell *shell, t_cmd *cmd);
@@ -163,7 +164,7 @@ int		handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd);
 int		skip_empty_node(t_cmd **cmd);
 
 /*HEREDOC*/
-int		setup_heredocs(t_cmd *cmd_list);
+int		setup_heredocs(t_cmd *cmd_list, t_shell *shell);
 void	cleanup_heredocs(t_cmd *cmd_list);
 
 /*REDIR*/

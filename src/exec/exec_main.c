@@ -76,7 +76,7 @@ int	exec_cmds(t_shell *shell, t_cmd *cmd)
 
 	prev_fd = -1;
 	last_pid = 0;
-	if (setup_heredocs(cmd) != 0)
+	if (setup_heredocs(cmd, shell) != 0)
 		return (heredoc_fail(shell));
 	while (cmd)
 	{

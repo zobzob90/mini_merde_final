@@ -30,7 +30,7 @@ static int	contains_expand_chars(const char *str)
 
 /*Expand variables and quotes within a token according to shell rules.*/
 
-static char	*expand_token(char *token, t_shell *shell)
+char	*expand_token(char *token, t_shell *shell)
 {
 	char	*res;
 	int		i;

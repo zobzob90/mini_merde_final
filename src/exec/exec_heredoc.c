@@ -43,7 +43,7 @@ char	*generate_tmp_filename(void)
 
 /*Copy the heredoc content in a temporary file.*/
 
-static int	write_heredoc_file(const char *filename, const char *limiter)
+static int	write_heredoc_file(const char *filename, const char *limiter, t_shell *shell)
 {
 	int		fd;
 	char	*line;
@@ -61,6 +61,7 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 			free(line);
 			break ;
 		}
+		line = expand_token(line, shell);
 		write(fd, line, strlen(line));
 		write(fd, "\n", 1);
 		free(line);
@@ -71,7 +72,7 @@ static int	write_heredoc_file(const char *filename, const char *limiter)
 
 /*Return 1 when the heredoc creation fails and 0 when it's OK.*/
 
-int	setup_heredocs(t_cmd *cmd_list)
+int	setup_heredocs(t_cmd *cmd_list, t_shell *shell)
 {
 	t_cmd	*cmd;
 	t_redir	*redir;
@@ -86,7 +87,7 @@ int	setup_heredocs(t_cmd *cmd_list)
 			if (redir->type == HEREDOC)
 			{
 				filename = generate_tmp_filename();
-				if (!filename || write_heredoc_file(filename, redir->file))
+				if (!filename || write_heredoc_file(filename, redir->file, shell))
 					return (1);
 				free(redir->file);
 				redir->file = filename;
