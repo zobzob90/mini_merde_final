@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/24 17:53:14 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,8 @@ int		exec_external_cmd(t_cmd *cmd, t_shell *shell,
 int		try_exec_builtin(t_cmd *cmd, t_shell *shell);
 int		handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd);
 int		skip_empty_node(t_cmd **cmd);
+int		is_empty_node(t_cmd *cmd);
+int		has_next_non_empty_cmd(t_cmd *cmd);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list, t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:19 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 16:22:44 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid)
 	int		status;
 
 	status = 0;
-	if (cmd->next && pipe(shell->pipe_fd) == -1)
+	if (has_next_non_empty_cmd(cmd) && pipe(shell->pipe_fd) == -1)
 		return (perror("pipe"), -1);
 	pid = fork();
 	if (pid == -1)
@@ -87,7 +87,7 @@ int	exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid)
 	}
 	(signal(SIGINT, SIG_IGN), signal(SIGQUIT, SIG_IGN));
 	*last_pid = pid;
-	if (!cmd->next)
+	if (!has_next_non_empty_cmd(cmd))
 		cleanup_pipe(shell, pid, last_pid, &status);
 	else
 		handle_parent(pid, cmd, shell->pipe_fd, prev_fd);

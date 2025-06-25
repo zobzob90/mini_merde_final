@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 17:41:00 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:26:44 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
-	if (cmd->next)
+	if (has_next_non_empty_cmd(cmd))
 	{
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
@@ -60,26 +60,58 @@ static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 	int		prev_fd;
 	int		i;
 	int		ret;
+	int		has_real_commands;
 
 	prev_fd = -1;
 	i = 0;
+	has_real_commands = 0;
 	while (cmd)
 	{
 		pids[i] = 0;
-		if (skip_empty_node(&cmd))
+		if (is_empty_node(cmd))
+		{
+			if (!cmd->next && !cmd->prev)
+			{
+				shell->exit_code = 127;
+				printf(": command not found\n");
+				return (0);
+			}
+			cmd = cmd->next;
 			continue ;
+		}
+		has_real_commands = 1;
 		if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
 		{
+			if (prev_fd != -1)
+			{
+				close(prev_fd);
+				prev_fd = -1;
+			}
 			(exec_redir_only(cmd, shell, prev_fd), cmd = cmd->next);
 			continue ;
 		}
 		ret = try_exec_builtin(cmd, shell);
 		if (ret != -1)
+		{
+			if (prev_fd != -1)
+				close(prev_fd);
 			return (handle_builtin_return(shell, ret));
+		}
 		if (exec_external_cmd(cmd, shell, &prev_fd, &(pids[i])) != 0)
+		{
+			if (prev_fd != -1)
+				close(prev_fd);
 			return (-1);
+		}
 		i++;
 		cmd = cmd->next;
+	}
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (!has_real_commands && i == 0)
+	{
+		shell->exit_code = 0;
+		return (0);
 	}
 	return (i);
 }
