@@ -34,8 +34,11 @@ void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 			append_cmd(shell, cmd, lexer->value);
 		else if (lexer->type == PIPE)
 		{
-			if ((!cmd->cmds || !cmd->cmds[0])
-				|| !lexer->next || lexer->next->type == PIPE)
+			if ((!cmd->cmds || !cmd->cmds[0]) && !cmd->redir)
+			{
+				return (parser_syntax_error(shell, "|"));
+			}
+			if (!lexer->next || lexer->next->type == PIPE)
 				return (parser_syntax_error(shell, "|"));
 			cmd = append_pipe(shell, cmd);
 		}
