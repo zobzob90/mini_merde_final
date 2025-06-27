@@ -6,7 +6,7 @@
 /*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/27 08:09:01 by valentin         ###   ########.fr       */
+/*   Updated: 2025/06/27 13:41:31 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,93 @@ static int	heredoc_fail(t_shell *shell)
 	return (1);
 }
 
-static int	handle_builtin_return(t_shell *shell, int ret)
+static int	handle_empty_single_node(t_shell *shell)
 {
-	shell->exit_code = ret;
-	return (ret);
+	shell->exit_code = 127;
+	printf(": command not found\n");
+	return (0);
+}
+
+static int	handle_redir_only_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd)
+{
+	if (*prev_fd != -1)
+	{
+		close(*prev_fd);
+		*prev_fd = -1;
+	}
+	exec_redir_only(cmd, shell, *prev_fd);
+	return (1);
+}
+
+static int	handle_builtin_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd)
+{
+	int	ret;
+
+	ret = try_exec_builtin(cmd, shell);
+	if (ret != -1)
+	{
+		if (*prev_fd != -1)
+			close(*prev_fd);
+		shell->exit_code = ret;
+		return (ret);
+	}
+	return (-1);
+}
+
+static int	process_cmd_node(t_cmd *cmd, t_shell *shell,
+		int *prev_fd, pid_t *pid)
+{
+	int	ret;
+
+	if (is_empty_node(cmd))
+	{
+		if (!cmd->next && !cmd->prev)
+			return (handle_empty_single_node(shell));
+		return (1);
+	}
+	if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
+		return (handle_redir_only_cmd(cmd, shell, prev_fd));
+	ret = handle_builtin_cmd(cmd, shell, prev_fd);
+	if (ret != -1)
+		return (ret);
+	if (exec_external_cmd(cmd, shell, prev_fd, pid) != 0)
+	{
+		if (*prev_fd != -1)
+			close(*prev_fd);
+		return (-1);
+	}
+	return (0);
+}
+
+static int	handle_cmd_result(int ret, t_cmd **cmd,
+	int *has_real_commands, int *i)
+{
+	if (ret > 0)
+		return (ret);
+	if (ret == -1)
+		return (-1);
+	if (ret == 1)
+	{
+		*cmd = (*cmd)->next;
+		return (0);
+	}
+	*has_real_commands = 1;
+	(*i)++;
+	*cmd = (*cmd)->next;
+	return (0);
+}
+
+static int	finalize_pipeline(int prev_fd, int has_real_commands,
+	int i, t_shell *shell)
+{
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (!has_real_commands && i == 0)
+	{
+		shell->exit_code = 0;
+		return (0);
+	}
+	return (i);
 }
 
 static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
@@ -68,52 +151,14 @@ static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 	while (cmd)
 	{
 		pids[i] = 0;
-		if (is_empty_node(cmd))
-		{
-			if (!cmd->next && !cmd->prev)
-			{
-				shell->exit_code = 127;
-				printf(": command not found\n");
-				return (0);
-			}
-			cmd = cmd->next;
-			continue ;
-		}
-		has_real_commands = 1;
-		if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
-		{
-			if (prev_fd != -1)
-			{
-				close(prev_fd);
-				prev_fd = -1;
-			}
-			(exec_redir_only(cmd, shell, prev_fd), cmd = cmd->next);
-			continue ;
-		}
-		ret = try_exec_builtin(cmd, shell);
-		if (ret != -1)
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			return (handle_builtin_return(shell, ret));
-		}
-		if (exec_external_cmd(cmd, shell, &prev_fd, &(pids[i])) != 0)
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			return (-1);
-		}
-		i++;
-		cmd = cmd->next;
+		ret = process_cmd_node(cmd, shell, &prev_fd, &(pids[i]));
+		ret = handle_cmd_result(ret, &cmd, &has_real_commands, &i);
+		if (ret != 0)
+			return (ret);
+		if (ret == 0 && cmd == NULL)
+			break ;
 	}
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (!has_real_commands && i == 0)
-	{
-		shell->exit_code = 0;
-		return (0);
-	}
-	return (i);
+	return (finalize_pipeline(prev_fd, has_real_commands, i, shell));
 }
 
 /*Main fonction of the exec.*/
