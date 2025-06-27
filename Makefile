@@ -30,6 +30,7 @@ SRCS = src/main.c \
 		src/expand/join.c \
 		src/expand/join_dollar.c \
 		src/parsing/parsing_utils.c \
+		src/parsing/parsing_utils2.c \
 		src/parsing/pars_init.c \
 		src/parsing/parsing.c \
 		src/exec/exec_builtin.c \
