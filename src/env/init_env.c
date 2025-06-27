@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:47:34 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/24 12:34:21 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:02:43 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	add_env_if_missing(t_env **env, const char *key, const char *value)
 			while (last->next)
 				last = last->next;
 			last->next = new;
-		}	
+		}
 	}
 }
 

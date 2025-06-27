@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/25 18:26:44 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:09:01 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static int	heredoc_fail(t_shell *shell)
 
 static int	handle_builtin_return(t_shell *shell, int ret)
 {
-    shell->exit_code = ret;
-    return (ret);
+	shell->exit_code = ret;
+	return (ret);
 }
 
 static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)

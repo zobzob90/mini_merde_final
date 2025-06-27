@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:20:39 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:04:29 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	skip_empty_node(t_cmd **cmd)
 
 int	is_empty_node(t_cmd *cmd)
 {
-	if (!cmd->cmds || !cmd->cmds[0] || 
-		(cmd->cmds[0] && ft_strlen(cmd->cmds[0]) == 0))
+	if (!cmd->cmds || !cmd->cmds[0]
+		|| (cmd->cmds[0] && ft_strlen(cmd->cmds[0]) == 0))
 	{
 		if (!cmd->redir)
 			return (1);

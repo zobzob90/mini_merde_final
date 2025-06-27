@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:36:47 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/05/19 13:13:59 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:02:14 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init_lexer(t_lexer *lexer)
 /*Allocate and append a new token of a given type to the lexer list.*/
 
 void	add_new_token(t_lexer **lexer, t_shell *shell, t_token type)
-{	
+{
 	t_lexer	*new_token;
 	t_lexer	*curr;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_external.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 16:54:15 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:03:44 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,14 @@ void	handle_execve_fail(char *path, char **envp, char *cmd, t_shell *shell)
 
 	err = errno;
 	perror(cmd);
-	free(path);
 	ft_free_tab(envp);
 	exit_clean_shell(shell, NULL);
 	if (err == EACCES || (path && is_directory(path)))
-		exit(126);
+		(free(path), exit(126));
 	else if (err == ENOENT || err == EFAULT)
-		exit(127);
+		(free(path), exit(127));
 	else
-		exit(1);
+		(free(path), exit(1));
 }
 
 /*Execute an external command using execve.*/

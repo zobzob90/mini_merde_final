@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:19 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 08:06:45 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ int	exec_redir_only(t_cmd *cmd, t_shell *shell, int prev_fd)
 
 static void	cleanup_pipe(t_shell *shell, pid_t pid, int *last_pid, int *status)
 {
-    (void)pid;
-    (void)last_pid;
-    update_exit_code(shell, *status);
-    set_signal_handlers();
-    if (shell->pipe_fd[0] >= 0)
-        close(shell->pipe_fd[0]);
-    if (shell->pipe_fd[1] >= 0)
-        close(shell->pipe_fd[1]);
+	(void)pid;
+	(void)last_pid;
+	update_exit_code(shell, *status);
+	set_signal_handlers();
+	if (shell->pipe_fd[0] >= 0)
+		close(shell->pipe_fd[0]);
+	if (shell->pipe_fd[1] >= 0)
+		close(shell->pipe_fd[1]);
 }
 
 int	exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid)
