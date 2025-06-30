@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:01:19 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/24 17:51:06 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 09:02:07 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ static int	launch_easter(t_shell *shell, char **argv)
 	else if (ft_strcmp(argv[0], "kevin") == 0)
 		return (sentiment_de_sau6(shell));
 	else if (ft_strncmp(argv[0], "sudo", 4) == 0)
-		ft_putstr_fd("Tu n'es pas le vrai bash, imposteur ! 🚨\n", 2);
+		return (printf("Tu n'es pas le vrai bash, imposteur ! 🚨\n"), 0);
 	else if (ft_strcmp(argv[0], "moulinette") == 0)
 		return (get_moulinette(shell));
 	else if (ft_strcmp(argv[0], "miaou") == 0)
-		ft_putstr_fd("Je suis un gros chat\n", 2);
+		return (printf("Je suis un gros chat\n"), 0);
 	else if (ft_strcmp(argv[0], "Xavier") == 0)
-		ft_putstr_fd("Xavier, notre rais a nous\n", 2);
+		return (printf("Xavier, notre rais a nous\n"), 0);
 	return (-1);
 }
 

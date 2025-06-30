@@ -39,6 +39,7 @@ SRCS = src/main.c \
 		src/exec/exec_child.c \
 		src/exec/exec_heredoc.c \
 		src/exec/exec_main.c \
+		src/exec/exec_main_utils.c \
 		src/exec/exec_path.c \
 		src/exec/exec_redir.c \
 		src/exec/exec_utils.c \

@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:32 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 16:57:22 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 08:43:16 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,15 @@ static int	write_heredoc_file(const char *filename,
 	}
 	close(fd);
 	return (0);
+}
+
+/*Clean the heredoc and update the exit code to 1.*/
+
+int	heredoc_fail(t_shell *shell)
+{
+	cleanup_heredocs(shell->cmd);
+	shell->exit_code = 1;
+	return (1);
 }
 
 /*Return 1 when the heredoc creation fails and 0 when it's OK.*/

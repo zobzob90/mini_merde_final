@@ -3,109 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/27 13:41:31 by valentin         ###   ########.fr       */
+/*   Updated: 2025/06/30 08:50:28 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*Manage parent process file descriptors after forking a child.*/
-
-int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
-{
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (has_next_non_empty_cmd(cmd))
-	{
-		close(pipefd[1]);
-		*prev_fd = pipefd[0];
-	}
-	set_signal_handlers();
-	return (pid);
-}
-
-/*Update shell exit code based on child process termination status.*/
-
-int	update_exit_code(t_shell *shell, int status)
-{
-	if (WIFEXITED(status))
-		shell->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		shell->exit_code = 128 + WTERMSIG(status);
-	else
-		shell->exit_code = 1;
-	return (shell->exit_code);
-}
-
-/*Clean the heredoc and update the exit code to 1.*/
-
-static int	heredoc_fail(t_shell *shell)
-{
-	cleanup_heredocs(shell->cmd);
-	shell->exit_code = 1;
-	return (1);
-}
-
-static int	handle_empty_single_node(t_shell *shell)
-{
-	shell->exit_code = 127;
-	printf(": command not found\n");
-	return (0);
-}
-
-static int	handle_redir_only_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd)
-{
-	if (*prev_fd != -1)
-	{
-		close(*prev_fd);
-		*prev_fd = -1;
-	}
-	exec_redir_only(cmd, shell, *prev_fd);
-	return (1);
-}
-
-static int	handle_builtin_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd)
-{
-	int	ret;
-
-	ret = try_exec_builtin(cmd, shell);
-	if (ret != -1)
-	{
-		if (*prev_fd != -1)
-			close(*prev_fd);
-		shell->exit_code = ret;
-		return (ret);
-	}
-	return (-1);
-}
-
-static int	process_cmd_node(t_cmd *cmd, t_shell *shell,
-		int *prev_fd, pid_t *pid)
-{
-	int	ret;
-
-	if (is_empty_node(cmd))
-	{
-		if (!cmd->next && !cmd->prev)
-			return (handle_empty_single_node(shell));
-		return (1);
-	}
-	if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
-		return (handle_redir_only_cmd(cmd, shell, prev_fd));
-	ret = handle_builtin_cmd(cmd, shell, prev_fd);
-	if (ret != -1)
-		return (ret);
-	if (exec_external_cmd(cmd, shell, prev_fd, pid) != 0)
-	{
-		if (*prev_fd != -1)
-			close(*prev_fd);
-		return (-1);
-	}
-	return (0);
-}
 
 static int	handle_cmd_result(int ret, t_cmd **cmd,
 	int *has_real_commands, int *i)
