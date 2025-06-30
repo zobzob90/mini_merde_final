@@ -1,4 +1,0 @@
-DANS SKIP_NODE EXEC UTILS
-
-	/*if ((*cmd)->cmds == NULL || (*cmd)->cmds[0] == NULL)*/
-	/* 		return (2)*/
