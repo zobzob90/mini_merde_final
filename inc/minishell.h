@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 09:40:31 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int		handle_redir_exec(t_redir *redir);
 void	wait_all_children(pid_t last_pid, int *status);
 int		wait_and_return_status(pid_t pid);
 int		check_exec_errors(char *path, t_cmd *cmd, t_shell *shell);
+int		should_free_path(t_cmd *cmd, char *path);
 void	exec_external(t_cmd *cmd, t_shell *shell);
 void	exec_child(t_cmd *cmd, t_shell *shell, int prev_fd, int pipefd[2]);
 int		update_exit_code(t_shell *shell, int status);
@@ -155,6 +156,13 @@ int		env_list_size(t_env *env);
 char	*ft_strjoin_path(char *path, char *cmd);
 char	*resolve_cmd_path(char *cmd, t_env *env);
 int		is_directory(const char *path);
+
+/*EXEC MAIN UTILS*/
+int		handle_empty_single_node(t_shell *shell);
+int		handle_redir_only_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd);
+int		handle_builtin_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd);
+int		process_cmd_node(t_cmd *cmd, t_shell *shell,
+			int *prev_fd, pid_t *pid);
 
 /*EXEC_UTILS*/
 char	**env_list_to_array(t_env *env);
@@ -169,6 +177,7 @@ int		has_next_non_empty_cmd(t_cmd *cmd);
 
 /*HEREDOC*/
 int		setup_heredocs(t_cmd *cmd_list, t_shell *shell);
+int		heredoc_fail(t_shell *shell);
 void	cleanup_heredocs(t_cmd *cmd_list);
 
 /*REDIR*/
@@ -222,4 +231,4 @@ void	free_env(t_env *env);
 int		print_cmd_not_found(t_shell *shell, char *cmd);
 void	ft_sort_str_array(t_env	**arr, int size);
 
-#endif 
+#endif

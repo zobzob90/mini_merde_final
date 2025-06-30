@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:41:31 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/24 16:54:15 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 09:40:31 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_executable_path(t_cmd *cmd, t_env *env)
 	char	*path;
 
 	if (ft_strchr(cmd->cmds[0], '/'))
-		path = ft_strdup(cmd->cmds[0]);
+		path = cmd->cmds[0];
 	else
 		path = resolve_cmd_path(cmd->cmds[0], env);
 	return (path);
@@ -27,14 +27,15 @@ char	*get_executable_path(t_cmd *cmd, t_env *env)
 
 /*Convert environment linked list to envp array.*/
 
-char	**prepare_envp(t_env *env, char *path)
+char	**prepare_envp(t_env *env, t_cmd *cmd, char *path)
 {
 	char	**envp;
 
 	envp = env_list_to_array(env);
 	if (!envp)
 	{
-		free(path);
+		if (should_free_path(cmd, path))
+			free(path);
 		return (NULL);
 	}
 	return (envp);
@@ -53,21 +54,32 @@ int	is_directory(const char *path)
 
 /*Handle execve failure and exit.*/
 
-void	handle_execve_fail(char *path, char **envp, char *cmd, t_shell *shell)
+void	handle_execve_fail(char *path, char **envp, t_cmd *cmd, t_shell *shell)
 {
 	int	err;
 
 	err = errno;
-	perror(cmd);
-	free(path);
+	perror(cmd->cmds[0]);
 	ft_free_tab(envp);
 	exit_clean_shell(shell, NULL);
-	if (err == EACCES || (path && is_directory(path)))
-		exit(126);
-	else if (err == ENOENT || err == EFAULT)
-		exit(127);
+	if (should_free_path(cmd, path))
+	{
+		if (err == EACCES || (path && is_directory(path)))
+			(free(path), exit(126));
+		else if (err == ENOENT || err == EFAULT)
+			(free(path), exit(127));
+		else
+			(free(path), exit(1));
+	}
 	else
-		exit(1);
+	{
+		if (err == EACCES || (path && is_directory(path)))
+			exit(126);
+		else if (err == ENOENT || err == EFAULT)
+			exit(127);
+		else
+			exit(1);
+	}
 }
 
 /*Execute an external command using execve.*/
@@ -81,9 +93,7 @@ void	exec_external(t_cmd *cmd, t_shell *shell)
 		exit (1);
 	path = get_executable_path(cmd, shell->env);
 	check_exec_errors(path, cmd, shell);
-	envp = prepare_envp(shell->env, path);
-	if (!envp)
-		(free(path), shell->exit_code = 1, exit(1));
+	envp = prepare_envp(shell->env, cmd, path);
 	execve(path, cmd->cmds, envp);
-	handle_execve_fail(path, envp, cmd->cmds[0], shell);
+	handle_execve_fail(path, envp, cmd, shell);
 }

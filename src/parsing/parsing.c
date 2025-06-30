@@ -3,24 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:23:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/25 17:36:58 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/27 09:01:08 by valentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*Print a syntax error message and set the shell's exit codes.*/
+/*Handle WORD tokens by appending them to the current command.*/
 
-void	parser_syntax_error(t_shell *shell, const char *msg)
+static void	handle_word_token(t_shell *shell, t_cmd *cmd, t_lexer *lexer)
 {
-	ft_putstr_fd("Error : Unexpected token `", 2);
-	ft_putstr_fd((char *)msg, 2);
-	ft_putstr_fd("`\n", 2);
-	shell->exit_code = 2;
-	return ;
+	if (lexer->type == WORD && lexer->value)
+		append_cmd(shell, cmd, lexer->value);
+}
+
+/*Handle PIPE tokens with syntax validation.*/
+
+static t_cmd	*handle_pipe_token(t_shell *shell, t_cmd *cmd, t_lexer *lexer)
+{
+	if ((!cmd->cmds || !cmd->cmds[0]) && !cmd->redir)
+	{
+		parser_syntax_error(shell, "|");
+		return (cmd);
+	}
+	if (!lexer->next || lexer->next->type == PIPE)
+	{
+		parser_syntax_error(shell, "|");
+		return (cmd);
+	}
+	return (append_pipe(shell, cmd));
+}
+
+/*Handle redirection tokens and advance lexer position.*/
+
+static void	handle_redir_token(t_shell *shell, t_cmd *cmd, t_lexer **lexer)
+{
+	handle_redir(shell, cmd, *lexer);
+	if (shell->exit_code == 2)
+		return ;
+	*lexer = (*lexer)->next;
 }
 
 /*Parse the lexer tokens and build the command structure,
@@ -31,35 +55,22 @@ void	parse_tokens(t_shell *shell, t_lexer *lexer, t_cmd *cmd)
 	while (lexer)
 	{
 		if (lexer->type == WORD && lexer->value)
-			append_cmd(shell, cmd, lexer->value);
+			handle_word_token(shell, cmd, lexer);
 		else if (lexer->type == PIPE)
 		{
-			if ((!cmd->cmds || !cmd->cmds[0])
-				|| !lexer->next || lexer->next->type == PIPE)
-				return (parser_syntax_error(shell, "|"));
-			cmd = append_pipe(shell, cmd);
+			cmd = handle_pipe_token(shell, cmd, lexer);
+			if (shell->exit_code == 2)
+				return ;
 		}
 		else if (lexer->type == REDIR_IN || lexer->type == REDIR_OUT
 			|| lexer->type == APPEND || lexer->type == HEREDOC)
 		{
-			handle_redir(shell, cmd, lexer);
+			handle_redir_token(shell, cmd, &lexer);
 			if (shell->exit_code == 2)
 				return ;
-			lexer = lexer->next;
 		}
 		else
 			parser_syntax_error(shell, lexer->value);
-		lexer = lexer->next;
-	}
-}
-
-/*Remove surrounding quotes from each token in the lexer list.*/
-
-void	clean_all_quotes(t_lexer *lexer)
-{
-	while (lexer)
-	{
-		lexer->value = remove_quotes_from_tok(lexer->value);
 		lexer = lexer->next;
 	}
 }

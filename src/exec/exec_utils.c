@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:19 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 09:35:22 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	exec_redir_only(t_cmd *cmd, t_shell *shell, int prev_fd)
 
 static void	cleanup_pipe(t_shell *shell, pid_t pid, int *last_pid, int *status)
 {
-	(void)pid;
 	(void)last_pid;
+	(void)pid;
 	update_exit_code(shell, *status);
 	set_signal_handlers();
 	if (shell->pipe_fd[0] >= 0)
@@ -92,4 +92,17 @@ int	exec_external_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd, pid_t *last_pid)
 	else
 		handle_parent(pid, cmd, shell->pipe_fd, prev_fd);
 	return (0);
+}
+
+/*Update shell exit code based on child process termination status.*/
+
+int	update_exit_code(t_shell *shell, int status)
+{
+	if (WIFEXITED(status))
+		shell->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->exit_code = 128 + WTERMSIG(status);
+	else
+		shell->exit_code = 1;
+	return (shell->exit_code);
 }

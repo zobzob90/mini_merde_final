@@ -59,14 +59,19 @@ static void	setup_pipes_and_redir(t_cmd *cmd, int prev_fd, int pipefd[2])
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
 			(perror("dup2 prev_fd"), exit(1));
-		close (prev_fd);
 	}
-	if (cmd->next)
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (has_next_non_empty_cmd(cmd) && pipefd)
 	{
-		close(pipefd[0]);
-		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
-			(perror("dup2 pipefd[1]"), exit(1));
-		close(pipefd[1]);
+		if (pipefd[0] >= 0)
+			close(pipefd[0]);
+		if (pipefd[1] >= 0)
+		{
+			if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+				(perror("dup2 pipefd[1]"), exit(1));
+			close(pipefd[1]);
+		}
 	}
 }
 

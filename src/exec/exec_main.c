@@ -6,53 +6,41 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/25 18:26:44 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 08:50:28 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*Manage parent process file descriptors after forking a child.*/
-
-int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
+static int	handle_cmd_result(int ret, t_cmd **cmd,
+	int *has_real_commands, int *i)
 {
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (has_next_non_empty_cmd(cmd))
+	if (ret > 0)
+		return (ret);
+	if (ret == -1)
+		return (-1);
+	if (ret == 1)
 	{
-		close(pipefd[1]);
-		*prev_fd = pipefd[0];
+		*cmd = (*cmd)->next;
+		return (0);
 	}
-	set_signal_handlers();
-	return (pid);
+	*has_real_commands = 1;
+	(*i)++;
+	*cmd = (*cmd)->next;
+	return (0);
 }
 
-/*Update shell exit code based on child process termination status.*/
-
-int	update_exit_code(t_shell *shell, int status)
+static int	finalize_pipeline(int prev_fd, int has_real_commands,
+	int i, t_shell *shell)
 {
-	if (WIFEXITED(status))
-		shell->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		shell->exit_code = 128 + WTERMSIG(status);
-	else
-		shell->exit_code = 1;
-	return (shell->exit_code);
-}
-
-/*Clean the heredoc and update the exit code to 1.*/
-
-static int	heredoc_fail(t_shell *shell)
-{
-	cleanup_heredocs(shell->cmd);
-	shell->exit_code = 1;
-	return (1);
-}
-
-static int	handle_builtin_return(t_shell *shell, int ret)
-{
-    shell->exit_code = ret;
-    return (ret);
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (!has_real_commands && i == 0)
+	{
+		shell->exit_code = 0;
+		return (0);
+	}
+	return (i);
 }
 
 static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
@@ -68,52 +56,14 @@ static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 	while (cmd)
 	{
 		pids[i] = 0;
-		if (is_empty_node(cmd))
-		{
-			if (!cmd->next && !cmd->prev)
-			{
-				shell->exit_code = 127;
-				printf(": command not found\n");
-				return (0);
-			}
-			cmd = cmd->next;
-			continue ;
-		}
-		has_real_commands = 1;
-		if ((!cmd->cmds || !cmd->cmds[0]) && cmd->redir)
-		{
-			if (prev_fd != -1)
-			{
-				close(prev_fd);
-				prev_fd = -1;
-			}
-			(exec_redir_only(cmd, shell, prev_fd), cmd = cmd->next);
-			continue ;
-		}
-		ret = try_exec_builtin(cmd, shell);
-		if (ret != -1)
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			return (handle_builtin_return(shell, ret));
-		}
-		if (exec_external_cmd(cmd, shell, &prev_fd, &(pids[i])) != 0)
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			return (-1);
-		}
-		i++;
-		cmd = cmd->next;
+		ret = process_cmd_node(cmd, shell, &prev_fd, &(pids[i]));
+		ret = handle_cmd_result(ret, &cmd, &has_real_commands, &i);
+		if (ret != 0)
+			return (ret);
+		if (ret == 0 && cmd == NULL)
+			break ;
 	}
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (!has_real_commands && i == 0)
-	{
-		shell->exit_code = 0;
-		return (0);
-	}
-	return (i);
+	return (finalize_pipeline(prev_fd, has_real_commands, i, shell));
 }
 
 /*Main fonction of the exec.*/

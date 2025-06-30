@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:20:39 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:05 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 08:46:16 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	skip_empty_node(t_cmd **cmd)
 
 int	is_empty_node(t_cmd *cmd)
 {
-	if (!cmd->cmds || !cmd->cmds[0] || 
-		(cmd->cmds[0] && ft_strlen(cmd->cmds[0]) == 0))
+	if (!cmd->cmds || !cmd->cmds[0]
+		|| (cmd->cmds[0] && ft_strlen(cmd->cmds[0]) == 0))
 	{
 		if (!cmd->redir)
 			return (1);
@@ -54,4 +54,19 @@ int	has_next_non_empty_cmd(t_cmd *cmd)
 		next_cmd = next_cmd->next;
 	}
 	return (0);
+}
+
+/*Manage parent process file descriptors after forking a child.*/
+
+int	handle_parent(pid_t pid, t_cmd *cmd, int *pipefd, int *prev_fd)
+{
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (has_next_non_empty_cmd(cmd))
+	{
+		close(pipefd[1]);
+		*prev_fd = pipefd[0];
+	}
+	set_signal_handlers();
+	return (pid);
 }
