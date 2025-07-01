@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:32 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/30 08:43:16 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:39:25 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	write_heredoc_file(const char *filename,
 			break ;
 		}
 		line = expand_token(line, shell);
-		write(fd, line, strlen(line));
+		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 	}

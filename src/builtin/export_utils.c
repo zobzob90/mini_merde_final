@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:40 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/20 13:02:57 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:40:32 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	add_or_update_env(t_env **env, char *key, char *value)
 		return (ft_putstr_fd("export : invalid format\n", 2));
 	while (tmp)
 	{
-		if (strcmp(tmp->key, key) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(value);

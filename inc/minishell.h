@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:14:29 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/30 09:40:31 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:41:42 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include "../libft/libft.h"
 
 # define PATH_MAX 4096
-# define MAX_PIPE 256
+# define MAX_PIPE 10000
 # define TRUE 1
 # define FALSE 0
 
@@ -161,6 +161,7 @@ int		is_directory(const char *path);
 int		handle_empty_single_node(t_shell *shell);
 int		handle_redir_only_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd);
 int		handle_builtin_cmd(t_cmd *cmd, t_shell *shell, int *prev_fd);
+int		count_commands(t_cmd *cmd);
 int		process_cmd_node(t_cmd *cmd, t_shell *shell,
 			int *prev_fd, pid_t *pid);
 

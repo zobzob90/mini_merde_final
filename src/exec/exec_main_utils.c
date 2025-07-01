@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 08:47:30 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/30 08:48:51 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:25:28 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,17 @@ int	process_cmd_node(t_cmd *cmd, t_shell *shell,
 		return (-1);
 	}
 	return (0);
+}
+
+int	count_commands(t_cmd *cmd)
+{
+	int	count;
+
+	count = 0;
+	while (cmd)
+	{
+		count++;
+		cmd = cmd->next;
+	}
+	return (count);
 }

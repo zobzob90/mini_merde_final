@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:49:18 by ertrigna          #+#    #+#             */
-/*   Updated: 2025/06/12 11:26:21 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/06/30 15:41:20 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static void	echo_args(char **av, int start)
 	i = start;
 	while (av[i])
 	{
-		ft_printf("%s", av[i]);
+		printf("%s", av[i]);
 		if (av[i + 1])
-			ft_printf(" ");
+			printf(" ");
 		i++;
 	}
 }
@@ -46,6 +46,6 @@ int	get_echo(char **av)
 	}
 	echo_args(av, i);
 	if (n_flag)
-		ft_printf("\n");
+		printf("\n");
 	return (0);
 }

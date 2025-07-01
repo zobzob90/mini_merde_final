@@ -6,7 +6,7 @@
 /*   By: ertrigna <ertrigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:49:30 by vdeliere          #+#    #+#             */
-/*   Updated: 2025/06/30 08:50:28 by ertrigna         ###   ########.fr       */
+/*   Updated: 2025/07/01 11:28:20 by ertrigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,33 @@ static int	finalize_pipeline(int prev_fd, int has_real_commands,
 	return (i);
 }
 
+static int	process_single_command(t_shell *shell, t_cmd *cmd,
+	int *prev_fd, pid_t *pid)
+{
+	int	ret;
+
+	*pid = 0;
+	ret = process_cmd_node(cmd, shell, prev_fd, pid);
+	return (ret);
+}
+
 static int	launch_pipeline(t_shell *shell, t_cmd *cmd, pid_t *pids)
 {
 	int		prev_fd;
 	int		i;
 	int		ret;
 	int		has_real_commands;
+	int		cmd_count;
 
+	cmd_count = count_commands(cmd);
+	if (cmd_count > MAX_PIPE)
+		ft_putstr_fd("minishell: too many pipe\n", STDERR_FILENO);
 	prev_fd = -1;
 	i = 0;
 	has_real_commands = 0;
-	while (cmd)
+	while (cmd && i < MAX_PIPE)
 	{
-		pids[i] = 0;
-		ret = process_cmd_node(cmd, shell, &prev_fd, &(pids[i]));
+		ret = process_single_command(shell, cmd, &prev_fd, &(pids[i]));
 		ret = handle_cmd_result(ret, &cmd, &has_real_commands, &i);
 		if (ret != 0)
 			return (ret);
