@@ -81,7 +81,6 @@ minishell/
 │   └── utils/             # Fonctions utilitaires
 ├── main.c                 # Point d'entrée principal
 ├── Makefile               # Compilation
-└── rapport_final.sh       # Script de soumission
 
 📚 Technologies
 
